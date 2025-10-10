@@ -1,73 +1,151 @@
-# React + TypeScript + Vite
+# App-Kine - Application de Gestion de Cabinet de Kinésithérapie
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📋 Description
 
-Currently, two official plugins are available:
+App-Kine est une application web moderne destinée aux kinésithérapeutes pour gérer efficacement leurs patients, planifier leurs séances, et suivre les progrès thérapeutiques. L'application vise à digitaliser et optimiser la gestion quotidienne des cabinets de kinésithérapie.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 Objectifs
 
-## React Compiler
+- **Réduire de 50%** le temps administratif des kinésithérapeutes
+- **Améliorer la qualité** du suivi patient grâce à une documentation structurée
+- **Offrir une expérience utilisateur** intuitive et mobile-first
+- **Assurer la conformité RGPD** pour la gestion des données médicales
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Fonctionnalités Principales
 
-## Expanding the ESLint configuration
+### 👥 Gestion des Patients
+- Fiche patient complète (informations personnelles, médicales)
+- Historique des séances et traitements
+- Photos et documents joints
+- Recherche et filtrage avancés
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 📅 Planification des Séances
+- Calendrier interactif
+- Gestion des créneaux disponibles
+- Rappels automatiques
+- Gestion des annulations
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 📝 Suivi Thérapeutique
+- Évaluation initiale et de suivi
+- Objectifs de traitement
+- Progression des exercices
+- Notes de séance
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 💰 Facturation et Administration
+- Génération de factures
+- Suivi des paiements
+- Statistiques de fréquentation
+- Export des données
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Stack Technologique
+
+### Frontend
+- **React 19** avec TypeScript
+- **Vite** pour le build
+- **Tailwind CSS** pour le styling
+- **Zustand** pour la gestion d'état
+- **React Hook Form + Zod** pour les formulaires
+
+### Backend
+- **Node.js** avec Express.js
+- **PostgreSQL** avec Prisma ORM
+- **JWT** pour l'authentification
+- **Zod** pour la validation
+
+### DevOps
+- **Vercel** pour le déploiement frontend
+- **Railway/Supabase** pour le backend
+- **CloudFlare** pour le CDN
+- **Sentry** pour le monitoring
+
+## 📚 Documentation
+
+- [Project Brief](./docs/project-brief.md) - Vision et objectifs du produit
+- [PRD](./docs/prd.md) - Spécifications détaillées des fonctionnalités
+- [Technical Guidance](./docs/technical-guidance.md) - Architecture et directives techniques
+- [Development Setup](./docs/development-setup.md) - Guide de configuration du développement
+
+## 🚀 Démarrage Rapide
+
+### Prérequis
+- Node.js 20+
+- PostgreSQL 15+ (ou Supabase)
+- Git
+
+### Installation
+
+```bash
+# Cloner le projet
+git clone <repository-url>
+cd app-kine
+
+# Installer les dépendances
+npm install
+
+# Configurer l'environnement
+cp .env.example .env.local
+# Éditer .env.local avec vos configurations
+
+# Configurer la base de données
+npx prisma generate
+npx prisma migrate dev
+
+# Démarrer le serveur de développement
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Scripts Disponibles
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev          # Démarrer le serveur de développement
+npm run build        # Build de production
+npm run test         # Lancer les tests
+npm run lint         # Linter le code
+npm run format       # Formater le code
+npm run type-check   # Vérifier les types TypeScript
 ```
+
+## 🏗️ Architecture
+
+L'application suit une architecture monolithique modulaire avec séparation claire des couches :
+
+- **Présentation** : React components et pages
+- **Logique métier** : Services et hooks personnalisés
+- **Données** : Prisma ORM avec PostgreSQL
+
+## 🔒 Sécurité et Conformité
+
+- **RGPD** : Conformité complète pour les données médicales
+- **Chiffrement** : AES-256 pour les données au repos, TLS 1.3 en transit
+- **Authentification** : JWT avec refresh tokens
+- **Audit** : Trail complet des actions utilisateur
+
+## 📊 Métriques de Succès
+
+- **Performance** : Temps de chargement < 2 secondes
+- **Disponibilité** : 99.9% uptime
+- **Sécurité** : Zéro violation de données
+- **Satisfaction** : NPS > 50
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Commiter les changements (`git commit -m 'feat: ajouter nouvelle fonctionnalité'`)
+4. Pousser vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrir une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 📞 Support
+
+Pour toute question ou support :
+- 📧 Email : support@app-kine.fr
+- 📱 Documentation : [docs.app-kine.fr](https://docs.app-kine.fr)
+- 🐛 Issues : [GitHub Issues](https://github.com/app-kine/issues)
+
+---
+
+**Développé avec ❤️ pour les kinésithérapeutes français**

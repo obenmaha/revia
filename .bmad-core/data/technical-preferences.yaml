@@ -1,0 +1,129 @@
+# Technical Preferences for App-Kine
+# This file defines the technical choices and preferences for the project
+
+# Repository Structure
+repository_structure: "Monorepo"
+rationale: "Simplifies development and deployment for a single application with frontend and backend"
+
+# Service Architecture
+service_architecture: "Monolith"
+rationale: "Simpler to develop and deploy initially, can be split into microservices later if needed"
+
+# Testing Strategy
+testing_approach: "Full Testing Pyramid"
+rationale: "Comprehensive testing ensures quality and reliability for a medical application"
+
+# Frontend Technology Stack
+frontend:
+  framework: "React 19"
+  language: "TypeScript"
+  build_tool: "Vite"
+  styling: "Tailwind CSS"
+  state_management: "Zustand"
+  form_handling: "React Hook Form + Zod"
+  testing: "Vitest + Testing Library"
+  routing: "React Router v6"
+
+# Backend Technology Stack
+backend:
+  runtime: "Node.js 20+"
+  framework: "Express.js"
+  language: "TypeScript"
+  database: "PostgreSQL 15+"
+  orm: "Prisma"
+  authentication: "JWT + bcrypt"
+  validation: "Zod"
+  testing: "Jest + Supertest"
+
+# Database
+database:
+  provider: "PostgreSQL"
+  orm: "Prisma"
+  migrations: "Prisma Migrate"
+  seeding: "Prisma Seed"
+  connection_pooling: true
+  ssl: true
+
+# Security
+security:
+  authentication: "JWT with refresh tokens"
+  password_hashing: "bcrypt"
+  data_encryption: "AES-256"
+  https: true
+  cors: "Configured for production domains"
+  rate_limiting: true
+
+# Deployment
+deployment:
+  frontend: "Vercel"
+  backend: "Railway or Supabase"
+  database: "Supabase PostgreSQL"
+  cdn: "CloudFlare"
+  monitoring: "Sentry"
+  analytics: "Plausible Analytics"
+
+# Performance
+performance:
+  code_splitting: true
+  lazy_loading: true
+  image_optimization: true
+  caching: "Service Worker + HTTP Cache"
+  compression: "gzip"
+  cdn: true
+
+# Development Tools
+development:
+  editor: "VS Code"
+  extensions: ["Tailwind CSS", "Prettier", "ESLint", "Prisma"]
+  package_manager: "npm"
+  version_control: "Git"
+  ci_cd: "GitHub Actions"
+
+# Code Quality
+code_quality:
+  linting: "ESLint with TypeScript rules"
+  formatting: "Prettier"
+  type_checking: "TypeScript strict mode"
+  pre_commit_hooks: "Husky + lint-staged"
+  code_review: "Required for all PRs"
+
+# Compliance
+compliance:
+  gdpr: true
+  data_protection: true
+  medical_data: true
+  audit_trail: true
+  data_retention: "Configurable per data type"
+
+# Scalability Considerations
+scalability:
+  horizontal_scaling: "Stateless backend design"
+  database_scaling: "Read replicas + connection pooling"
+  caching: "Redis for session storage"
+  cdn: "Global content delivery"
+  monitoring: "Application performance monitoring"
+
+# Integration Points
+integrations:
+  email: "SMTP or SendGrid"
+  sms: "Twilio or similar"
+  calendar: "Google Calendar API"
+  payments: "Stripe or similar"
+  file_storage: "AWS S3 or similar"
+  backup: "Automated daily backups"
+
+# Environment Configuration
+environments:
+  development:
+    database: "Local PostgreSQL"
+    debug: true
+    logging: "verbose"
+  staging:
+    database: "Supabase staging"
+    debug: false
+    logging: "info"
+  production:
+    database: "Supabase production"
+    debug: false
+    logging: "error only"
+    monitoring: true
