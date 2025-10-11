@@ -2,27 +2,29 @@
 
 ## Vue d'Ensemble
 
-App-Kine est une application web moderne de gestion de cabinet de kinésithérapie, conçue avec une architecture monolithique modulaire évolutive, optimisée pour la performance, la sécurité et l'expérience utilisateur mobile-first.
+App-Kine est une application web moderne de gestion de cabinet de kinésithérapie, conçue avec une **architecture serverless "Full Supabase + Edge Functions"**, optimisée pour la performance, la sécurité RGPD et l'expérience utilisateur mobile-first.
 
 ## Principes Architecturaux
 
-### 1. Architecture Monolithique Modulaire
+### 1. Architecture Serverless Modulaire
 
-- **Avantage** : Simplicité de développement et déploiement initial
-- **Évolutivité** : Modules indépendants permettant migration vers microservices
-- **Cohésion** : Logique métier centralisée et cohérente
+- **Avantage** : Simplicité de développement et déploiement, coût optimisé
+- **Évolutivité** : Edge Functions modulaires permettant scaling automatique
+- **Cohésion** : Logique métier centralisée via Supabase + Edge Functions
 
 ### 2. Mobile-First Design
 
 - **Interface responsive** : Optimisée pour smartphones et tablettes
 - **Performance** : Chargement rapide sur connexions mobiles
 - **UX native** : Gestures et interactions mobiles naturelles
+- **PWA Ready** : Support offline et installation native
 
-### 3. Sécurité par Conception
+### 3. Sécurité par Conception (RGPD-Native)
 
-- **RGPD** : Conformité dès la conception
+- **RGPD** : Conformité native via Row Level Security (RLS)
 - **Chiffrement** : Données sensibles protégées en transit et au repos
-- **Authentification** : JWT avec refresh tokens sécurisés
+- **Authentification** : Supabase Auth avec RLS automatique
+- **Isolation** : Séparation stricte des données par praticien
 
 ## Stack Technologique
 
@@ -30,39 +32,43 @@ App-Kine est une application web moderne de gestion de cabinet de kinésithérap
 
 - **Framework** : React 19 avec TypeScript
 - **Build Tool** : Vite (performance optimisée)
-- **State Management** : Zustand (léger et performant)
+- **State Management** : TanStack Query v5 (server state) + Zustand (client state)
 - **Routing** : React Router v6
 - **UI Components** : Radix UI + Tailwind CSS
 - **Forms** : React Hook Form + Zod validation
 - **Charts** : Recharts (légers et accessibles)
 - **Calendar** : FullCalendar.js
 - **File Upload** : React Dropzone
+- **Monitoring** : Sentry (erreurs frontend)
 
-### Backend
+### Backend (Serverless)
 
-- **Runtime** : Node.js 20 LTS
-- **Framework** : Express.js avec TypeScript
-- **ORM** : Prisma (type-safe, performant)
-- **Validation** : Zod (cohérence frontend/backend)
-- **Authentication** : JWT + bcrypt
-- **File Storage** : AWS S3 ou Cloudinary
-- **Email** : Resend ou SendGrid
-- **PDF Generation** : Puppeteer
+- **Platform** : Supabase (PostgreSQL + Auth + Storage + Edge Functions)
+- **Runtime** : Deno (Edge Functions)
+- **Language** : TypeScript
+- **Authentication** : Supabase Auth (JWT natif)
+- **Authorization** : Row Level Security (RLS)
+- **File Storage** : Supabase Storage (avec RLS)
+- **Email** : Edge Functions + Resend/SendGrid
+- **PDF Generation** : Edge Functions + Puppeteer
+- **Cache** : Upstash Redis (optionnel, facturation à l'usage)
 
 ### Base de Données
 
-- **Primary** : PostgreSQL 15+
-- **Cache** : Redis (sessions, cache de requêtes)
-- **Search** : PostgreSQL Full-Text Search (puissant et simple)
-- **Backup** : Automatique quotidien + point-in-time recovery
+- **Primary** : PostgreSQL 15+ (via Supabase)
+- **Security** : Row Level Security (RLS) natif
+- **Search** : PostgreSQL Full-Text Search + Supabase API
+- **Backup** : Automatique Supabase + point-in-time recovery
+- **Realtime** : Supabase Realtime (WebSockets)
 
 ### Infrastructure
 
-- **Hosting** : Vercel (frontend) + Railway/Render (backend)
+- **Frontend Hosting** : Vercel (Edge Network)
+- **Backend Platform** : Supabase (Global Edge)
 - **CDN** : CloudFlare (performance globale)
-- **Monitoring** : Sentry (erreurs) + Vercel Analytics
-- **Security** : CloudFlare WAF + DDoS protection
-- **SSL** : Let's Encrypt (automatique)
+- **Monitoring** : Sentry (frontend + Edge Functions)
+- **Security** : CloudFlare WAF + DDoS protection + RLS
+- **SSL** : Automatique (Vercel + Supabase)
 
 ## Architecture des Couches
 
@@ -71,38 +77,40 @@ App-Kine est une application web moderne de gestion de cabinet de kinésithérap
 ```
 src/
 ├── components/          # Composants réutilisables
-│   ├── ui/             # Composants UI de base
+│   ├── ui/             # Composants UI de base (Radix UI)
 │   ├── forms/          # Composants de formulaires
+│   ├── layouts/        # Layouts de pages
 │   └── features/       # Composants métier
 ├── pages/              # Pages de l'application
 ├── hooks/              # Hooks React personnalisés
-├── stores/             # État global (Zustand)
-├── services/           # Services API
+├── stores/             # État client (Zustand)
+├── services/           # Services Supabase
 ├── utils/              # Utilitaires
 └── types/              # Types TypeScript
 ```
 
-### 2. Couche API (Backend)
+### 2. Couche API (Edge Functions)
 
 ```
-src/
-├── controllers/        # Contrôleurs des routes
-├── services/           # Logique métier
-├── repositories/       # Accès aux données
-├── middleware/         # Middleware Express
-├── routes/             # Définition des routes
-├── models/             # Modèles Prisma
-├── utils/              # Utilitaires
-└── types/              # Types TypeScript
+supabase/functions/
+├── generate-invoice/   # Génération de factures
+├── send-email/         # Envoi d'emails
+├── daily-report/       # Rapports quotidiens
+├── upload-document/    # Upload de documents
+└── business-logic/     # Logique métier complexe
 ```
 
-### 3. Couche Données
+### 3. Couche Données (Supabase)
 
 ```
-prisma/
-├── schema.prisma       # Schéma de base de données
-├── migrations/         # Migrations
-└── seed.ts            # Données de test
+supabase/
+├── migrations/         # Migrations SQL
+├── seed.sql           # Données de test
+└── policies/          # Politiques RLS
+    ├── patients.sql
+    ├── sessions.sql
+    ├── invoices.sql
+    └── documents.sql
 ```
 
 ## Modèle de Données
@@ -184,59 +192,61 @@ interface Invoice {
 
 ### 1. Authentification et Autorisation
 
-- **JWT Tokens** : Access token (15min) + Refresh token (7 jours)
-- **Hachage** : bcrypt avec salt rounds = 12
-- **Sessions** : Stockées en Redis avec expiration
-- **RBAC** : Rôles et permissions granulaires
+- **Supabase Auth** : JWT natif avec refresh automatique
+- **Row Level Security (RLS)** : Isolation automatique par praticien
+- **Sessions** : Gérées automatiquement par Supabase
+- **RBAC** : Rôles intégrés (PRACTITIONER, ADMIN)
 
 ### 2. Protection des Données
 
-- **Chiffrement** : AES-256 pour données sensibles
-- **HTTPS** : Obligatoire (TLS 1.3)
-- **Headers** : Security headers complets
-- **CORS** : Configuration restrictive
-- **Rate Limiting** : Protection contre les attaques
+- **Chiffrement** : Automatique (TLS 1.3 + chiffrement au repos)
+- **HTTPS** : Obligatoire (Vercel + Supabase)
+- **Headers** : Security headers automatiques
+- **CORS** : Configuration restrictive Supabase
+- **Rate Limiting** : Intégré Supabase + CloudFlare
 
-### 3. Conformité RGPD
+### 3. Conformité RGPD (Native)
 
-- **Consentement** : Gestion explicite du consentement
-- **Droit à l'oubli** : Suppression complète des données
-- **Portabilité** : Export des données utilisateur
-- **Audit** : Logs de toutes les actions sensibles
-- **DPO** : Délégué à la protection des données
+- **RLS Stricte** : Isolation automatique des données par praticien
+- **Audit Logs** : Logs d'accès automatiques Supabase
+- **Droit à l'oubli** : Suppression en cascade via RLS
+- **Portabilité** : Export via Supabase API
+- **Consentement** : Gestion via Supabase Auth
+- **Chiffrement** : Données sensibles chiffrées automatiquement
 
 ## Performance et Scalabilité
 
 ### 1. Optimisations Frontend
 
-- **Code Splitting** : Lazy loading des routes
-- **Bundle Optimization** : Tree shaking, minification
-- **Caching** : Service Worker pour assets statiques
+- **Code Splitting** : Lazy loading des routes (Vite)
+- **Bundle Optimization** : Tree shaking, minification automatique
+- **Caching** : TanStack Query + Service Worker
 - **Images** : WebP, lazy loading, responsive images
-- **CDN** : CloudFlare pour distribution globale
+- **CDN** : CloudFlare + Vercel Edge Network
 
-### 2. Optimisations Backend
+### 2. Optimisations Backend (Serverless)
 
-- **Database Indexing** : Index optimisés pour requêtes fréquentes
-- **Query Optimization** : Prisma avec requêtes optimisées
-- **Caching** : Redis pour sessions et données fréquentes
-- **Connection Pooling** : Pool de connexions PostgreSQL
-- **Compression** : Gzip/Brotli pour les réponses API
+- **Edge Functions** : Exécution proche des utilisateurs
+- **Database Indexing** : Index optimisés + RLS
+- **Query Optimization** : Supabase API optimisée
+- **Caching** : Upstash Redis (optionnel, facturation à l'usage)
+- **Connection Pooling** : Automatique Supabase
+- **Compression** : Automatique (Vercel + Supabase)
 
 ### 3. Monitoring et Observabilité
 
-- **Error Tracking** : Sentry pour erreurs frontend/backend
-- **Performance** : Vercel Analytics + custom metrics
-- **Uptime** : Monitoring 24/7 avec alertes
-- **Logs** : Centralisés et structurés (JSON)
+- **Error Tracking** : Sentry (frontend + Edge Functions)
+- **Performance** : Vercel Analytics + Supabase Metrics
+- **Uptime** : Monitoring 24/7 automatique
+- **Logs** : Centralisés Supabase + Sentry
 
 ## Déploiement et DevOps
 
 ### 1. Environnements
 
-- **Development** : Local avec Docker Compose
-- **Staging** : Vercel Preview + Railway Staging
-- **Production** : Vercel + Railway Production
+- **Development** : Local avec Supabase CLI
+- **Staging** : Vercel Preview + Supabase Staging
+- **Production** : Vercel + Supabase Production
 
 ### 2. CI/CD Pipeline
 
@@ -244,34 +254,34 @@ interface Invoice {
 # GitHub Actions
 - Lint & Type Check
 - Unit Tests (Vitest)
-- Integration Tests
+- Integration Tests (RLS)
 - Build & Deploy Staging
 - E2E Tests (Playwright)
-- Deploy Production
+- Deploy Production (Vercel + Supabase)
 ```
 
 ### 3. Infrastructure as Code
 
-- **Terraform** : Infrastructure provisioning
-- **Docker** : Containerisation des services
-- **Environment Variables** : Gestion sécurisée des secrets
+- **Supabase CLI** : Migrations et Edge Functions
+- **Vercel CLI** : Déploiement frontend
+- **Environment Variables** : Gestion sécurisée Vercel + Supabase
 
 ## Migration et Évolutivité
 
-### 1. Migration vers Microservices
+### 1. Scaling Serverless
 
-L'architecture modulaire permet une migration progressive :
+L'architecture Edge Functions permet un scaling automatique :
 
-- **Phase 1** : Extraction des modules indépendants
-- **Phase 2** : API Gateway pour orchestration
-- **Phase 3** : Services autonomes avec bases de données dédiées
+- **Phase 1** : Edge Functions modulaires (actuel)
+- **Phase 2** : Edge Functions spécialisées par domaine
+- **Phase 3** : Microservices Edge Functions autonomes
 
-### 2. Scaling Horizontal
+### 2. Scaling Horizontal (Automatique)
 
-- **Load Balancing** : Distribution des requêtes
-- **Database Sharding** : Partitionnement par praticien
-- **Caching** : Redis Cluster pour haute disponibilité
-- **CDN** : Distribution mondiale des assets
+- **Load Balancing** : Automatique (Vercel + Supabase)
+- **Database Scaling** : Automatique Supabase
+- **Caching** : Upstash Redis (facturation à l'usage)
+- **CDN** : CloudFlare + Vercel Edge (global)
 
 ## Sécurité et Conformité
 
@@ -279,12 +289,13 @@ L'architecture modulaire permet une migration progressive :
 
 - **Penetration Testing** : Tests de sécurité réguliers
 - **Code Review** : Revue de code obligatoire
-- **Dependency Scanning** : Scan des vulnérabilités
-- **Security Headers** : OWASP compliance
+- **Dependency Scanning** : Scan des vulnérabilités (GitHub + Vercel)
+- **Security Headers** : OWASP compliance (automatique)
+- **RLS Audit** : Vérification des politiques de sécurité
 
 ### 2. Backup et Récupération
 
-- **Backup Automatique** : Quotidien avec rétention 30 jours
+- **Backup Automatique** : Supabase (quotidien + point-in-time)
 - **Point-in-Time Recovery** : Récupération à tout moment
 - **Disaster Recovery** : Plan de continuité d'activité
 - **Testing** : Tests de restauration réguliers
@@ -309,27 +320,27 @@ L'architecture modulaire permet une migration progressive :
 
 ### Phase 1 - MVP (Mois 1-3)
 
-- Architecture de base avec React + Node.js
-- Authentification et gestion des utilisateurs
-- CRUD patients et séances
-- Interface mobile optimisée
+- Architecture serverless avec React + Supabase
+- Authentification et RLS par praticien
+- CRUD patients et séances (RLS native)
+- Interface mobile optimisée + PWA
 
 ### Phase 2 - Fonctionnalités Avancées (Mois 4-6)
 
-- Calendrier interactif
-- Facturation automatique
+- Edge Functions pour logique métier
+- Calendrier interactif + Realtime
+- Facturation automatique (PDF + Email)
 - Rapports et analytics
-- Optimisations de performance
 
 ### Phase 3 - Évolutivité (Mois 7-12)
 
-- API publique
-- Intégrations tierces
+- Edge Functions spécialisées
+- Intégrations tierces (Stripe, etc.)
 - Fonctionnalités collaboratives
-- Migration vers microservices
+- Scaling automatique
 
 ---
 
 **Architecte** : Winston (BMad-Method)  
 **Date** : 2024-12-19  
-**Version** : 1.0
+**Version** : 2.0 (Serverless)

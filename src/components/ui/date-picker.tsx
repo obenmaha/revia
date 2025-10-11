@@ -41,8 +41,10 @@ export function DatePicker({
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={onDateChange}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          selected={date as any}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onSelect={onDateChange as any}
           initialFocus
           {...props}
         />

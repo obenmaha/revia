@@ -9,11 +9,10 @@ CREATE TYPE user_role AS ENUM ('PRACTITIONER', 'ADMIN');
 CREATE TYPE session_status AS ENUM ('SCHEDULED', 'COMPLETED', 'CANCELLED', 'NO_SHOW');
 CREATE TYPE invoice_status AS ENUM ('DRAFT', 'SENT', 'PAID', 'OVERDUE');
 
--- Table des utilisateurs (praticiens)
+-- Table des utilisateurs (praticiens) - Utilise Supabase Auth
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     role user_role NOT NULL DEFAULT 'PRACTITIONER',
@@ -24,7 +23,7 @@ CREATE TABLE users (
 
 -- Table des patients
 CREATE TABLE patients (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     practitioner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
@@ -32,7 +31,7 @@ CREATE TABLE patients (
     phone TEXT,
     email TEXT,
     address JSONB,
-    medical_history JSONB,
+    medical_info JSONB,
     emergency_contact JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -40,7 +39,7 @@ CREATE TABLE patients (
 
 -- Table des séances
 CREATE TABLE sessions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     patient_id UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
     practitioner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     scheduled_at TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -56,7 +55,7 @@ CREATE TABLE sessions (
 
 -- Table des factures
 CREATE TABLE invoices (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     patient_id UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
     practitioner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     invoice_number TEXT UNIQUE NOT NULL,
@@ -70,7 +69,7 @@ CREATE TABLE invoices (
 
 -- Table des paiements
 CREATE TABLE payments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     invoice_id UUID NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
     amount DECIMAL(10,2) NOT NULL,
     method TEXT NOT NULL,
@@ -80,7 +79,7 @@ CREATE TABLE payments (
 
 -- Table des documents
 CREATE TABLE documents (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     patient_id UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
     filename TEXT NOT NULL,
     file_path TEXT NOT NULL,
@@ -213,6 +212,5 @@ CREATE POLICY "Practitioners can insert documents for their patients" ON documen
         )
     );
 
--- Données de test (optionnel)
-INSERT INTO users (email, password_hash, first_name, last_name, role) VALUES
-('test@example.com', '$2a$10$example_hash', 'Test', 'User', 'PRACTITIONER');
+-- Note: Les utilisateurs sont créés via Supabase Auth
+-- Pas de données de test nécessaires car l'authentification gère la création des utilisateurs

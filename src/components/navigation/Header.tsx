@@ -11,6 +11,7 @@ import {
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { ThemeToggle } from '../theme/ThemeToggle';
 
 interface HeaderProps {
   setSidebarOpen: (open: boolean) => void;
@@ -41,6 +42,9 @@ export function Header({ setSidebarOpen }: HeaderProps) {
       </Button>
 
       <div className="flex-1" />
+
+      {/* Theme toggle */}
+      <ThemeToggle />
 
       {/* Notifications */}
       <Button variant="ghost" size="icon" className="relative">

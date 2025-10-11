@@ -1,6 +1,49 @@
 import { createClient } from '@supabase/supabase-js';
 import { env } from '../config/env';
 
+// Types pour les données complexes
+export interface Address {
+  street?: string;
+  city?: string;
+  postalCode?: string;
+  country?: string;
+}
+
+export interface MedicalInfo {
+  allergies?: string[];
+  medications?: string[];
+  conditions?: string[];
+  notes?: string;
+}
+
+export interface EmergencyContact {
+  name: string;
+  phone: string;
+  relationship?: string;
+}
+
+export interface SessionObjectives {
+  goals?: string[];
+  focus?: string[];
+  notes?: string;
+}
+
+export interface SessionExercises {
+  name: string;
+  description?: string;
+  repetitions?: number;
+  sets?: number;
+  duration?: number;
+}
+
+export interface SessionEvaluation {
+  painLevel?: number;
+  mobility?: number;
+  strength?: number;
+  notes?: string;
+  nextSteps?: string[];
+}
+
 // Types Supabase générés automatiquement
 export type Database = {
   public: {
@@ -11,7 +54,7 @@ export type Database = {
           email: string;
           first_name: string;
           last_name: string;
-          role: 'practitioner' | 'admin';
+          role: 'PRACTITIONER' | 'ADMIN';
           is_active: boolean;
           created_at: string;
           updated_at: string;
@@ -21,7 +64,7 @@ export type Database = {
           email: string;
           first_name: string;
           last_name: string;
-          role: 'practitioner' | 'admin';
+          role?: 'PRACTITIONER' | 'ADMIN';
           is_active?: boolean;
           created_at?: string;
           updated_at?: string;
@@ -31,7 +74,7 @@ export type Database = {
           email?: string;
           first_name?: string;
           last_name?: string;
-          role?: 'practitioner' | 'admin';
+          role?: 'PRACTITIONER' | 'ADMIN';
           is_active?: boolean;
           created_at?: string;
           updated_at?: string;
@@ -46,9 +89,9 @@ export type Database = {
           birth_date: string;
           phone?: string;
           email?: string;
-          address?: string;
-          medical_history?: string;
-          emergency_contact?: string;
+          address?: Address;
+          medical_info?: MedicalInfo;
+          emergency_contact?: EmergencyContact;
           created_at: string;
           updated_at: string;
         };
@@ -60,9 +103,9 @@ export type Database = {
           birth_date: string;
           phone?: string;
           email?: string;
-          address?: string;
-          medical_history?: string;
-          emergency_contact?: string;
+          address?: Address;
+          medical_info?: MedicalInfo;
+          emergency_contact?: EmergencyContact;
           created_at?: string;
           updated_at?: string;
         };
@@ -74,9 +117,9 @@ export type Database = {
           birth_date?: string;
           phone?: string;
           email?: string;
-          address?: string;
-          medical_history?: string;
-          emergency_contact?: string;
+          address?: Address;
+          medical_info?: MedicalInfo;
+          emergency_contact?: EmergencyContact;
           created_at?: string;
           updated_at?: string;
         };
@@ -88,11 +131,11 @@ export type Database = {
           practitioner_id: string;
           scheduled_at: string;
           duration: number;
-          status: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+          status: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
           notes?: string;
-          objectives?: string[];
-          exercises?: string[];
-          evaluation?: string;
+          objectives?: SessionObjectives;
+          exercises?: SessionExercises;
+          evaluation?: SessionEvaluation;
           created_at: string;
           updated_at: string;
         };
@@ -102,11 +145,11 @@ export type Database = {
           practitioner_id: string;
           scheduled_at: string;
           duration: number;
-          status?: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+          status?: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
           notes?: string;
-          objectives?: string[];
-          exercises?: string[];
-          evaluation?: string;
+          objectives?: SessionObjectives;
+          exercises?: SessionExercises;
+          evaluation?: SessionEvaluation;
           created_at?: string;
           updated_at?: string;
         };
@@ -116,13 +159,77 @@ export type Database = {
           practitioner_id?: string;
           scheduled_at?: string;
           duration?: number;
-          status?: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+          status?: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
           notes?: string;
-          objectives?: string[];
-          exercises?: string[];
-          evaluation?: string;
+          objectives?: SessionObjectives;
+          exercises?: SessionExercises;
+          evaluation?: SessionEvaluation;
           created_at?: string;
           updated_at?: string;
+        };
+      };
+      invoices: {
+        Row: {
+          id: string;
+          patient_id: string;
+          practitioner_id: string;
+          invoice_number: string;
+          amount: number;
+          status: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE';
+          due_date: string;
+          paid_at?: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          patient_id: string;
+          practitioner_id: string;
+          invoice_number: string;
+          amount: number;
+          status?: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE';
+          due_date: string;
+          paid_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          patient_id?: string;
+          practitioner_id?: string;
+          invoice_number?: string;
+          amount?: number;
+          status?: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE';
+          due_date?: string;
+          paid_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      payments: {
+        Row: {
+          id: string;
+          invoice_id: string;
+          amount: number;
+          method: string;
+          reference?: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          invoice_id: string;
+          amount: number;
+          method: string;
+          reference?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          invoice_id?: string;
+          amount?: number;
+          method?: string;
+          reference?: string;
+          created_at?: string;
         };
       };
     };

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,8 +16,8 @@ export interface PageFilter {
   type: 'text' | 'select' | 'date' | 'dateRange';
   options?: { value: string; label: string }[];
   placeholder?: string;
-  value?: any;
-  onChange: (value: any) => void;
+  value?: string | Date | undefined;
+  onChange: (value: string | Date | undefined) => void;
 }
 
 export interface PageFiltersProps {
@@ -39,13 +38,13 @@ export function PageFilters({ filters, onClear, className }: PageFiltersProps) {
             {filter.type === 'text' && (
               <Input
                 placeholder={filter.placeholder}
-                value={filter.value || ''}
+                value={String(filter.value || '')}
                 onChange={e => filter.onChange(e.target.value)}
               />
             )}
             {filter.type === 'select' && (
               <Select
-                value={filter.value || ''}
+                value={String(filter.value || '')}
                 onValueChange={filter.onChange}
               >
                 <SelectTrigger>
@@ -62,7 +61,7 @@ export function PageFilters({ filters, onClear, className }: PageFiltersProps) {
             )}
             {filter.type === 'date' && (
               <DatePicker
-                date={filter.value}
+                date={filter.value as Date | undefined}
                 onDateChange={filter.onChange}
                 placeholder={filter.placeholder}
               />

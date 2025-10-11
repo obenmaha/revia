@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { Button, ButtonProps } from '@/components/ui/button';
+import { Button, type ButtonProps } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 export interface LoadingButtonProps extends ButtonProps {

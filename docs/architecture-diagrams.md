@@ -1,32 +1,39 @@
 # Diagrammes d'Architecture - App-Kine
 
-## 1. Architecture Globale
+## 1. Architecture Globale (Serverless)
 
 ```mermaid
 graph TB
     subgraph "Client Layer"
-        A[React App<br/>Mobile-First UI]
-        B[PWA<br/>Offline Support]
+        A[React 19 App<br/>Mobile-First UI + PWA]
+        B[TanStack Query<br/>Server State Management]
     end
 
     subgraph "CDN & Edge"
         C[CloudFlare CDN<br/>Global Distribution]
+        D[Vercel Edge Network<br/>Global Edge Functions]
     end
 
     subgraph "Application Layer"
-        D[Vercel<br/>Frontend Hosting]
-        E[Railway/Render<br/>Backend API]
+        E[Vercel<br/>Frontend Hosting]
+        F[Supabase Platform<br/>Backend-as-a-Service]
     end
 
     subgraph "Data Layer"
-        F[PostgreSQL<br/>Primary Database]
-        G[Redis<br/>Cache & Sessions]
-        H[AWS S3<br/>File Storage]
+        G[PostgreSQL<br/>Primary Database + RLS]
+        H[Supabase Storage<br/>File Storage + RLS]
+        I[Upstash Redis<br/>Cache (Optional)]
+    end
+
+    subgraph "Edge Functions"
+        J[Generate Invoice<br/>PDF + Email]
+        K[Upload Document<br/>File Processing]
+        L[Daily Report<br/>Analytics]
     end
 
     subgraph "External Services"
-        I[Email Service<br/>Resend/SendGrid]
-        J[Monitoring<br/>Sentry + Analytics]
+        M[Email Service<br/>Resend/SendGrid]
+        N[Monitoring<br/>Sentry + Analytics]
     end
 
     A --> C
@@ -34,124 +41,147 @@ graph TB
     C --> D
     D --> E
     E --> F
-    E --> G
-    E --> H
-    E --> I
-    E --> J
+    F --> G
+    F --> H
+    F --> I
+    F --> J
+    F --> K
+    F --> L
+    J --> M
+    K --> N
+    L --> N
 ```
 
-## 2. Architecture des Couches
+## 2. Architecture des Couches (Serverless)
 
 ```mermaid
 graph TB
     subgraph "Frontend Layer"
-        A[React Components]
-        B[State Management<br/>Zustand]
-        C[API Client<br/>Axios/Fetch]
+        A[React 19 Components]
+        B[TanStack Query<br/>Server State]
+        C[Zustand<br/>Client State]
+        D[Supabase Client<br/>API Client]
     end
 
-    subgraph "API Layer"
-        D[Express.js Server]
-        E[Authentication<br/>JWT Middleware]
-        F[Validation<br/>Zod Schemas]
-        G[Controllers]
+    subgraph "Edge Functions Layer"
+        E[Generate Invoice<br/>PDF + Email]
+        F[Upload Document<br/>File Processing]
+        G[Daily Report<br/>Analytics]
+        H[Business Logic<br/>Complex Operations]
     end
 
-    subgraph "Business Layer"
-        H[Services<br/>Business Logic]
-        I[Repositories<br/>Data Access]
+    subgraph "Data Access Layer"
+        I[Supabase API<br/>REST + Realtime]
+        J[Row Level Security<br/>RLS Policies]
+        K[Supabase Storage<br/>File Management]
     end
 
     subgraph "Data Layer"
-        J[Prisma ORM]
-        K[PostgreSQL<br/>Primary DB]
-        L[Redis<br/>Cache]
+        L[PostgreSQL<br/>Primary DB + RLS]
+        M[Upstash Redis<br/>Cache (Optional)]
+        N[Audit Logs<br/>Security Tracking]
     end
 
     A --> B
     B --> C
     C --> D
-    D --> E
-    E --> F
-    F --> G
-    G --> H
-    H --> I
+    D --> I
     I --> J
-    J --> K
     J --> L
+    D --> E
+    D --> F
+    D --> G
+    D --> H
+    E --> I
+    F --> K
+    G --> I
+    H --> I
+    I --> M
+    I --> N
 ```
 
-## 3. Flux de Données - Authentification
+## 3. Flux de Données - Authentification (Supabase)
 
 ```mermaid
 sequenceDiagram
     participant U as User
     participant F as Frontend
-    participant A as API
+    participant S as Supabase Auth
     participant D as Database
-    participant R as Redis
+    participant R as RLS
 
     U->>F: Login Request
-    F->>A: POST /auth/login
-    A->>D: Validate Credentials
-    D-->>A: User Data
-    A->>A: Generate JWT
-    A->>R: Store Session
-    A-->>F: Access + Refresh Token
-    F->>F: Store Tokens
-    F-->>U: Redirect to Dashboard
+    F->>S: signInWithPassword()
+    S->>D: Validate Credentials
+    D-->>S: User Data + RLS Context
+    S->>S: Generate JWT (with RLS)
+    S-->>F: Access Token + User Data
+    F->>F: Store Session (Auto)
+    F->>D: Query Data (RLS Applied)
+    D->>R: Check RLS Policies
+    R-->>D: Filtered Data
+    D-->>F: User's Data Only
+    F-->>U: Dashboard with Data
 ```
 
-## 4. Flux de Données - Gestion des Patients
+## 4. Flux de Données - Gestion des Patients (RLS)
 
 ```mermaid
 sequenceDiagram
     participant U as User
     participant F as Frontend
-    participant A as API
-    participant S as Service
+    participant S as Supabase Client
     participant D as Database
+    participant R as RLS
 
     U->>F: Create Patient
-    F->>A: POST /patients
-    A->>A: Validate Data
-    A->>S: PatientService.create
-    S->>D: Insert Patient
+    F->>S: from('patients').insert()
+    S->>D: Insert Patient (with auth.uid())
+    D->>R: Check RLS Policy
+    R->>R: Verify practitioner_id = auth.uid()
+    R-->>D: Allow Insert
     D-->>S: Patient Created
-    S-->>A: Patient Data
-    A-->>F: Success Response
+    S-->>F: Patient Data (Filtered)
+    F->>F: Update TanStack Query Cache
     F-->>U: Show Success Message
 ```
 
-## 5. Architecture de Sécurité
+## 5. Architecture de Sécurité (RGPD-Native)
 
 ```mermaid
 graph TB
     subgraph "Client Security"
-        A[HTTPS Only]
+        A[HTTPS Only (Vercel)]
         B[Content Security Policy]
-        C[Secure Headers]
+        C[Secure Headers (Auto)]
     end
 
     subgraph "API Security"
-        D[JWT Authentication]
-        E[Rate Limiting]
-        F[Input Validation]
-        G[CORS Protection]
+        D[Supabase Auth (JWT)]
+        E[Rate Limiting (CloudFlare)]
+        F[Input Validation (Zod)]
+        G[CORS Protection (Supabase)]
     end
 
-    subgraph "Data Security"
-        H[Encryption at Rest]
-        I[Encryption in Transit]
-        J[Access Control]
-        K[Audit Logging]
+    subgraph "Data Security (RLS)"
+        H[Encryption at Rest (Auto)]
+        I[Encryption in Transit (TLS 1.3)]
+        J[Row Level Security (RLS)]
+        K[Audit Logging (Auto)]
     end
 
     subgraph "Infrastructure Security"
-        L[WAF Protection]
-        M[DDoS Mitigation]
-        N[SSL/TLS 1.3]
-        O[Security Monitoring]
+        L[WAF Protection (CloudFlare)]
+        M[DDoS Mitigation (Auto)]
+        N[SSL/TLS 1.3 (Auto)]
+        O[Security Monitoring (Sentry)]
+    end
+
+    subgraph "RGPD Compliance"
+        P[Data Isolation (RLS)]
+        Q[Right to Erasure (Cascade)]
+        R[Data Portability (Export)]
+        S[Consent Management (Auth)]
     end
 
     A --> D
@@ -165,6 +195,10 @@ graph TB
     I --> M
     J --> N
     K --> O
+    J --> P
+    P --> Q
+    Q --> R
+    R --> S
 ```
 
 ## 6. Modèle de Données - Relations
@@ -351,29 +385,72 @@ graph TB
     F --> K
 ```
 
-## 10. Flux de Facturation
+## 10. Flux de Facturation (Edge Functions)
 
 ```mermaid
 sequenceDiagram
     participant S as Session
-    participant A as API
-    participant I as Invoice Service
+    participant F as Frontend
+    participant E as Edge Function
     participant D as Database
-    participant E as Email Service
+    participant M as Email Service
 
-    S->>A: Session Completed
-    A->>I: Generate Invoice
-    I->>D: Create Invoice Record
-    I->>I: Calculate Amount
-    I->>D: Update Invoice
-    I->>E: Send Invoice Email
-    E-->>I: Email Sent
-    I-->>A: Invoice Created
-    A-->>S: Success Response
+    S->>F: Session Completed
+    F->>E: invoke('generate-invoice')
+    E->>D: Query Sessions (RLS Applied)
+    D-->>E: Session Data
+    E->>E: Calculate Amount
+    E->>D: Create Invoice (RLS Applied)
+    D-->>E: Invoice Created
+    E->>M: Send Invoice Email
+    M-->>E: Email Sent
+    E-->>F: Invoice Created
+    F->>F: Update TanStack Query Cache
+    F-->>S: Success Response
+```
+
+## 11. Architecture Edge Functions
+
+```mermaid
+graph TB
+    subgraph "Edge Functions (Deno)"
+        A[generate-invoice<br/>PDF + Email]
+        B[upload-document<br/>File Processing]
+        C[daily-report<br/>Analytics]
+        D[send-email<br/>Notifications]
+        E[business-logic<br/>Complex Operations]
+    end
+
+    subgraph "Supabase Platform"
+        F[PostgreSQL<br/>Database + RLS]
+        G[Storage<br/>File Management]
+        H[Auth<br/>User Management]
+        I[Realtime<br/>WebSockets]
+    end
+
+    subgraph "External Services"
+        J[Resend/SendGrid<br/>Email Service]
+        K[Puppeteer<br/>PDF Generation]
+        L[Upstash Redis<br/>Cache]
+    end
+
+    A --> F
+    A --> J
+    A --> K
+    B --> G
+    B --> F
+    C --> F
+    C --> L
+    D --> J
+    D --> F
+    E --> F
+    E --> G
+    E --> H
+    E --> I
 ```
 
 ---
 
 **Architecte** : Winston (BMad-Method)  
 **Date** : 2024-12-19  
-**Version** : 1.0
+**Version** : 2.0 (Serverless)

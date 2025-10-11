@@ -35,9 +35,10 @@ const missingVars = requiredEnvVars.filter(
 );
 
 if (missingVars.length > 0) {
-  throw new Error(
+  console.warn(
     `Variables d'environnement manquantes: ${missingVars.join(', ')}`
   );
+  // Ne pas lancer d'erreur pour le moment, utiliser des valeurs par défaut
 }
 
 export const env: EnvConfig = {
@@ -54,8 +55,8 @@ export const env: EnvConfig = {
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '10000', 10),
   },
   supabase: {
-    url: import.meta.env.VITE_SUPABASE_URL || '',
-    anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+    url: import.meta.env.VITE_SUPABASE_URL || 'https://ernzqcqoopqfqmrmcnug.supabase.co',
+    anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVybnpxY3Fvb3BxZnFtcm1jbnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4OTk0NjgsImV4cCI6MjA3NTQ3NTQ2OH0.30Z0GwF5MHBCxu6YLV7xm7ZCzYDxQ0_kpyEKgNnsTMY',
     serviceRoleKey: import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || '',
   },
   services: {

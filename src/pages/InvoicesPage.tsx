@@ -1,16 +1,14 @@
-import React from 'react';
+import { useState } from 'react';
 import { useInvoices } from '../hooks/useInvoices';
 import { PageHeader } from '../components/ui/page-header';
 import { PageContent } from '../components/ui/page-content';
 import { PageTable } from '../components/ui/page-table';
-import { PageFilters, PageFilter } from '../components/ui/page-filters';
-import { PageActions, PageAction } from '../components/ui/page-actions';
+import type { PageFilter } from '../components/ui/page-filters';
+import type { PageAction } from '../components/ui/page-actions';
+import type { Invoice } from '../types';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import {
-  Plus,
-  Search,
-  Filter,
   MoreHorizontal,
   Edit,
   Trash2,
@@ -28,20 +26,11 @@ import {
 } from '../components/ui/dropdown-menu';
 
 export function InvoicesPage() {
-  const {
-    invoices,
-    pagination,
-    isLoading,
-    error,
-    createInvoice,
-    updateInvoice,
-    deleteInvoice,
-    refetch,
-  } = useInvoices();
+  const { invoices, pagination, error, refetch } = useInvoices();
 
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [statusFilter, setStatusFilter] = React.useState('');
-  const [dateFilter, setDateFilter] = React.useState<Date | undefined>();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState<Date | undefined>();
 
   const filters: PageFilter[] = [
     {
@@ -50,7 +39,7 @@ export function InvoicesPage() {
       type: 'text',
       placeholder: 'Numéro, patient...',
       value: searchTerm,
-      onChange: setSearchTerm,
+      onChange: value => setSearchTerm(value as string),
     },
     {
       key: 'status',
@@ -64,14 +53,14 @@ export function InvoicesPage() {
         { value: 'overdue', label: 'En retard' },
       ],
       value: statusFilter,
-      onChange: setStatusFilter,
+      onChange: value => setStatusFilter(value as string),
     },
     {
       key: 'date',
       label: "Date d'échéance",
       type: 'date',
       value: dateFilter,
-      onChange: setDateFilter,
+      onChange: value => setDateFilter(value as Date | undefined),
     },
   ];
 
@@ -121,35 +110,48 @@ export function InvoicesPage() {
     {
       accessorKey: 'invoiceNumber',
       header: 'Numéro',
-      cell: ({ row }: any) => (
+      cell: ({
+        row,
+      }: {
+        row: { getValue: (key: string) => unknown; original: Invoice };
+      }) => (
         <div className="flex items-center space-x-2">
           <FileText className="h-4 w-4 text-muted-foreground" />
-          <span className="font-mono">{row.getValue('invoiceNumber')}</span>
+          <span className="font-mono">
+            {String(row.getValue('invoiceNumber'))}
+          </span>
         </div>
       ),
     },
     {
       accessorKey: 'patient',
       header: 'Patient',
-      cell: ({ row }: any) => (
+      cell: ({
+        row,
+      }: {
+        row: { getValue: (key: string) => unknown; original: Invoice };
+      }) => (
         <div className="flex items-center space-x-2">
           <User className="h-4 w-4 text-muted-foreground" />
-          <span>
-            {row.original.patient?.firstName} {row.original.patient?.lastName}
-          </span>
+          <span>Patient ID: {row.original.patientId}</span>
         </div>
       ),
     },
     {
       accessorKey: 'amount',
       header: 'Montant',
-      cell: ({ row }: any) => (
+      cell: ({
+        row,
+      }: {
+        row: { getValue: (key: string) => unknown; original: Invoice };
+      }) => (
         <div className="flex items-center space-x-2">
           <DollarSign className="h-4 w-4 text-muted-foreground" />
           <span className="font-medium">
-            {row
-              .getValue('amount')
-              .toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}
+            {Number(row.getValue('amount')).toLocaleString('fr-FR', {
+              style: 'currency',
+              currency: 'EUR',
+            })}
           </span>
         </div>
       ),
@@ -157,13 +159,14 @@ export function InvoicesPage() {
     {
       accessorKey: 'status',
       header: 'Statut',
-      cell: ({ row }: any) => getStatusBadge(row.getValue('status')),
+      cell: ({ row }: { row: { getValue: (key: string) => unknown } }) =>
+        getStatusBadge(String(row.getValue('status'))),
     },
     {
       accessorKey: 'dueDate',
       header: 'Échéance',
-      cell: ({ row }: any) => {
-        const date = new Date(row.getValue('dueDate'));
+      cell: ({ row }: { row: { getValue: (key: string) => unknown } }) => {
+        const date = new Date(String(row.getValue('dueDate')));
         return (
           <div className="flex items-center space-x-2">
             <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -175,15 +178,19 @@ export function InvoicesPage() {
     {
       accessorKey: 'createdAt',
       header: 'Créée le',
-      cell: ({ row }: any) => {
-        const date = new Date(row.getValue('createdAt'));
+      cell: ({ row }: { row: { getValue: (key: string) => unknown } }) => {
+        const date = new Date(String(row.getValue('createdAt')));
         return date.toLocaleDateString('fr-FR');
       },
     },
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }: any) => {
+      cell: ({
+        row,
+      }: {
+        row: { getValue: (key: string) => unknown; original: Invoice };
+      }) => {
         const invoice = row.original;
 
         return (

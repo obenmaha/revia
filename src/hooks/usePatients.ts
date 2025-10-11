@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { patientsService } from '../services/patientsService';
 import { queryKeys } from '../lib/query-client';
-import type { Patient, PatientForm, PaginatedResponse } from '../types';
+import type { PatientForm } from '../types';
 import toast from 'react-hot-toast';
 
 export function usePatients(
@@ -22,8 +22,12 @@ export function usePatients(
   } = useQuery({
     queryKey: [...queryKeys.patientsByPractitioner('current'), params],
     queryFn: () =>
-      patientsService.getPatients(params.page, params.limit, params.query),
-    keepPreviousData: true,
+      patientsService.getPatients({
+        page: params.page,
+        limit: params.limit,
+        search: params.query,
+      }),
+    placeholderData: previousData => previousData,
   });
 
   // Mutation de création de patient
@@ -127,7 +131,7 @@ export function usePatient(id: string) {
     refetch,
   } = useQuery({
     queryKey: queryKeys.patient(id),
-    queryFn: () => patientsService.getPatientById(id),
+    queryFn: () => patientsService.getPatient(id),
     enabled: !!id,
   });
 

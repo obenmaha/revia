@@ -3,6 +3,8 @@ import { authService } from '../services/authService';
 import { useAuthStore } from '../stores/authStore';
 import { queryKeys } from '../lib/query-client';
 import type { LoginForm, RegisterForm, User } from '../types';
+import { mapSupabaseUserToUser } from '../types';
+import { supabase } from '../lib/supabase';
 
 export function useAuth() {
   const queryClient = useQueryClient();
@@ -20,8 +22,10 @@ export function useAuth() {
   const loginMutation = useMutation({
     mutationFn: authService.signIn,
     onSuccess: data => {
-      setUser(data.user);
-      queryClient.setQueryData(queryKeys.currentUser, data.user);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mappedUser = mapSupabaseUserToUser(data.user as any);
+      setUser(mappedUser);
+      queryClient.setQueryData(queryKeys.currentUser, mappedUser);
     },
     onError: error => {
       console.error('Erreur de connexion:', error);
@@ -31,10 +35,20 @@ export function useAuth() {
   // Mutation d'inscription
   const registerMutation = useMutation({
     mutationFn: authService.signUp,
-    onSuccess: data => {
+    onSuccess: async data => {
       if (data.user) {
-        setUser(data.user);
-        queryClient.setQueryData(queryKeys.currentUser, data.user);
+        // Récupérer les données de profil depuis la table users
+        const { data: profileData, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+
+        if (profileData && !error) {
+          const mappedUser = mapSupabaseUserToUser(profileData);
+          setUser(mappedUser);
+          queryClient.setQueryData(queryKeys.currentUser, mappedUser);
+        }
       }
     },
     onError: error => {

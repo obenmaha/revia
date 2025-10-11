@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Smile } from 'lucide-react';
-import { Picker } from 'emoji-picker-react';
+import Picker from 'emoji-picker-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ export interface EmojiPickerProps {
 export function EmojiPicker({ onEmojiSelect, className }: EmojiPickerProps) {
   const [open, setOpen] = React.useState(false);
 
-  const handleEmojiClick = (emojiData: any) => {
+  const handleEmojiClick = (emojiData: { emoji: string }) => {
     onEmojiSelect(emojiData.emoji);
     setOpen(false);
   };

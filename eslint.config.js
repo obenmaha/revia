@@ -7,7 +7,16 @@ import prettier from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
 export default [
-  { ignores: ['dist', 'node_modules', 'coverage'] },
+  {
+    ignores: [
+      'dist',
+      'node_modules',
+      'coverage',
+      'scripts/**/*.js',
+      'tailwind.config.js',
+      '*.config.js',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   prettierConfig,
@@ -25,6 +34,11 @@ export default [
         { allowConstantExport: true },
       ],
       'prettier/prettier': 'error',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
     languageOptions: {
       ecmaVersion: 2020,

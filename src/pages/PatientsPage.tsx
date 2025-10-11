@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { usePatients } from '../hooks/usePatients';
 import { useDebounce } from '../hooks/useDebounce';
+import type { Patient } from '../types';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import {
@@ -128,7 +129,7 @@ export function PatientsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {patients.map(patient => (
+                    {patients.map((patient: Patient) => (
                       <TableRow key={patient.id}>
                         <TableCell className="font-medium">
                           {patient.lastName}

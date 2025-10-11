@@ -39,10 +39,23 @@ export function PageAccordion({
 }: PageAccordionProps) {
   return (
     <Accordion
-      type={type}
-      defaultValue={defaultValue}
-      value={value}
-      onValueChange={onValueChange}
+      {...(type === 'single'
+        ? {
+            type: 'single' as const,
+            defaultValue: defaultValue as string | undefined,
+            value: value as string | undefined,
+            onValueChange: onValueChange as
+              | ((value: string) => void)
+              | undefined,
+          }
+        : {
+            type: 'multiple' as const,
+            defaultValue: defaultValue as string[] | undefined,
+            value: value as string[] | undefined,
+            onValueChange: onValueChange as
+              | ((value: string[]) => void)
+              | undefined,
+          })}
       className={cn(className)}
     >
       {items.map(item => (

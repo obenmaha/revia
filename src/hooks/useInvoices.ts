@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { invoicesService } from '../services/invoicesService';
 import { queryKeys } from '../lib/query-client';
-import type { Invoice, PaginatedResponse } from '../types';
+import type { Invoice } from '../types';
 
 export function useInvoices(
   params: {
@@ -24,7 +24,7 @@ export function useInvoices(
   } = useQuery({
     queryKey: queryKeys.invoicesByPractitioner('current'),
     queryFn: () => invoicesService.getInvoices(params),
-    keepPreviousData: true,
+    placeholderData: previousData => previousData,
   });
 
   // Mutation de création de facture
@@ -50,7 +50,11 @@ export function useInvoices(
       data: Partial<
         Omit<Invoice, 'id' | 'createdAt' | 'updatedAt' | 'invoiceNumber'>
       >;
-    }) => invoicesService.updateInvoice(id, data),
+    }) =>
+      invoicesService.updateInvoice(id, {
+        ...data,
+        dueDate: data.dueDate?.toISOString(),
+      }),
     onSuccess: updatedInvoice => {
       queryClient.setQueryData(
         queryKeys.invoice(updatedInvoice.id),
@@ -82,7 +86,11 @@ export function useInvoices(
       'id' | 'createdAt' | 'updatedAt' | 'invoiceNumber' | 'status'
     >
   ) => {
-    return createInvoiceMutation.mutateAsync(invoiceData);
+    return createInvoiceMutation.mutateAsync({
+      ...invoiceData,
+      dueDate: invoiceData.dueDate.toISOString(),
+      sessionIds: [], // TODO: Implémenter la logique des sessions
+    });
   };
 
   const updateInvoice = async (
@@ -136,7 +144,7 @@ export function useInvoice(id: string) {
     refetch,
   } = useQuery({
     queryKey: queryKeys.invoice(id),
-    queryFn: () => invoicesService.getInvoiceById(id),
+    queryFn: () => invoicesService.getInvoice(id),
     enabled: !!id,
   });
 
@@ -146,7 +154,11 @@ export function useInvoice(id: string) {
       data: Partial<
         Omit<Invoice, 'id' | 'createdAt' | 'updatedAt' | 'invoiceNumber'>
       >
-    ) => invoicesService.updateInvoice(id, data),
+    ) =>
+      invoicesService.updateInvoice(id, {
+        ...data,
+        dueDate: data.dueDate?.toISOString(),
+      }),
     onSuccess: updatedInvoice => {
       queryClient.setQueryData(queryKeys.invoice(id), updatedInvoice);
       queryClient.invalidateQueries({

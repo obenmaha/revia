@@ -1,14 +1,5 @@
-import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { PageStepper, PageStep } from '@/components/ui/page-stepper';
+import { PageStepper, type PageStep } from '@/components/ui/page-stepper';
 
 export interface PageWizardProps {
   steps: PageStep[];

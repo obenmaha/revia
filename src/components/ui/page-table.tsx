@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { cn } from '@/lib/utils';
 import {
   Card,
@@ -8,14 +7,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
-import { PageFilters, PageFilter } from '@/components/ui/page-filters';
-import { PageActions, PageAction } from '@/components/ui/page-actions';
+import { PageFilters, type PageFilter } from '@/components/ui/page-filters';
+import { PageActions, type PageAction } from '@/components/ui/page-actions';
 
-export interface PageTableProps {
+export interface PageTableProps<TData = unknown> {
   title: string;
   description?: string;
-  data: any[];
-  columns: any[];
+  data: TData[];
+  columns: import('@tanstack/react-table').ColumnDef<TData, unknown>[];
   filters?: PageFilter[];
   actions?: PageAction[];
   onClearFilters?: () => void;
@@ -29,7 +28,7 @@ export interface PageTableProps {
   showSearch?: boolean;
 }
 
-export function PageTable({
+export function PageTable<TData = unknown>({
   title,
   description,
   data,
@@ -45,7 +44,7 @@ export function PageTable({
   pageSize,
   showPagination,
   showSearch,
-}: PageTableProps) {
+}: PageTableProps<TData>) {
   return (
     <Card className={cn(className)}>
       <CardHeader className={cn(headerClassName)}>

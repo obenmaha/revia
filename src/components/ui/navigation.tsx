@@ -1,16 +1,8 @@
 import * as React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarItem,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarItem } from '@/components/ui/sidebar';
 
 export interface NavigationItem {
   title: string;
@@ -26,7 +18,8 @@ export interface NavigationProps {
 }
 
 export function Navigation({ items, className }: NavigationProps) {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   return (
     <div className={cn('space-y-1', className)}>

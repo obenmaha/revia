@@ -6,9 +6,9 @@
 
 ## Executive Summary
 
-**Topic:** APP KINE - Application de suivi d'exercices pour rééducation et performance sportive
+**Topic:** APP KINE - Application de suivi d'exercices pour patients et sportifs
 
-**Session Goals:** Exploration large des fonctionnalités et de l'expérience utilisateur pour une PWA web destinée aux patients en rééducation et aux sportifs
+**Session Goals:** Exploration large des fonctionnalités et de l'expérience utilisateur pour une PWA web destinée aux patients en rééducation et aux sportifs, avec focus sur l'engagement patient
 
 **Techniques Used:** User Journey Mapping, What-If Scenarios, Mind Mapping, Feature Prioritization Matrix
 
@@ -17,11 +17,11 @@
 **Key Themes Identified:**
 
 - Simplicité et accessibilité web
-- Double segment utilisateur (rééducation + sport)
+- Focus patient/sportif en priorité
 - Workflow Programmer → Faire → Valider
 - Gamification et motivation
-- Collaboration avec les kinésithérapeutes
-- Évolution progressive des fonctionnalités
+- Partage simple avec kinésithérapeutes
+- Lancement rapide avec MVP patient
 
 ## Technique Sessions
 
@@ -45,11 +45,13 @@
 - Importance du contrôle utilisateur sur le partage
 - Besoin de simplicité pour patients souvent âgés
 - Workflow de validation crucial pour la motivation
+- Focus patient d'abord, kiné via export
 
 **Notable Connections:**
 
 - Lien entre motivation et visualisation des progrès
-- Importance de la collaboration kiné-patient
+- Importance du partage simple avec kiné
+- Mode Guest pour réduire la friction d'adoption
 
 ### What-If Scenarios - Cas d'usage limites (15 min)
 
@@ -196,24 +198,24 @@
 
 ## Action Planning
 
-### #1 Priority: Développement du PRD
+### #1 Priority: Développement du PRD Patient/Sportif
 
-- **Rationale** : Structure toutes les idées en spécifications claires, guide le développement
-- **Next steps** : Activer l'agent PM, créer le PRD détaillé avec user stories
+- **Rationale** : Structure toutes les idées en spécifications claires, guide le développement avec focus patient
+- **Next steps** : Activer l'agent PM, créer le PRD détaillé avec user stories patient
 - **Resources needed** : Agent PM, template PRD, validation utilisateur
 - **Timeline** : 1-2 semaines
 
-### #2 Priority: Spécifications UX
+### #2 Priority: Spécifications UX Patient/Sportif
 
-- **Rationale** : Définit l'expérience utilisateur pour les deux modes, guide le design
-- **Next steps** : Agent UX-expert, wireframes, spécifications UI
+- **Rationale** : Définit l'expérience utilisateur pour les patients et sportifs, guide le design
+- **Next steps** : Agent UX-expert, wireframes, spécifications UI mobile-first
 - **Resources needed** : Agent UX, outils de wireframing, validation utilisateur
 - **Timeline** : 1 semaine
 
-### #3 Priority: Architecture technique
+### #3 Priority: Architecture technique Patient/Sportif
 
-- **Rationale** : Définit la stack technique, s'assure de la faisabilité avec Vite
-- **Next steps** : Agent architect, choix de la stack, architecture PWA
+- **Rationale** : Définit la stack technique, s'assure de la faisabilité avec Vite pour l'usage patient
+- **Next steps** : Agent architect, choix de la stack, architecture PWA mobile-first
 - **Resources needed** : Agent architect, recherche technologique, validation technique
 - **Timeline** : 1 semaine
 
@@ -223,8 +225,9 @@
 
 - **Exploration large** : A permis de découvrir des fonctionnalités inattendues
 - **Techniques variées** : User Journey + What-If + Mind Mapping ont donné des perspectives complémentaires
-- **Approche progressive** : Priorisation claire MVP → Phase 2 → Phase 3 → Phase 4
+- **Approche progressive** : Priorisation claire MVP Patient → Phase 2 → Phase 3 → Phase 4
 - **Focus utilisateur** : Toujours centré sur les besoins réels des patients et sportifs
+- **Vision clarifiée** : Focus patient d'abord, kiné via export simple
 
 ### Areas for Further Exploration
 
@@ -232,6 +235,7 @@
 - **Analyse concurrentielle** : Étude des apps existantes (rééducation et fitness)
 - **Validation technique** : Tests de performance avec de gros volumes de données
 - **Aspects légaux** : Conformité RGPD approfondie, responsabilité médicale
+- **Mode Guest** : Tests d'adoption sans inscription
 
 ### Recommended Follow-up Techniques
 
@@ -245,13 +249,16 @@
 - Comment gérer la responsabilité médicale des alertes automatiques ?
 - Quels sont les seuils optimaux pour les alertes de douleur ?
 - Comment personnaliser l'expérience selon l'âge et le niveau technologique ?
+- Comment optimiser l'adoption du Mode Guest ?
+- Comment mesurer l'engagement patient vs kiné ?
 - Quelle est la stratégie de monétisation optimale ?
 
 ### Next Session Planning
 
-- **Suggested topics** : Recherche utilisateur, analyse concurrentielle, validation technique
+- **Suggested topics** : Recherche utilisateur patient, analyse concurrentielle, validation technique
 - **Recommended timeframe** : 1-2 semaines après le PRD
 - **Preparation needed** : Identification d'utilisateurs test, recherche concurrentielle, questions techniques
+- **Focus** : Validation de la vision patient/sportif et du Mode Guest
 
 ---
 

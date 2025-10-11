@@ -30,7 +30,7 @@ export function CopyButton({
         description: 'Le texte a été copié dans le presse-papiers.',
       });
       setTimeout(() => setCopied(false), 2000);
-    } catch (error) {
+    } catch {
       toast({
         title: 'Erreur',
         description: 'Impossible de copier le texte.',

@@ -1,9 +1,7 @@
-import * as React from 'react';
-import { useDropzone, FileWithPath } from 'react-dropzone';
+import { useDropzone, type FileWithPath } from 'react-dropzone';
 import { Upload, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
 export interface FileUploadProps {
   onFileSelect: (files: FileWithPath[]) => void;

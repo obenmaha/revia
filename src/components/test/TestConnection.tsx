@@ -16,7 +16,7 @@ export function TestConnection() {
   const [result, setResult] = useState<{
     success: boolean;
     message: string;
-    details?: any;
+    details?: unknown;
   } | null>(null);
 
   const testConnection = async () => {
@@ -78,11 +78,11 @@ export function TestConnection() {
               )}
               <AlertDescription>{result.message}</AlertDescription>
             </div>
-            {result.details && (
+            {result.details ? (
               <pre className="mt-2 text-xs bg-muted p-2 rounded overflow-auto">
                 {JSON.stringify(result.details, null, 2)}
               </pre>
-            )}
+            ) : null}
           </Alert>
         )}
       </CardContent>

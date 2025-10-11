@@ -4,26 +4,27 @@
 
 ### Goals
 
-- Créer une application web moderne pour la gestion des cabinets de kinésithérapie
-- Réduire de 50% le temps administratif des kinésithérapeutes
-- Améliorer la qualité du suivi patient grâce à une documentation structurée
+- Créer une application web moderne pour les patients et sportifs
+- Améliorer l'adhésion aux exercices prescrits de 60% à 80%
+- Motiver les patients grâce à la gamification et au suivi de progression
 - Offrir une expérience utilisateur intuitive et mobile-first
-- Assurer la conformité RGPD pour la gestion des données médicales
-- Permettre la scalabilité pour les cabinets multi-praticiens
+- Permettre le partage facile de l'historique avec le kinésithérapeute
+- Assurer la conformité RGPD pour la gestion des données de santé
 
 ### Background Context
 
-App-Kine répond au besoin critique des kinésithérapeutes français de digitaliser leur gestion quotidienne. Actuellement, la plupart des praticiens utilisent des solutions papier ou des logiciels génériques inadaptés, ce qui génère une perte de temps considérable (30-40% du temps de travail) et des erreurs de suivi.
+App-Kine répond au besoin critique des patients et sportifs de suivre leurs exercices prescrits et de maintenir leur motivation sur le long terme. Actuellement, 60% des patients arrêtent leurs exercices prescrits, ce qui ralentit leur récupération et réduit l'efficacité des séances de kinésithérapie.
 
-Le marché français de la kinésithérapie compte plus de 100 000 praticiens, dont 80% exercent en libéral. Ces professionnels ont besoin d'outils spécialisés qui respectent les spécificités réglementaires françaises tout en offrant une simplicité d'usage pour une adoption rapide.
+Le marché français de la rééducation et du sport compte des millions de personnes qui ont besoin d'outils simples et motivants pour suivre leur progression. Ces utilisateurs ont besoin d'une application qui combine simplicité d'usage, gamification et partage facile avec leur kinésithérapeute.
 
-L'application vise à devenir la solution de référence pour la gestion des cabinets de kinésithérapie en France, en combinant simplicité d'usage, fonctionnalités spécialisées et conformité réglementaire.
+L'application vise à devenir la solution de référence pour le suivi d'exercices en France, en combinant simplicité d'usage, gamification et partage professionnel.
 
 ### Change Log
 
 | Date       | Version | Description              | Author    |
 | ---------- | ------- | ------------------------ | --------- |
 | 2024-12-19 | 1.0     | Création initiale du PRD | John (PM) |
+| 2024-12-19 | 2.0     | Refocus patient/sportif  | John (PM) |
 
 ## Requirements
 
@@ -134,17 +135,13 @@ Pyramide de tests complète :
 
 ## Epic List
 
-**Epic 1** : Infrastructure et Authentification - Mise en place de l'infrastructure de base, authentification sécurisée et gestion des utilisateurs
+**Epic 1** : Infrastructure et Authentification - Mise en place de l'infrastructure de base, authentification sécurisée et interface mobile-first
 
-**Epic 2** : Gestion des Patients - Création, modification et organisation des dossiers patients avec toutes les informations nécessaires
+**Epic 2** : Gestion des Sessions et Historique - Création, enregistrement et validation des sessions d'exercices avec historique complet
 
-**Epic 3** : Planification et Calendrier - Système de planification des séances avec calendrier interactif et gestion des créneaux
+**Epic 3** : Export et Partage - Export et partage de l'historique avec le kinésithérapeute
 
-**Epic 4** : Documentation des Séances - Interface de documentation des séances avec notes, évaluations et suivi des objectifs
-
-**Epic 5** : Facturation et Administration - Génération de factures, suivi des paiements et outils administratifs
-
-**Epic 6** : Rapports et Analytics - Tableaux de bord, statistiques et rapports pour le suivi de l'activité
+**Epic 4** : Motivation et Engagement - Gamification, rappels et progression pour maintenir la motivation
 
 ## Epic 1: Infrastructure et Authentification
 
@@ -210,325 +207,228 @@ Afin d'accéder facilement aux différentes fonctionnalités.
 5. Les composants UI de base sont réutilisables
 6. L'accessibilité WCAG AA est respectée
 
-## Epic 2: Gestion des Patients
+## Epic 2: Gestion des Sessions et Historique
 
-**Epic Goal** : Permettre la création, la modification et l'organisation complète des dossiers patients avec toutes les informations nécessaires à la pratique de la kinésithérapie.
+**Epic Goal** : Permettre aux patients de créer, enregistrer et valider leurs sessions d'exercices, avec un historique complet de leur progression.
 
-### Story 2.1: Création et Modification des Dossiers Patients
+### Story 2.1: Profil Patient/Sportif
 
-En tant que kinésithérapeute,
-Je veux pouvoir créer et modifier des dossiers patients complets,
-Afin de centraliser toutes les informations nécessaires à leur suivi.
+En tant que patient/sportif,
+Je veux pouvoir créer et modifier mon profil,
+Afin de personnaliser mon expérience dans l'application.
 
 **Acceptance Criteria:**
 
-1. Un formulaire de création de patient est disponible
-2. Les informations personnelles, médicales et de contact sont collectées
+1. Un formulaire de création de profil est disponible
+2. Les informations personnelles de base sont collectées
 3. La validation des données est en place
 4. La modification des informations existantes est possible
-5. L'historique des modifications est tracé
+5. Le profil est sauvegardé automatiquement
 6. Les données sensibles sont protégées
 
-### Story 2.2: Recherche et Filtrage des Patients
+### Story 2.2: Créer une Session
 
-En tant que kinésithérapeute,
-Je veux pouvoir rechercher rapidement un patient,
-Afin de gagner du temps dans ma gestion quotidienne.
-
-**Acceptance Criteria:**
-
-1. Une barre de recherche instantanée est disponible
-2. La recherche fonctionne sur nom, prénom et numéro de téléphone
-3. Des filtres avancés sont proposés (statut, dernière séance, etc.)
-4. Les résultats s'affichent en temps réel
-5. La recherche est optimisée pour la performance
-6. L'historique des recherches récentes est sauvegardé
-
-### Story 2.3: Gestion des Documents et Photos
-
-En tant que kinésithérapeute,
-Je veux pouvoir ajouter des documents et photos aux dossiers patients,
-Afin d'enrichir le suivi médical.
+En tant que patient/sportif,
+Je veux pouvoir créer une nouvelle session d'exercices,
+Afin de planifier mes entraînements.
 
 **Acceptance Criteria:**
 
-1. L'upload de fichiers est fonctionnel
-2. Les formats supportés incluent images, PDF et documents
-3. La compression automatique des images est active
-4. L'organisation par catégories est possible
-5. La sécurité des fichiers uploadés est assurée
-6. La prévisualisation des documents est disponible
+1. Un formulaire de création de session est disponible
+2. Les informations de base sont collectées (nom, date, type)
+3. La validation des données est en place
+4. La session est sauvegardée automatiquement
+5. L'interface est intuitive et rapide
+6. Les sessions sont organisées chronologiquement
 
-### Story 2.4: Historique et Suivi des Patients
+### Story 2.3: Enregistrer des Exercices
 
-En tant que kinésithérapeute,
-Je veux voir l'historique complet d'un patient,
-Afin d'assurer un suivi cohérent de son traitement.
-
-**Acceptance Criteria:**
-
-1. L'historique des séances est affiché chronologiquement
-2. Les informations médicales importantes sont mises en évidence
-3. Les objectifs de traitement sont visibles
-4. L'évolution du patient est tracée
-5. Les alertes et rappels sont affichés
-6. L'export de l'historique est possible
-
-## Epic 3: Planification et Calendrier
-
-**Epic Goal** : Offrir un système de planification intuitif et efficace pour gérer les séances de kinésithérapie avec un calendrier interactif et une gestion optimisée des créneaux.
-
-### Story 3.1: Calendrier Interactif
-
-En tant que kinésithérapeute,
-Je veux avoir un calendrier interactif pour planifier mes séances,
-Afin de gérer efficacement mon emploi du temps.
+En tant que patient/sportif,
+Je veux pouvoir enregistrer les exercices de ma session,
+Afin de suivre ma progression.
 
 **Acceptance Criteria:**
 
-1. Un calendrier mensuel, hebdomadaire et quotidien est disponible
-2. La création de séances par glisser-déposer est possible
-3. Les créneaux disponibles et occupés sont visuellement distincts
-4. La modification et suppression des séances est intuitive
-5. Les conflits de planning sont détectés automatiquement
+1. Une interface d'enregistrement d'exercices est disponible
+2. Les informations de base sont collectées (nom, durée, intensité, notes)
+3. La validation des données est en place
+4. L'ajout d'exercices multiples est possible
+5. L'interface est optimisée pour mobile
+6. Les données sont sauvegardées automatiquement
+
+### Story 2.4: Valider une Session
+
+En tant que patient/sportif,
+Je veux pouvoir valider ma session terminée,
+Afin de confirmer que j'ai réalisé mes exercices.
+
+**Acceptance Criteria:**
+
+1. Un bouton de validation est disponible
+2. La confirmation de validation est demandée
+3. La session est marquée comme terminée
+4. Les statistiques sont mises à jour
+5. Un feedback de validation est affiché
+6. L'historique est mis à jour automatiquement
+
+### Story 2.5: Voir l'Historique
+
+En tant que patient/sportif,
+Je veux pouvoir voir l'historique de mes sessions,
+Afin de suivre ma progression dans le temps.
+
+**Acceptance Criteria:**
+
+1. Une liste chronologique des sessions est disponible
+2. Les sessions sont organisées par date
+3. Les informations clés sont visibles (date, type, statut)
+4. La navigation dans l'historique est intuitive
+5. Les filtres par période sont disponibles
 6. L'interface est optimisée pour mobile
 
-### Story 3.2: Gestion des Créneaux de Disponibilité
+### Story 2.6: Détails d'une Session
 
-En tant que kinésithérapeute,
-Je veux définir mes créneaux de disponibilité,
-Afin que les patients ne puissent réserver que sur mes heures de travail.
-
-**Acceptance Criteria:**
-
-1. La définition des horaires de travail est possible
-2. Les jours fériés et congés peuvent être marqués
-3. Les créneaux récurrents sont configurables
-4. Les exceptions ponctuelles sont gérées
-5. La synchronisation avec les calendriers externes est possible
-6. Les alertes de modification sont envoyées
-
-### Story 3.3: Réservation et Annulation de Séances
-
-En tant que kinésithérapeute,
-Je veux gérer les réservations et annulations de séances,
-Afin d'optimiser mon planning et la satisfaction patient.
+En tant que patient/sportif,
+Je veux pouvoir voir les détails d'une session,
+Afin de revoir mes exercices et mes notes.
 
 **Acceptance Criteria:**
 
-1. La réservation de séances est simple et rapide
-2. Les annulations sont gérées avec gestion des créneaux libérés
-3. Les listes d'attente sont mises en place
-4. Les rappels automatiques sont envoyés
-5. Les motifs d'annulation sont enregistrés
-6. Les statistiques de fréquentation sont calculées
+1. Une page de détails de session est disponible
+2. Tous les exercices de la session sont affichés
+3. Les notes et observations sont visibles
+4. Les statistiques de la session sont calculées
+5. La navigation vers l'historique est possible
+6. L'interface est claire et lisible
 
-### Story 3.4: Rappels et Notifications
+## Epic 3: Export et Partage
 
-En tant que kinésithérapeute,
-Je veux recevoir des rappels pour mes séances,
-Afin de ne rien oublier dans ma journée de travail.
+**Epic Goal** : Permettre aux patients d'exporter et de partager leur historique avec leur kinésithérapeute pour améliorer le suivi thérapeutique.
 
-**Acceptance Criteria:**
+### Story 3.1: Export pour Kiné
 
-1. Les rappels de séances sont configurables
-2. Les notifications push et email sont disponibles
-3. Les rappels personnalisés par patient sont possibles
-4. La gestion des préférences de notification est intuitive
-5. Les rappels de suivi post-séance sont automatiques
-6. L'intégration avec les calendriers externes fonctionne
-
-## Epic 4: Documentation des Séances
-
-**Epic Goal** : Fournir une interface complète pour documenter les séances de kinésithérapie avec notes détaillées, évaluations et suivi des objectifs de traitement.
-
-### Story 4.1: Interface de Documentation des Séances
-
-En tant que kinésithérapeute,
-Je veux documenter facilement mes séances,
-Afin de maintenir un suivi précis de chaque patient.
+En tant que patient/sportif,
+Je veux pouvoir exporter mes sessions pour mon kinésithérapeute,
+Afin qu'il puisse voir ma progression.
 
 **Acceptance Criteria:**
 
-1. Une interface de documentation intuitive est disponible
-2. Les templates de séances sont personnalisables
-3. La saisie rapide des informations courantes est possible
-4. L'auto-sauvegarde fonctionne en continu
-5. Les champs obligatoires sont clairement identifiés
-6. L'interface est optimisée pour tablette
+1. Un bouton d'export est disponible dans l'historique
+2. L'export en PDF et CSV est possible
+3. Les données essentielles sont incluses (sessions, exercices, notes)
+4. Le format est lisible et professionnel
+5. L'export est généré rapidement
+6. Les données sensibles sont protégées
 
-### Story 4.2: Évaluations et Objectifs de Traitement
+### Story 3.2: Partage avec Kiné
 
-En tant que kinésithérapeute,
-Je veux définir et suivre les objectifs de traitement,
-Afin d'assurer une progression cohérente de mes patients.
-
-**Acceptance Criteria:**
-
-1. La définition d'objectifs de traitement est possible
-2. Les évaluations de progression sont standardisées
-3. Les métriques de suivi sont personnalisables
-4. L'historique des évaluations est accessible
-5. Les alertes de non-progression sont activées
-6. Les rapports de progression sont générables
-
-### Story 4.3: Notes et Observations
-
-En tant que kinésithérapeute,
-Je veux ajouter des notes détaillées à mes séances,
-Afin de documenter précisément l'évolution de mes patients.
+En tant que patient/sportif,
+Je veux pouvoir partager facilement mes données avec mon kinésithérapeute,
+Afin d'améliorer mon suivi thérapeutique.
 
 **Acceptance Criteria:**
 
-1. Un système de notes libres est disponible
-2. Les notes sont organisées par catégories
-3. La recherche dans les notes est fonctionnelle
-4. Les notes confidentielles sont protégées
-5. L'export des notes est possible
-6. Les templates de notes sont réutilisables
+1. Un système de partage est disponible
+2. Le partage par lien ou email est possible
+3. Les données partagées sont sécurisées
+4. Le kiné peut voir les données sans compte
+5. Le partage est révocable
+6. L'historique de partage est tracé
 
-### Story 4.4: Exercices et Recommandations
+### Story 3.3: Filtrage des Données
 
-En tant que kinésithérapeute,
-Je veux prescrire des exercices à mes patients,
-Afin d'optimiser leur récupération entre les séances.
-
-**Acceptance Criteria:**
-
-1. Une bibliothèque d'exercices est disponible
-2. La prescription d'exercices personnalisés est possible
-3. Les instructions visuelles sont incluses
-4. Le suivi de réalisation des exercices est tracé
-5. Les modifications de prescription sont historisées
-6. L'envoi automatique aux patients est configurable
-
-## Epic 5: Facturation et Administration
-
-**Epic Goal** : Automatiser la facturation et fournir des outils administratifs complets pour la gestion financière et administrative du cabinet.
-
-### Story 5.1: Génération Automatique de Factures
-
-En tant que kinésithérapeute,
-Je veux générer automatiquement mes factures,
-Afin de gagner du temps sur les tâches administratives.
+En tant que patient/sportif,
+Je veux pouvoir filtrer mes données avant de les partager,
+Afin de ne montrer que les informations pertinentes.
 
 **Acceptance Criteria:**
 
-1. La génération automatique basée sur les séances est active
-2. Les templates de facture sont personnalisables
-3. La conformité légale française est respectée
-4. L'envoi automatique par email est possible
-5. La gestion des numéros de facture est automatique
-6. L'export en PDF est de qualité professionnelle
+1. Des filtres par période sont disponibles
+2. Le filtrage par type d'exercice est possible
+3. Les filtres sont faciles à utiliser
+4. L'aperçu des données filtrées est visible
+5. Les filtres sont sauvegardés
+6. L'interface est intuitive
 
-### Story 5.2: Suivi des Paiements
+### Story 3.4: Résumé de Progression
 
-En tant que kinésithérapeute,
-Je veux suivre les paiements de mes patients,
-Afin de gérer efficacement ma trésorerie.
-
-**Acceptance Criteria:**
-
-1. L'enregistrement des paiements est simple
-2. Les statuts de paiement sont visibles
-3. Les relances automatiques sont configurables
-4. Les statistiques de recouvrement sont disponibles
-5. L'intégration avec les moyens de paiement est possible
-6. Les rapports de trésorerie sont générables
-
-### Story 5.3: Gestion des Remboursements
-
-En tant que kinésithérapeute,
-Je veux gérer les remboursements de sécurité sociale,
-Afin de simplifier mes démarches administratives.
+En tant que patient/sportif,
+Je veux pouvoir générer un résumé de ma progression,
+Afin de montrer mes améliorations à mon kinésithérapeute.
 
 **Acceptance Criteria:**
 
-1. Le calcul automatique des remboursements est fonctionnel
-2. La génération des feuilles de soins est automatisée
-3. Le suivi des remboursements est tracé
-4. L'intégration avec les plateformes de télétransmission est possible
-5. Les alertes de retard de remboursement sont actives
-6. Les rapports de remboursement sont disponibles
+1. Un résumé automatique est généré
+2. Les métriques clés sont calculées (fréquence, durée, progression)
+3. Les graphiques de progression sont inclus
+4. Le résumé est personnalisable
+5. L'export du résumé est possible
+6. L'interface est claire et lisible
 
-### Story 5.4: Outils Administratifs
+## Epic 4: Motivation et Engagement
 
-En tant que kinésithérapeute,
-Je veux accéder à des outils administratifs complets,
-Afin de gérer efficacement mon cabinet.
+**Epic Goal** : Maintenir la motivation et l'engagement des patients grâce à la gamification, aux rappels et au suivi de progression.
 
-**Acceptance Criteria:**
+### Story 4.1: Rappels de Session
 
-1. Un tableau de bord administratif est disponible
-2. Les statistiques de fréquentation sont calculées
-3. Les rapports d'activité sont générables
-4. L'export des données est possible
-5. La sauvegarde automatique est configurée
-6. Les alertes administratives sont personnalisables
-
-## Epic 6: Rapports et Analytics
-
-**Epic Goal** : Fournir des tableaux de bord, statistiques et rapports complets pour analyser l'activité du cabinet et optimiser la gestion.
-
-### Story 6.1: Tableau de Bord Principal
-
-En tant que kinésithérapeute,
-Je veux avoir une vue d'ensemble de mon activité,
-Afin de prendre des décisions éclairées sur mon cabinet.
+En tant que patient/sportif,
+Je veux recevoir des rappels pour mes sessions,
+Afin de ne pas oublier de faire mes exercices.
 
 **Acceptance Criteria:**
 
-1. Un tableau de bord avec KPIs principaux est disponible
-2. Les métriques de performance sont affichées
-3. Les alertes importantes sont mises en évidence
-4. La personnalisation des widgets est possible
+1. Un système de rappels est disponible
+2. Les rappels sont configurables (fréquence, heure)
+3. Les notifications push et email sont possibles
+4. Les rappels sont personnalisables
+5. La gestion des préférences est intuitive
+6. Les rappels sont désactivables
+
+### Story 4.2: Progression Simple
+
+En tant que patient/sportif,
+Je veux voir ma progression de manière simple,
+Afin de rester motivé dans mes exercices.
+
+**Acceptance Criteria:**
+
+1. Des graphiques de progression sont disponibles
+2. Les métriques clés sont affichées (fréquence, durée)
+3. Les tendances sont visibles
+4. L'interface est claire et lisible
 5. Les données sont mises à jour en temps réel
-6. L'export du tableau de bord est fonctionnel
+6. L'export des graphiques est possible
 
-### Story 6.2: Statistiques de Fréquentation
+### Story 4.3: Mode Guest
 
-En tant que kinésithérapeute,
-Je veux analyser la fréquentation de mon cabinet,
-Afin d'optimiser mon planning et mes revenus.
-
-**Acceptance Criteria:**
-
-1. Les statistiques de fréquentation sont calculées
-2. Les tendances temporelles sont visibles
-3. Les analyses par patient sont disponibles
-4. Les comparaisons périodiques sont possibles
-5. Les prévisions de fréquentation sont générées
-6. L'export des statistiques est possible
-
-### Story 6.3: Rapports Financiers
-
-En tant que kinésithérapeute,
-Je veux générer des rapports financiers détaillés,
-Afin de suivre la performance de mon cabinet.
+En tant que visiteur,
+Je veux pouvoir essayer l'application sans m'inscrire,
+Afin de tester les fonctionnalités avant de m'engager.
 
 **Acceptance Criteria:**
 
-1. Les rapports de revenus sont générables
-2. L'analyse des coûts est disponible
-3. Les projections financières sont calculées
-4. Les comparaisons budgétaires sont possibles
-5. L'export vers Excel/PDF est fonctionnel
-6. Les alertes financières sont configurables
+1. Un mode Guest est disponible
+2. Les fonctionnalités de base sont accessibles
+3. Les données sont sauvegardées temporairement
+4. La conversion vers un compte complet est possible
+5. L'interface est claire sur le mode Guest
+6. Les limitations sont expliquées
 
-### Story 6.4: Analytics Avancés
+### Story 4.4: Gamification Basique
 
-En tant que kinésithérapeute,
-Je veux accéder à des analyses avancées,
-Afin d'optimiser ma pratique et la satisfaction patient.
+En tant que patient/sportif,
+Je veux être motivé par des éléments de jeu,
+Afin de maintenir ma régularité dans les exercices.
 
 **Acceptance Criteria:**
 
-1. Les analyses de performance patient sont disponibles
-2. Les métriques de satisfaction sont calculées
-3. Les recommandations d'amélioration sont proposées
-4. Les comparaisons avec les benchmarks sont possibles
-5. Les prédictions de tendances sont générées
-6. L'intégration avec des outils externes est possible
+1. Un système de streaks est disponible
+2. Des badges de progression sont attribués
+3. Les objectifs sont visibles et motivants
+4. Les récompenses sont claires
+5. L'interface est engageante
+6. Les statistiques personnelles sont affichées
+
 
 ## Checklist Results Report
 

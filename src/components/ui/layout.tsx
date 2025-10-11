@@ -3,10 +3,9 @@ import { cn } from '@/lib/utils';
 import {
   Sidebar,
   SidebarContent,
-  SidebarItem,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Navigation, NavigationItem } from '@/components/ui/navigation';
+import { Navigation, type NavigationItem } from '@/components/ui/navigation';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { PageActions, PageAction } from '@/components/ui/page-actions';
+import { PageActions, type PageAction } from '@/components/ui/page-actions';
 
 export interface PageFormProps {
   title: string;

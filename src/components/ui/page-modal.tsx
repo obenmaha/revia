@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { PageActions, PageAction } from '@/components/ui/page-actions';
+import { PageActions, type PageAction } from '@/components/ui/page-actions';
 
 export interface PageModalProps {
   title: string;

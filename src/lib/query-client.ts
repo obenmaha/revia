@@ -76,6 +76,8 @@ export const queryKeys = {
   invoice: (id: string) => ['invoice', id] as const,
   invoicesByPatient: (patientId: string) =>
     ['invoices', 'patient', patientId] as const,
+  invoicesByPractitioner: (practitionerId: string) =>
+    ['invoices', 'practitioner', practitionerId] as const,
 
   // Statistiques
   stats: ['stats'] as const,

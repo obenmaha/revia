@@ -2,102 +2,103 @@
 
 ## Vision du Produit
 
-**App-Kine** est une application web moderne destinée aux kinésithérapeutes pour gérer efficacement leurs patients, planifier leurs séances, et suivre les progrès thérapeutiques. L'application vise à digitaliser et optimiser la gestion quotidienne des cabinets de kinésithérapie.
+**App-Kine** est une application web moderne destinée aux **patients et sportifs** pour suivre leurs sessions d'exercices, documenter leur progression, et partager leur historique avec leur kinésithérapeute. L'application vise à motiver et engager les patients dans leur rééducation ou leur pratique sportive.
 
 ## Problème à Résoudre
 
 ### Problème Principal
 
-Les kinésithérapeutes passent trop de temps sur des tâches administratives (planification, suivi des patients, documentation) au détriment de leur pratique clinique. Les solutions existantes sont souvent :
+Les **patients et sportifs** ont du mal à suivre leurs exercices prescrits et à maintenir leur motivation sur le long terme. Les solutions existantes sont souvent :
 
-- Coûteuses et complexes
-- Pas adaptées aux spécificités de la kinésithérapie française
-- Difficiles à utiliser au quotidien
-- Manquent d'intégration avec les outils existants
+- Trop complexes pour les patients
+- Pas adaptées à la rééducation et au sport
+- Manquent de motivation et d'engagement
+- Pas de partage facile avec le kinésithérapeute
 
 ### Impact du Problème
 
-- **Perte de temps** : 30-40% du temps de travail consacré à l'administration
-- **Erreurs de suivi** : Documentation manuelle sujette aux erreurs
-- **Satisfaction patient** : Moins de temps disponible pour les soins
-- **Croissance limitée** : Difficulté à gérer plus de patients efficacement
+- **Adhésion faible** : 60% des patients arrêtent leurs exercices prescrits
+- **Suivi difficile** : Le kinésithérapeute ne sait pas si les exercices sont faits
+- **Progression lente** : Manque de motivation et de feedback
+- **Perte de temps** : Séances kiné moins efficaces sans données patient
 
 ## Utilisateurs Cibles
 
-### Utilisateur Principal : Kinésithérapeute Indépendant
+### Utilisateur Principal : Patient/Sportif
 
-- **Profil** : Kinésithérapeute libéral, 2-10 ans d'expérience
-- **Besoins** : Gestion simple et efficace de 50-200 patients
-- **Contraintes** : Budget limité, temps restreint, besoin de simplicité
-- **Objectifs** : Optimiser la gestion, améliorer le suivi patient, gagner du temps
+- **Profil** : Personne en rééducation ou sportif, 18-65 ans
+- **Besoins** : Suivi simple de ses exercices, motivation, partage avec kiné
+- **Contraintes** : Temps limité, besoin de simplicité, motivation variable
+- **Objectifs** : Suivre sa progression, rester motivé, partager avec kiné
 
-### Utilisateur Secondaire : Cabinet de Kinésithérapie
+### Utilisateur Secondaire : Kinésithérapeute
 
-- **Profil** : Cabinet avec 2-5 kinésithérapeutes
-- **Besoins** : Coordination entre praticiens, gestion centralisée
-- **Contraintes** : Besoin de collaboration, partage d'informations
-- **Objectifs** : Standardiser les processus, améliorer la communication
+- **Profil** : Kinésithérapeute libéral ou en cabinet
+- **Besoins** : Recevoir l'historique patient, ajuster le traitement
+- **Contraintes** : Temps limité, besoin de données claires
+- **Objectifs** : Améliorer le suivi patient, optimiser les séances
 
 ## Objectifs de Succès
 
 ### Objectifs Business
 
-- **Adoption** : 100 utilisateurs actifs dans les 6 premiers mois
-- **Rétention** : 80% de rétention après 3 mois
-- **Satisfaction** : Note moyenne de 4.5/5 sur l'expérience utilisateur
-- **Croissance** : 20% d'augmentation mensuelle des nouveaux utilisateurs
+- **Adoption** : 500 patients actifs dans les 6 premiers mois
+- **Rétention** : 70% de rétention après 3 mois
+- **Engagement** : 3+ sessions par semaine en moyenne
+- **Partage** : 60% des patients partagent avec leur kiné
 
 ### Objectifs Produit
 
-- **Efficacité** : Réduction de 50% du temps administratif
-- **Qualité** : 95% de précision dans le suivi des patients
-- **Adoption** : 90% des fonctionnalités utilisées régulièrement
+- **Adhésion** : 80% des patients continuent leurs exercices prescrits
+- **Motivation** : Note moyenne de 4.5/5 sur l'expérience utilisateur
+- **Simplicité** : 90% des utilisateurs comprennent l'app en < 5 minutes
 - **Performance** : Temps de chargement < 2 secondes
 
 ## Valeur Proposée
 
+### Pour les Patients/Sportifs
+
+- **Motivation** : Gamification et progression visible
+- **Simplicité** : Interface intuitive, facile à utiliser
+- **Suivi personnel** : Historique de ses sessions et progrès
+- **Partage facile** : Export simple pour le kinésithérapeute
+
 ### Pour les Kinésithérapeutes
 
-- **Gain de temps** : Automatisation des tâches répétitives
-- **Meilleur suivi** : Historique complet et accessible des patients
-- **Planification optimisée** : Gestion intelligente des créneaux
-- **Simplicité** : Interface intuitive, formation minimale requise
-
-### Pour les Patients
-
-- **Meilleur service** : Plus de temps consacré aux soins
-- **Suivi personnalisé** : Historique détaillé des séances
-- **Communication** : Accès aux exercices et recommandations
+- **Données patient** : Historique complet des exercices réalisés
+- **Suivi amélioré** : Savoir si les exercices sont faits
+- **Séances optimisées** : Ajuster le traitement selon les données
+- **Gain de temps** : Moins de questions sur l'adhésion au traitement
 
 ## Fonctionnalités Clés (MVP)
 
-### 1. Gestion des Patients
+### 1. Gestion des Sessions
 
-- Fiche patient complète (informations personnelles, médicales)
-- Historique des séances et traitements
-- Photos et documents joints
-- Recherche et filtrage avancés
+- Création de sessions d'exercices
+- Enregistrement des exercices (durée, intensité, notes)
+- Validation des sessions réalisées
+- Mode Guest pour essai sans inscription
 
-### 2. Planification des Séances
+### 2. Historique et Suivi
 
-- Calendrier interactif
-- Gestion des créneaux disponibles
-- Rappels automatiques
-- Gestion des annulations
+- Visualisation de l'historique des sessions
+- Détails de chaque session
+- Progression et statistiques personnelles
+- Rappels de motivation
 
-### 3. Suivi Thérapeutique
+### 3. Export et Partage
 
-- Évaluation initiale et de suivi
-- Objectifs de traitement
-- Progression des exercices
-- Notes de séance
+- Export PDF/CSV des sessions
+- Partage avec le kinésithérapeute
+- Filtrage des données par période
+- Résumé de progression
 
-### 4. Facturation et Administration
+### 4. Motivation et Engagement
 
-- Génération de factures
-- Suivi des paiements
-- Statistiques de fréquentation
-- Export des données
+- Gamification basique (streaks, badges)
+- Notifications de rappel
+- Graphiques de progression
+- Interface mobile-first
 
 ## Contraintes et Hypothèses
 
@@ -111,35 +112,38 @@ Les kinésithérapeutes passent trop de temps sur des tâches administratives (p
 ### Contraintes Business
 
 - **Budget** : Développement avec des ressources limitées
-- **Timeline** : MVP en 3 mois
-- **Marché** : Focus sur le marché français
-- **Concurrence** : Différenciation par la simplicité et l'accessibilité
+- **Timeline** : MVP Core en 4 semaines, MVP+ en 8 semaines
+- **Marché** : Focus sur le marché français (rééducation + sport)
+- **Concurrence** : Différenciation par la simplicité et la gamification
 
 ### Hypothèses Clés
 
-- Les kinésithérapeutes sont prêts à adopter des outils numériques
+- Les patients sont prêts à utiliser une app pour suivre leurs exercices
 - La simplicité d'usage prime sur la complexité des fonctionnalités
-- Le prix d'entrée doit être accessible aux praticiens indépendants
-- L'intégration mobile est essentielle pour l'usage quotidien
+- La gamification améliore l'adhésion au traitement
+- Le partage avec le kiné est une valeur ajoutée importante
 
 ## Métriques de Succès
 
 ### Métriques d'Adoption
 
-- Nombre d'utilisateurs actifs mensuels
+- Nombre de patients actifs mensuels
 - Taux d'inscription (visiteurs → utilisateurs)
 - Taux de rétention (1 mois, 3 mois, 6 mois)
+- Utilisation du Mode Guest
 
 ### Métriques d'Engagement
 
-- Fréquence d'utilisation (séances par semaine)
-- Fonctionnalités les plus utilisées
+- Fréquence d'utilisation (sessions par semaine)
+- Nombre d'exercices enregistrés
+- Taux de validation des sessions
 - Temps passé dans l'application
 
 ### Métriques de Satisfaction
 
 - NPS (Net Promoter Score)
 - Notes de satisfaction utilisateur
+- Taux de partage avec kiné
 - Taux de support client
 
 ### Métriques Business
@@ -151,25 +155,25 @@ Les kinésithérapeutes passent trop de temps sur des tâches administratives (p
 
 ## Roadmap Initiale
 
-### Phase 1 - MVP (Mois 1-3)
+### Phase 1 - MVP Core (Semaines 1-4)
 
-- Gestion basique des patients
-- Calendrier de planification
-- Suivi des séances
-- Interface mobile optimisée
+- Infrastructure et authentification
+- Gestion des sessions (créer, enregistrer, valider)
+- Historique des sessions
+- Interface mobile-first
 
-### Phase 2 - Amélioration (Mois 4-6)
+### Phase 2 - MVP+ (Semaines 5-8)
 
-- Fonctionnalités avancées de suivi
-- Intégrations externes
-- Rapports et analytics
+- Export et partage avec kiné
+- Gamification et motivation
+- Rappels et notifications
 - Optimisations de performance
 
-### Phase 3 - Expansion (Mois 7-12)
+### Phase 3 - Expansion (Mois 3-6)
 
-- Fonctionnalités collaboratives
-- API publique
-- Intégrations tierces
+- Fonctionnalités avancées de gamification
+- Intégrations avec calendriers
+- Analytics avancés
 - Fonctionnalités premium
 
 ## Risques Identifiés
@@ -182,19 +186,20 @@ Les kinésithérapeutes passent trop de temps sur des tâches administratives (p
 
 ### Risques Business
 
-- **Adoption lente** : Résistance au changement des praticiens
-- **Concurrence** : Solutions existantes bien établies
-- **Réglementation** : Évolution des règles de santé numérique
+- **Adoption lente** : Résistance des patients à utiliser une app
+- **Concurrence** : Solutions fitness existantes bien établies
+- **Motivation** : Difficulté à maintenir l'engagement long terme
 
 ### Stratégies d'Atténuation
 
 - Tests utilisateurs précoces et itératifs
-- Focus sur la simplicité et l'utilité immédiate
-- Conformité proactive aux réglementations
-- Partenariats avec des cabinets pilotes
+- Mode Guest pour réduire la friction d'adoption
+- Gamification pour maintenir la motivation
+- Partenariats avec des kinésithérapeutes prescripteurs
 
 ---
 
-**Date de création** : $(date)
-**Version** : 1.0
+**Date de création** : 2024-12-19
+**Version** : 2.0
 **Auteur** : Product Manager (John)
+**Dernière mise à jour** : 2024-12-19

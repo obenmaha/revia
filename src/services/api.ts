@@ -94,10 +94,7 @@ class ApiService {
   // Vérifier la connexion
   static async healthCheck() {
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('count')
-        .limit(1);
+      const { error } = await supabase.from('users').select('count').limit(1);
 
       if (error) {
         throw new Error(error.message);
@@ -137,4 +134,8 @@ class ApiService {
   }
 }
 
-export const apiService = new ApiService();
+// Export des méthodes statiques
+export const apiService = {
+  healthCheck: ApiService.healthCheck,
+  getStats: ApiService.getStats,
+};

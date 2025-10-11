@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { usePatient } from '../hooks/usePatients';
 import { useSessions } from '../hooks/useSessions';
+import type { Session } from '../types';
 import {
   Card,
   CardContent,
@@ -274,7 +275,7 @@ export function PatientDetailPage() {
                 </p>
               ) : (
                 <div className="space-y-4">
-                  {sessions?.map(session => (
+                  {sessions?.map((session: Session) => (
                     <div
                       key={session.id}
                       className="flex items-center justify-between p-4 border rounded-lg"

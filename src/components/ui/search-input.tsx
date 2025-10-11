@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Search, X } from 'lucide-react';
-import { useDebounce } from '@/hooks/use-debounce';
+import { useDebounce } from '@/hooks/useDebounce';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';

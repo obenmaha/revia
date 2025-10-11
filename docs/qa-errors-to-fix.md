@@ -18,6 +18,7 @@ Ce document répertorie toutes les erreurs identifiées lors de la vérification
 #### 1.1 Services non instanciés correctement
 
 **Fichiers concernés** :
+
 - `src/hooks/useAuth.ts`
 - `src/hooks/useInvoices.ts`
 - `src/hooks/usePatients.ts`
@@ -27,6 +28,7 @@ Ce document répertorie toutes les erreurs identifiées lors de la vérification
 **Problème** : Les services sont utilisés comme des classes statiques au lieu d'être instanciés.
 
 **Erreurs** :
+
 ```typescript
 // ❌ Incorrect
 queryFn: authService.getCurrentUser,
@@ -38,6 +40,7 @@ mutationFn: (data) => authService.signIn(data),
 ```
 
 **Solution** :
+
 1. Modifier les services pour utiliser des méthodes d'instance
 2. Instancier les services dans les hooks
 3. Ou convertir les services en fonctions statiques
@@ -45,6 +48,7 @@ mutationFn: (data) => authService.signIn(data),
 #### 1.2 Types Supabase manquants
 
 **Fichiers concernés** :
+
 - `src/services/authService.ts`
 - `src/services/patientsService.ts`
 - `src/services/sessionsService.ts`
@@ -53,6 +57,7 @@ mutationFn: (data) => authService.signIn(data),
 **Problème** : Les types Supabase ne sont pas générés, causant des erreurs de type.
 
 **Erreurs** :
+
 ```typescript
 // ❌ Erreur de type
 const { error: profileError } = await supabase.from('users').insert({
@@ -67,6 +72,7 @@ const { error: profileError } = await supabase.from('users').insert({
 ```
 
 **Solution** :
+
 1. Exécuter `npx supabase gen types typescript --local > src/types/supabase.ts`
 2. Importer les types générés dans les services
 3. Utiliser les types appropriés pour chaque table
@@ -74,17 +80,20 @@ const { error: profileError } = await supabase.from('users').insert({
 #### 1.3 Problèmes de types dans les hooks
 
 **Fichiers concernés** :
+
 - `src/hooks/useAuth.ts`
 - `src/hooks/useInvoices.ts`
 - `src/hooks/usePatients.ts`
 - `src/hooks/useSessions.ts`
 
 **Problèmes** :
+
 - Types `unknown` non typés
 - Paramètres de mutation incorrects
 - Propriétés manquantes dans les types de réponse
 
 **Solutions** :
+
 ```typescript
 // ❌ Incorrect
 setUser(data.user); // data est de type unknown
@@ -102,6 +111,7 @@ mutationFn: (credentials: LoginForm) => authService.signIn(credentials),
 #### 1.4 Imports React manquants
 
 **Fichiers concernés** :
+
 - `src/hooks/useFocus.ts`
 - `src/hooks/useFocusVisible.ts`
 - `src/hooks/useFocusWithin.ts`
@@ -110,6 +120,7 @@ mutationFn: (credentials: LoginForm) => authService.signIn(credentials),
 **Problème** : `useEffect` utilisé sans import.
 
 **Solution** :
+
 ```typescript
 // ❌ Incorrect
 useEffect(() => {
@@ -127,17 +138,20 @@ useEffect(() => {
 #### 1.5 Problèmes de types dans les pages
 
 **Fichiers concernés** :
+
 - `src/pages/DashboardPage.tsx`
 - `src/pages/InvoicesPage.tsx`
 - `src/pages/PatientsPage.tsx`
 - `src/pages/SessionsPage.tsx`
 
 **Problèmes** :
+
 - Types `any` implicites
 - Propriétés manquantes dans les types
 - Imports non utilisés
 
 **Solutions** :
+
 ```typescript
 // ❌ Incorrect
 {patients.map(patient => ( // patient est de type any
@@ -165,6 +179,7 @@ import type { PageFilter } from '../components/ui/page-filters';
 **Problème** : Variables, imports et paramètres déclarés mais non utilisés.
 
 **Solutions** :
+
 ```typescript
 // ❌ Incorrect
 import { useEffect } from 'react'; // non utilisé
@@ -178,6 +193,7 @@ const { error } = await supabase; // ou utiliser data
 #### 2.2 Types `any` explicites
 
 **Fichiers concernés** :
+
 - `src/components/test/TestConnection.tsx`
 - `src/components/ui/emoji-picker.tsx`
 - `src/components/ui/page-filters.tsx`
@@ -232,6 +248,7 @@ import { Card } from '../components/ui/card';
 **Problème** : Utilisation de `require` dans un fichier ES module.
 
 **Solution** :
+
 ```javascript
 // ❌ Incorrect
 const { fontFamily } = require('tailwindcss/defaultTheme');
@@ -255,7 +272,9 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 ### Phase 1 - Stabilisation (Semaine 1)
 
 #### Jour 1-2 : Correction des erreurs TypeScript
+
 1. **Générer les types Supabase**
+
    ```bash
    npx supabase gen types typescript --local > src/types/supabase.ts
    ```
@@ -271,12 +290,14 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
    - Corriger les types de réponse
 
 #### Jour 3-4 : Nettoyage du code
+
 1. **Supprimer les imports non utilisés**
 2. **Remplacer les types `any`**
 3. **Corriger les variables non utilisées**
 4. **Exécuter le formatage Prettier**
 
 #### Jour 5 : Validation
+
 1. **Vérifier la compilation** : `npm run build`
 2. **Vérifier le linting** : `npm run lint`
 3. **Exécuter les tests** : `npm run test:run`
@@ -284,16 +305,19 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 ### Phase 2 - Optimisation (Semaine 2)
 
 #### Jour 1-2 : Amélioration des types
+
 1. **Créer des interfaces TypeScript appropriées**
 2. **Ajouter la validation Zod**
 3. **Améliorer la gestion d'erreurs**
 
 #### Jour 3-4 : Tests et qualité
+
 1. **Ajouter des tests d'intégration**
 2. **Améliorer la couverture de tests**
 3. **Ajouter des tests E2E**
 
 #### Jour 5 : Performance
+
 1. **Optimiser les requêtes Supabase**
 2. **Implémenter la mise en cache**
 3. **Optimiser le bundle**
@@ -301,16 +325,19 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 ### Phase 3 - Production (Semaine 3)
 
 #### Jour 1-2 : Finalisation
+
 1. **Audit de sécurité final**
 2. **Tests de charge**
 3. **Optimisation des performances**
 
 #### Jour 3-4 : Déploiement
+
 1. **Configuration de production**
 2. **Déploiement en staging**
 3. **Tests de validation**
 
 #### Jour 5 : Mise en production
+
 1. **Déploiement en production**
 2. **Monitoring post-déploiement**
 3. **Documentation finale**
@@ -321,13 +348,13 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 
 ### Objectifs de Correction
 
-| Métrique | Actuel | Cible | Échéance |
-|----------|--------|-------|----------|
-| Erreurs TypeScript | 214 | 0 | Jour 5 |
-| Problèmes Linting | 121 | <10 | Jour 5 |
-| Build Success | ❌ | ✅ | Jour 5 |
-| Couverture Tests | 9 tests | >80% | Semaine 2 |
-| Performance | N/A | <2s | Semaine 3 |
+| Métrique           | Actuel  | Cible | Échéance  |
+| ------------------ | ------- | ----- | --------- |
+| Erreurs TypeScript | 214     | 0     | Jour 5    |
+| Problèmes Linting  | 121     | <10   | Jour 5    |
+| Build Success      | ❌      | ✅    | Jour 5    |
+| Couverture Tests   | 9 tests | >80%  | Semaine 2 |
+| Performance        | N/A     | <2s   | Semaine 3 |
 
 ### Critères de Validation
 
@@ -389,4 +416,3 @@ npm run build
 
 **Dernière mise à jour** : 2024-12-19  
 **Prochaine révision** : Après correction des erreurs P0
-
