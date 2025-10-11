@@ -15,6 +15,7 @@
 ### État actuel et points de douleur
 
 **Pour les patients en rééducation :**
+
 - **Manque de suivi structuré :** Pas d'outil centralisé pour enregistrer les exercices, séries et progrès
 - **Difficulté de motivation :** Absence de visualisation des progrès et de rappels
 - **Communication limitée :** Peu de moyens pour partager les données avec les kinésithérapeutes
@@ -22,6 +23,7 @@
 - **Complexité technique :** Les solutions existantes sont souvent trop complexes ou nécessitent des installations
 
 **Pour les sportifs :**
+
 - **Fragmentation des outils :** Utilisation de multiples applications non connectées
 - **Manque de contexte :** Les apps fitness ne capturent pas le RPE et la douleur
 - **Sur-engineering :** Solutions trop complexes pour un suivi simple et efficace
@@ -47,6 +49,7 @@
 ### Concept central
 
 Une PWA web simple et intuitive permettant aux patients en rééducation et aux sportifs de :
+
 - Enregistrer facilement leurs séances d'exercices
 - Suivre leurs progrès avec des métriques claires (RPE, douleur)
 - Consulter leur historique d'entraînement
@@ -74,23 +77,27 @@ Une PWA web simple et intuitive permettant aux patients en rééducation et aux 
 ### Primary User Segment: Patients en rééducation
 
 **Profil démographique :**
+
 - Âge : 25-75 ans
 - Niveau technologique : Débutant à intermédiaire
 - Contexte : Blessures sportives, accidents, chirurgies, pathologies chroniques
 
 **Comportements actuels :**
+
 - Utilisation occasionnelle de smartphones/tablettes
 - Recherche d'informations santé sur internet
 - Préférence pour des solutions simples et intuitives
 - Besoin de motivation et de suivi régulier
 
 **Besoins spécifiques :**
+
 - Enregistrement simple des exercices prescrits
 - Suivi des progrès et de la douleur
 - Rappels pour les séances
 - Partage d'informations avec le kinésithérapeute
 
 **Objectifs :**
+
 - Récupérer rapidement et efficacement
 - Maintenir la motivation tout au long du processus
 - Comprendre leurs progrès
@@ -99,17 +106,20 @@ Une PWA web simple et intuitive permettant aux patients en rééducation et aux 
 ### Primary User Segment: Sportifs et Athlètes
 
 **Profil démographique :**
+
 - Âge : 16-50 ans
 - Niveau technologique : Intermédiaire à avancé
 - Contexte : Sportifs amateurs, semi-professionnels, athlètes de haut niveau
 
 **Comportements actuels :**
+
 - Utilisation intensive d'applications de suivi (Strava, MyFitnessPal, etc.)
 - Recherche constante d'optimisation des performances
 - Suivi détaillé des métriques d'entraînement
 - Partage des performances sur les réseaux sociaux
 
 **Besoins spécifiques :**
+
 - Enregistrement précis des séances d'entraînement
 - Suivi des métriques de performance (RPE, douleur, progression)
 - Analyse des tendances et patterns d'entraînement
@@ -117,6 +127,7 @@ Une PWA web simple et intuitive permettant aux patients en rééducation et aux 
 - Détection précoce de surcharge ou blessures
 
 **Objectifs :**
+
 - Optimiser les performances sportives
 - Prévenir les blessures par un suivi attentif
 - Maintenir la motivation et la régularité
@@ -177,6 +188,7 @@ Une PWA web simple et intuitive permettant aux patients en rééducation et aux 
 ### MVP Success Criteria
 
 L'application est considérée comme réussie si :
+
 - 80% des utilisateurs peuvent enregistrer une séance complète en moins de 3 minutes
 - 70% des utilisateurs reviennent utiliser l'application dans les 7 jours
 - L'application fonctionne sur 95% des navigateurs mobiles modernes
@@ -294,4 +306,3 @@ L'application est considérée comme réussie si :
 ### PM Handoff
 
 Ce Project Brief fournit le contexte complet pour APP KINE. Veuillez commencer en 'Mode Génération PRD', examiner le brief en détail pour travailler avec l'utilisateur afin de créer la section PRD section par section comme l'indique le template, en demandant toute clarification nécessaire ou en suggérant des améliorations.
-

@@ -8,27 +8,27 @@ graph TB
         A[React App<br/>Mobile-First UI]
         B[PWA<br/>Offline Support]
     end
-    
+
     subgraph "CDN & Edge"
         C[CloudFlare CDN<br/>Global Distribution]
     end
-    
+
     subgraph "Application Layer"
         D[Vercel<br/>Frontend Hosting]
         E[Railway/Render<br/>Backend API]
     end
-    
+
     subgraph "Data Layer"
         F[PostgreSQL<br/>Primary Database]
         G[Redis<br/>Cache & Sessions]
         H[AWS S3<br/>File Storage]
     end
-    
+
     subgraph "External Services"
         I[Email Service<br/>Resend/SendGrid]
         J[Monitoring<br/>Sentry + Analytics]
     end
-    
+
     A --> C
     B --> C
     C --> D
@@ -49,25 +49,25 @@ graph TB
         B[State Management<br/>Zustand]
         C[API Client<br/>Axios/Fetch]
     end
-    
+
     subgraph "API Layer"
         D[Express.js Server]
         E[Authentication<br/>JWT Middleware]
         F[Validation<br/>Zod Schemas]
         G[Controllers]
     end
-    
+
     subgraph "Business Layer"
         H[Services<br/>Business Logic]
         I[Repositories<br/>Data Access]
     end
-    
+
     subgraph "Data Layer"
         J[Prisma ORM]
         K[PostgreSQL<br/>Primary DB]
         L[Redis<br/>Cache]
     end
-    
+
     A --> B
     B --> C
     C --> D
@@ -90,7 +90,7 @@ sequenceDiagram
     participant A as API
     participant D as Database
     participant R as Redis
-    
+
     U->>F: Login Request
     F->>A: POST /auth/login
     A->>D: Validate Credentials
@@ -111,7 +111,7 @@ sequenceDiagram
     participant A as API
     participant S as Service
     participant D as Database
-    
+
     U->>F: Create Patient
     F->>A: POST /patients
     A->>A: Validate Data
@@ -132,28 +132,28 @@ graph TB
         B[Content Security Policy]
         C[Secure Headers]
     end
-    
+
     subgraph "API Security"
         D[JWT Authentication]
         E[Rate Limiting]
         F[Input Validation]
         G[CORS Protection]
     end
-    
+
     subgraph "Data Security"
         H[Encryption at Rest]
         I[Encryption in Transit]
         J[Access Control]
         K[Audit Logging]
     end
-    
+
     subgraph "Infrastructure Security"
         L[WAF Protection]
         M[DDoS Mitigation]
         N[SSL/TLS 1.3]
         O[Security Monitoring]
     end
-    
+
     A --> D
     B --> E
     C --> F
@@ -174,17 +174,17 @@ erDiagram
     USER ||--o{ PATIENT : manages
     USER ||--o{ SESSION : conducts
     USER ||--o{ INVOICE : creates
-    
+
     PATIENT ||--o{ SESSION : has
     PATIENT ||--o{ INVOICE : receives
     PATIENT ||--o{ DOCUMENT : contains
-    
+
     SESSION ||--o{ EVALUATION : includes
     SESSION ||--o{ EXERCISE : prescribes
     SESSION ||--o{ OBJECTIVE : tracks
-    
+
     INVOICE ||--o{ PAYMENT : receives
-    
+
     USER {
         string id PK
         string email
@@ -196,7 +196,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     PATIENT {
         string id PK
         string practitionerId FK
@@ -211,7 +211,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     SESSION {
         string id PK
         string patientId FK
@@ -226,7 +226,7 @@ erDiagram
         datetime createdAt
         datetime updatedAt
     }
-    
+
     INVOICE {
         string id PK
         string patientId FK
@@ -248,14 +248,14 @@ graph TB
         A[Local Development<br/>Docker Compose]
         B[Git Repository<br/>GitHub]
     end
-    
+
     subgraph "CI/CD Pipeline"
         C[GitHub Actions<br/>Automated Testing]
         D[Build & Deploy<br/>Staging]
         E[E2E Tests<br/>Playwright]
         F[Deploy Production<br/>Zero Downtime]
     end
-    
+
     subgraph "Production Environment"
         G[Vercel<br/>Frontend]
         H[Railway<br/>Backend]
@@ -263,7 +263,7 @@ graph TB
         J[Redis<br/>Cache]
         K[CloudFlare<br/>CDN]
     end
-    
+
     A --> B
     B --> C
     C --> D
@@ -285,25 +285,25 @@ graph TB
         B[Error Tracking<br/>Sentry]
         C[User Analytics<br/>Vercel Analytics]
     end
-    
+
     subgraph "Infrastructure Metrics"
         D[Server Health<br/>CPU, Memory, Disk]
         E[Database Performance<br/>Query Time, Connections]
         F[Cache Performance<br/>Hit Rate, Latency]
     end
-    
+
     subgraph "Business Metrics"
         G[User Engagement<br/>DAU, MAU]
         H[Feature Usage<br/>Conversion Rates]
         I[Revenue Metrics<br/>MRR, Churn]
     end
-    
+
     subgraph "Alerting"
         J[Error Alerts<br/>PagerDuty]
         K[Performance Alerts<br/>Slack]
         L[Business Alerts<br/>Email]
     end
-    
+
     A --> J
     B --> J
     C --> G
@@ -325,12 +325,12 @@ graph TB
         C[Session Service Module]
         D[Invoice Service Module]
     end
-    
+
     subgraph "Phase 2 - API Gateway"
         E[API Gateway<br/>Kong/AWS API Gateway]
         F[Service Discovery<br/>Consul/Eureka]
     end
-    
+
     subgraph "Phase 3 - Microservices"
         G[User Microservice]
         H[Patient Microservice]
@@ -338,7 +338,7 @@ graph TB
         J[Invoice Microservice]
         K[Notification Microservice]
     end
-    
+
     A --> E
     B --> E
     C --> E
@@ -360,7 +360,7 @@ sequenceDiagram
     participant I as Invoice Service
     participant D as Database
     participant E as Email Service
-    
+
     S->>A: Session Completed
     A->>I: Generate Invoice
     I->>D: Create Invoice Record

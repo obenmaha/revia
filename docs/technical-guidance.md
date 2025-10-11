@@ -5,6 +5,7 @@
 ### Stack Technologique
 
 **Frontend:**
+
 - **Framework** : React 19 avec TypeScript
 - **Build Tool** : Vite 7.x
 - **Styling** : Tailwind CSS + Headless UI
@@ -15,6 +16,7 @@
 - **Icons** : Heroicons
 
 **Backend:**
+
 - **Runtime** : Node.js 20+
 - **Framework** : Express.js ou Fastify
 - **Database** : PostgreSQL 15+
@@ -24,6 +26,7 @@
 - **Testing** : Jest + Supertest
 
 **DevOps:**
+
 - **Deployment** : Vercel (Frontend) + Railway/Supabase (Backend)
 - **Database** : Supabase PostgreSQL
 - **CDN** : CloudFlare
@@ -58,59 +61,59 @@ app-kine/
 ```typescript
 // User (Kinésithérapeute)
 interface User {
-  id: string
-  email: string
-  firstName: string
-  lastName: string
-  phone?: string
-  address?: string
-  createdAt: Date
-  updatedAt: Date
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  address?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Patient
 interface Patient {
-  id: string
-  userId: string
-  firstName: string
-  lastName: string
-  birthDate: Date
-  phone: string
-  email?: string
-  address?: string
-  medicalInfo?: string
-  emergencyContact?: string
-  createdAt: Date
-  updatedAt: Date
+  id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
+  phone: string;
+  email?: string;
+  address?: string;
+  medicalInfo?: string;
+  emergencyContact?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Session (Séance)
 interface Session {
-  id: string
-  patientId: string
-  userId: string
-  scheduledAt: Date
-  duration: number // en minutes
-  status: 'scheduled' | 'completed' | 'cancelled' | 'no-show'
-  notes?: string
-  objectives?: string[]
-  exercises?: Exercise[]
-  createdAt: Date
-  updatedAt: Date
+  id: string;
+  patientId: string;
+  userId: string;
+  scheduledAt: Date;
+  duration: number; // en minutes
+  status: 'scheduled' | 'completed' | 'cancelled' | 'no-show';
+  notes?: string;
+  objectives?: string[];
+  exercises?: Exercise[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Invoice (Facture)
 interface Invoice {
-  id: string
-  patientId: string
-  userId: string
-  sessionIds: string[]
-  amount: number
-  status: 'draft' | 'sent' | 'paid' | 'overdue'
-  dueDate: Date
-  paidAt?: Date
-  createdAt: Date
-  updatedAt: Date
+  id: string;
+  patientId: string;
+  userId: string;
+  sessionIds: string[];
+  amount: number;
+  status: 'draft' | 'sent' | 'paid' | 'overdue';
+  dueDate: Date;
+  paidAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 ```
 

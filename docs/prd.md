@@ -3,6 +3,7 @@
 ## Goals and Background Context
 
 ### Goals
+
 - Créer une application web moderne pour la gestion des cabinets de kinésithérapie
 - Réduire de 50% le temps administratif des kinésithérapeutes
 - Améliorer la qualité du suivi patient grâce à une documentation structurée
@@ -20,9 +21,9 @@ L'application vise à devenir la solution de référence pour la gestion des cab
 
 ### Change Log
 
-| Date | Version | Description | Author |
-|------|---------|-------------|---------|
-| 2024-12-19 | 1.0 | Création initiale du PRD | John (PM) |
+| Date       | Version | Description              | Author    |
+| ---------- | ------- | ------------------------ | --------- |
+| 2024-12-19 | 1.0     | Création initiale du PRD | John (PM) |
 
 ## Requirements
 
@@ -116,6 +117,7 @@ Architecture monolithique modulaire avec séparation claire des couches (présen
 ### Testing Requirements
 
 Pyramide de tests complète :
+
 - Tests unitaires (80%) : Logique métier et composants
 - Tests d'intégration (15%) : API et interactions entre modules
 - Tests end-to-end (5%) : Flux utilisateur critiques
@@ -155,6 +157,7 @@ Je veux configurer l'infrastructure de base du projet,
 Afin de disposer d'un environnement de développement stable et productif.
 
 **Acceptance Criteria:**
+
 1. Le projet utilise React 19 avec TypeScript et Vite
 2. La configuration ESLint et Prettier est en place
 3. Les tests unitaires sont configurés avec Vitest
@@ -169,6 +172,7 @@ Je veux créer la structure de base de données,
 Afin de stocker les données des utilisateurs et patients de manière sécurisée.
 
 **Acceptance Criteria:**
+
 1. PostgreSQL est configuré avec Prisma ORM
 2. Les modèles User, Patient, Session, et Invoice sont créés
 3. Les migrations de base de données sont fonctionnelles
@@ -183,6 +187,7 @@ Je veux pouvoir me connecter de manière sécurisée,
 Afin d'accéder à mes données de manière protégée.
 
 **Acceptance Criteria:**
+
 1. L'inscription et la connexion sont fonctionnelles
 2. L'authentification utilise JWT avec refresh tokens
 3. Les mots de passe sont chiffrés avec bcrypt
@@ -197,6 +202,7 @@ Je veux avoir une interface de navigation claire,
 Afin d'accéder facilement aux différentes fonctionnalités.
 
 **Acceptance Criteria:**
+
 1. Un système de navigation principal est implémenté
 2. Les routes sont protégées par l'authentification
 3. L'interface est responsive et mobile-first
@@ -215,6 +221,7 @@ Je veux pouvoir créer et modifier des dossiers patients complets,
 Afin de centraliser toutes les informations nécessaires à leur suivi.
 
 **Acceptance Criteria:**
+
 1. Un formulaire de création de patient est disponible
 2. Les informations personnelles, médicales et de contact sont collectées
 3. La validation des données est en place
@@ -229,6 +236,7 @@ Je veux pouvoir rechercher rapidement un patient,
 Afin de gagner du temps dans ma gestion quotidienne.
 
 **Acceptance Criteria:**
+
 1. Une barre de recherche instantanée est disponible
 2. La recherche fonctionne sur nom, prénom et numéro de téléphone
 3. Des filtres avancés sont proposés (statut, dernière séance, etc.)
@@ -243,6 +251,7 @@ Je veux pouvoir ajouter des documents et photos aux dossiers patients,
 Afin d'enrichir le suivi médical.
 
 **Acceptance Criteria:**
+
 1. L'upload de fichiers est fonctionnel
 2. Les formats supportés incluent images, PDF et documents
 3. La compression automatique des images est active
@@ -257,6 +266,7 @@ Je veux voir l'historique complet d'un patient,
 Afin d'assurer un suivi cohérent de son traitement.
 
 **Acceptance Criteria:**
+
 1. L'historique des séances est affiché chronologiquement
 2. Les informations médicales importantes sont mises en évidence
 3. Les objectifs de traitement sont visibles
@@ -275,6 +285,7 @@ Je veux avoir un calendrier interactif pour planifier mes séances,
 Afin de gérer efficacement mon emploi du temps.
 
 **Acceptance Criteria:**
+
 1. Un calendrier mensuel, hebdomadaire et quotidien est disponible
 2. La création de séances par glisser-déposer est possible
 3. Les créneaux disponibles et occupés sont visuellement distincts
@@ -289,6 +300,7 @@ Je veux définir mes créneaux de disponibilité,
 Afin que les patients ne puissent réserver que sur mes heures de travail.
 
 **Acceptance Criteria:**
+
 1. La définition des horaires de travail est possible
 2. Les jours fériés et congés peuvent être marqués
 3. Les créneaux récurrents sont configurables
@@ -303,6 +315,7 @@ Je veux gérer les réservations et annulations de séances,
 Afin d'optimiser mon planning et la satisfaction patient.
 
 **Acceptance Criteria:**
+
 1. La réservation de séances est simple et rapide
 2. Les annulations sont gérées avec gestion des créneaux libérés
 3. Les listes d'attente sont mises en place
@@ -317,6 +330,7 @@ Je veux recevoir des rappels pour mes séances,
 Afin de ne rien oublier dans ma journée de travail.
 
 **Acceptance Criteria:**
+
 1. Les rappels de séances sont configurables
 2. Les notifications push et email sont disponibles
 3. Les rappels personnalisés par patient sont possibles
@@ -335,6 +349,7 @@ Je veux documenter facilement mes séances,
 Afin de maintenir un suivi précis de chaque patient.
 
 **Acceptance Criteria:**
+
 1. Une interface de documentation intuitive est disponible
 2. Les templates de séances sont personnalisables
 3. La saisie rapide des informations courantes est possible
@@ -349,6 +364,7 @@ Je veux définir et suivre les objectifs de traitement,
 Afin d'assurer une progression cohérente de mes patients.
 
 **Acceptance Criteria:**
+
 1. La définition d'objectifs de traitement est possible
 2. Les évaluations de progression sont standardisées
 3. Les métriques de suivi sont personnalisables
@@ -363,6 +379,7 @@ Je veux ajouter des notes détaillées à mes séances,
 Afin de documenter précisément l'évolution de mes patients.
 
 **Acceptance Criteria:**
+
 1. Un système de notes libres est disponible
 2. Les notes sont organisées par catégories
 3. La recherche dans les notes est fonctionnelle
@@ -377,6 +394,7 @@ Je veux prescrire des exercices à mes patients,
 Afin d'optimiser leur récupération entre les séances.
 
 **Acceptance Criteria:**
+
 1. Une bibliothèque d'exercices est disponible
 2. La prescription d'exercices personnalisés est possible
 3. Les instructions visuelles sont incluses
@@ -395,6 +413,7 @@ Je veux générer automatiquement mes factures,
 Afin de gagner du temps sur les tâches administratives.
 
 **Acceptance Criteria:**
+
 1. La génération automatique basée sur les séances est active
 2. Les templates de facture sont personnalisables
 3. La conformité légale française est respectée
@@ -409,6 +428,7 @@ Je veux suivre les paiements de mes patients,
 Afin de gérer efficacement ma trésorerie.
 
 **Acceptance Criteria:**
+
 1. L'enregistrement des paiements est simple
 2. Les statuts de paiement sont visibles
 3. Les relances automatiques sont configurables
@@ -423,6 +443,7 @@ Je veux gérer les remboursements de sécurité sociale,
 Afin de simplifier mes démarches administratives.
 
 **Acceptance Criteria:**
+
 1. Le calcul automatique des remboursements est fonctionnel
 2. La génération des feuilles de soins est automatisée
 3. Le suivi des remboursements est tracé
@@ -437,6 +458,7 @@ Je veux accéder à des outils administratifs complets,
 Afin de gérer efficacement mon cabinet.
 
 **Acceptance Criteria:**
+
 1. Un tableau de bord administratif est disponible
 2. Les statistiques de fréquentation sont calculées
 3. Les rapports d'activité sont générables
@@ -455,6 +477,7 @@ Je veux avoir une vue d'ensemble de mon activité,
 Afin de prendre des décisions éclairées sur mon cabinet.
 
 **Acceptance Criteria:**
+
 1. Un tableau de bord avec KPIs principaux est disponible
 2. Les métriques de performance sont affichées
 3. Les alertes importantes sont mises en évidence
@@ -469,6 +492,7 @@ Je veux analyser la fréquentation de mon cabinet,
 Afin d'optimiser mon planning et mes revenus.
 
 **Acceptance Criteria:**
+
 1. Les statistiques de fréquentation sont calculées
 2. Les tendances temporelles sont visibles
 3. Les analyses par patient sont disponibles
@@ -483,6 +507,7 @@ Je veux générer des rapports financiers détaillés,
 Afin de suivre la performance de mon cabinet.
 
 **Acceptance Criteria:**
+
 1. Les rapports de revenus sont générables
 2. L'analyse des coûts est disponible
 3. Les projections financières sont calculées
@@ -497,6 +522,7 @@ Je veux accéder à des analyses avancées,
 Afin d'optimiser ma pratique et la satisfaction patient.
 
 **Acceptance Criteria:**
+
 1. Les analyses de performance patient sont disponibles
 2. Les métriques de satisfaction sont calculées
 3. Les recommandations d'amélioration sont proposées
@@ -506,7 +532,7 @@ Afin d'optimiser ma pratique et la satisfaction patient.
 
 ## Checklist Results Report
 
-*Cette section sera remplie après l'exécution de la checklist PM*
+_Cette section sera remplie après l'exécution de la checklist PM_
 
 ## Next Steps
 

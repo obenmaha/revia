@@ -15,6 +15,7 @@
 **Total Ideas Generated:** 50+ idées et fonctionnalités
 
 **Key Themes Identified:**
+
 - Simplicité et accessibilité web
 - Double segment utilisateur (rééducation + sport)
 - Workflow Programmer → Faire → Valider
@@ -29,6 +30,7 @@
 **Description:** Exploration du parcours complet d'un patient de 45 ans blessé au genou
 
 **Ideas Generated:**
+
 - Découverte via recommandation kiné
 - Workflow : log-in → programmer séance → faire séance → valider
 - Mode "Rééducation" avec focus sur la récupération
@@ -39,11 +41,13 @@
 - Transition possible vers mode "Performance"
 
 **Insights Discovered:**
+
 - Importance du contrôle utilisateur sur le partage
 - Besoin de simplicité pour patients souvent âgés
 - Workflow de validation crucial pour la motivation
 
 **Notable Connections:**
+
 - Lien entre motivation et visualisation des progrès
 - Importance de la collaboration kiné-patient
 
@@ -52,6 +56,7 @@
 **Description:** Exploration de situations inattendues et cas limites
 
 **Ideas Generated:**
+
 - Gestion des douleurs élevées persistantes (consultation kiné)
 - Alertes automatiques au kiné (phase future)
 - Gamification avec personnage qui évolue selon les séances
@@ -62,11 +67,13 @@
 - Système de tags pour kinés (nouveau, sportif, blessé, récup)
 
 **Insights Discovered:**
+
 - Importance de la gamification pour la motivation
 - Besoin de flexibilité dans la gestion des modes
 - Système de tags très utile pour les kinés
 
 **Notable Connections:**
+
 - Lien entre gamification et adhérence au traitement
 - Importance de la gestion des transitions entre modes
 
@@ -75,6 +82,7 @@
 **Description:** Exploration libre de toutes les fonctionnalités possibles
 
 **Ideas Generated:**
+
 - Fonctionnalités core : enregistrement, historique, rappels
 - Gamification : personnage, niveaux, défis, animations
 - Fonctionnalités avancées : alertes, suggestions, partage
@@ -86,11 +94,13 @@
 - Pagination pour historique long
 
 **Insights Discovered:**
+
 - Duplication de séances = fonctionnalité clé pour l'UX
 - Importance de la conformité légale française
 - Besoin de performance pour l'historique long
 
 **Notable Connections:**
+
 - Lien entre simplicité d'usage et fonctionnalités avancées
 - Importance de la performance technique
 
@@ -99,17 +109,20 @@
 **Description:** Organisation des fonctionnalités par importance et facilité d'implémentation
 
 **Ideas Generated:**
+
 - MVP : Authentification, enregistrement, workflow, duplication, historique
 - Phase 2 : Recherche, profil, modes, couleurs, export, alertes, leveling
 - Phase 3 : Gamification, dashboard, graphiques, rappels, IA
 - Phase 4 : Tags personnalisables, alertes configurables, ML, détection anomalies
 
 **Insights Discovered:**
+
 - Approche progressive essentielle pour le succès
 - MVP doit être très simple et fonctionnel
 - Fonctionnalités avancées pour différenciation future
 
 **Notable Connections:**
+
 - Lien entre simplicité MVP et complexité future
 - Importance de la roadmap claire
 
@@ -118,16 +131,19 @@
 ### Immediate Opportunities
 
 **Duplication de séances intelligente**
+
 - Description : Choix de dates multiples pour programmer plusieurs séances identiques
 - Why immediate : Améliore drastiquement l'UX, facile à implémenter
 - Resources needed : Logique de programmation simple
 
 **Workflow Programmer → Valider**
+
 - Description : Séparation claire entre programmation et validation des séances
 - Why immediate : Structure claire pour l'utilisateur, évite les erreurs
 - Resources needed : Interface simple avec deux boutons distincts
 
 **Mode Guest pour adoption rapide**
+
 - Description : Essai sans inscription pour réduire la friction
 - Why immediate : Augmente le taux d'adoption, facile à implémenter
 - Resources needed : Gestion des données temporaires
@@ -135,16 +151,19 @@
 ### Future Innovations
 
 **Système de gamification avec personnage**
+
 - Description : Avatar qui évolue selon les séances réalisées
 - Development needed : Design d'avatar, logique d'évolution, animations
 - Timeline estimate : 2-3 mois
 
 **Export de données pour kinés**
+
 - Description : CSV avec sessions validées pour analyse professionnelle
 - Development needed : Génération de rapports, interface kiné
 - Timeline estimate : 1-2 mois
 
 **Système de tags personnalisables**
+
 - Description : Kinés peuvent créer leurs propres tags pour organiser les patients
 - Development needed : Interface de gestion des tags, logique de catégorisation
 - Timeline estimate : 2-3 mois
@@ -152,11 +171,13 @@
 ### Moonshots
 
 **IA pour exercices sur mesure**
+
 - Description : Recommandations d'exercices basées sur l'historique et les objectifs
 - Transformative potential : Différenciation majeure, valeur ajoutée énorme
 - Challenges to overcome : Collecte de données, algorithmes ML, validation médicale
 
 **Détection d'anomalies automatique**
+
 - Description : Alertes préventives basées sur les patterns de données
 - Transformative potential : Prévention des blessures, valeur médicale
 - Challenges to overcome : ML avancé, validation médicale, responsabilité légale
@@ -234,5 +255,4 @@
 
 ---
 
-*Session facilitée using the BMAD-METHOD™ brainstorming framework*
-
+_Session facilitée using the BMAD-METHOD™ brainstorming framework_

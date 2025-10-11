@@ -14,24 +14,28 @@ App-Kine est une application web moderne destinée aux kinésithérapeutes pour 
 ## 🚀 Fonctionnalités Principales
 
 ### 👥 Gestion des Patients
+
 - Fiche patient complète (informations personnelles, médicales)
 - Historique des séances et traitements
 - Photos et documents joints
 - Recherche et filtrage avancés
 
 ### 📅 Planification des Séances
+
 - Calendrier interactif
 - Gestion des créneaux disponibles
 - Rappels automatiques
 - Gestion des annulations
 
 ### 📝 Suivi Thérapeutique
+
 - Évaluation initiale et de suivi
 - Objectifs de traitement
 - Progression des exercices
 - Notes de séance
 
 ### 💰 Facturation et Administration
+
 - Génération de factures
 - Suivi des paiements
 - Statistiques de fréquentation
@@ -40,6 +44,7 @@ App-Kine est une application web moderne destinée aux kinésithérapeutes pour 
 ## 🛠️ Stack Technologique
 
 ### Frontend
+
 - **React 19** avec TypeScript
 - **Vite** pour le build
 - **Tailwind CSS** pour le styling
@@ -47,12 +52,14 @@ App-Kine est une application web moderne destinée aux kinésithérapeutes pour 
 - **React Hook Form + Zod** pour les formulaires
 
 ### Backend
+
 - **Node.js** avec Express.js
 - **PostgreSQL** avec Prisma ORM
 - **JWT** pour l'authentification
 - **Zod** pour la validation
 
 ### DevOps
+
 - **Vercel** pour le déploiement frontend
 - **Railway/Supabase** pour le backend
 - **CloudFlare** pour le CDN
@@ -68,6 +75,7 @@ App-Kine est une application web moderne destinée aux kinésithérapeutes pour 
 ## 🚀 Démarrage Rapide
 
 ### Prérequis
+
 - Node.js 20+
 - PostgreSQL 15+ (ou Supabase)
 - Git
@@ -142,6 +150,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 ## 📞 Support
 
 Pour toute question ou support :
+
 - 📧 Email : support@app-kine.fr
 - 📱 Documentation : [docs.app-kine.fr](https://docs.app-kine.fr)
 - 🐛 Issues : [GitHub Issues](https://github.com/app-kine/issues)

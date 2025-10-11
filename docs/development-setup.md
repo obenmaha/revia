@@ -166,7 +166,7 @@ app-kine/
 
 ```javascript
 // eslint.config.js
-import { defineConfig } from 'eslint-define-config'
+import { defineConfig } from 'eslint-define-config';
 
 export default defineConfig({
   extends: [
@@ -174,15 +174,15 @@ export default defineConfig({
     '@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:jsx-a11y/recommended'
+    'plugin:jsx-a11y/recommended',
   ],
   rules: {
     // Règles personnalisées
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
-    'prefer-const': 'error'
-  }
-})
+    'prefer-const': 'error',
+  },
+});
 ```
 
 ### Prettier Configuration
@@ -276,19 +276,21 @@ git push origin feature/nom-de-la-fonctionnalite
 ### Problèmes Courants
 
 1. **Erreurs de Base de Données**
+
    ```bash
    # Vérifier la connexion
    npx prisma db pull
-   
+
    # Réinitialiser la base
    npx prisma migrate reset
    ```
 
 2. **Erreurs TypeScript**
+
    ```bash
    # Vérifier les types
    npm run type-check
-   
+
    # Nettoyer le cache
    rm -rf node_modules/.cache
    npm install

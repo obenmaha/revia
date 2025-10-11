@@ -1,0 +1,66 @@
+# Configuration BMad-Method pour App-Kine
+# Ce fichier configure les chemins et paramètres pour la création d'histoires
+
+# Configuration des chemins de développement
+devStoryLocation: 'docs/stories'
+prdSharded: false
+prdFile: 'docs/prd.md'
+architectureVersion: 'v4'
+architectureSharded: false
+architectureFile: 'docs/architecture-technique.md'
+
+# Configuration des workflows
+workflow:
+  storyCreation: 'interactive'
+  checklistValidation: 'yolo'
+  changeManagement: 'incremental'
+
+# Configuration des agents
+agents:
+  scrumMaster: 'Bob'
+  productOwner: 'Alice'
+  architect: 'Winston'
+  developer: 'Charlie'
+  qa: 'Diana'
+
+# Configuration du projet
+project:
+  name: 'App-Kine'
+  type: 'web-application'
+  framework: 'react-typescript'
+  database: 'postgresql'
+  deployment: 'vercel'
+
+# Configuration des épics
+epics:
+  - id: 'epic-1'
+    title: 'Infrastructure et Authentification'
+    status: 'in-progress'
+  - id: 'epic-2'
+    title: 'Gestion des Patients'
+    status: 'pending'
+  - id: 'epic-3'
+    title: 'Planification et Calendrier'
+    status: 'pending'
+  - id: 'epic-4'
+    title: 'Documentation des Séances'
+    status: 'pending'
+  - id: 'epic-5'
+    title: 'Facturation et Administration'
+    status: 'pending'
+  - id: 'epic-6'
+    title: 'Rapports et Analytics'
+    status: 'pending'
+
+# Configuration des templates
+templates:
+  story: 'story-tmpl.yaml'
+  epic: 'epic-tmpl.yaml'
+  checklist: 'story-draft-checklist.md'
+
+# Configuration des validations
+validation:
+  storyDraft: true
+  architectureAlignment: true
+  prdCompliance: true
+  technicalFeasibility: true

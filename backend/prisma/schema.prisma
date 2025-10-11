@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  role      Role     @default(PRACTITIONER)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  patients  Patient[]
+  sessions  Session[]
+  invoices  Invoice[]
+
+  @@map("users")
+}
+
+model Patient {
+  id             String       @id @default(cuid())
+  practitionerId String       @map("practitioner_id")
+  firstName      String       @map("first_name")
+  lastName       String       @map("last_name")
+  birthDate      DateTime     @map("birth_date")
+  phone          String?
+  email          String?
+  address        Json?
+  medicalHistory String?      @map("medical_history")
+  emergencyContact Json?      @map("emergency_contact")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  // Relations
+  practitioner User       @relation(fields: [practitionerId], references: [id], onDelete: Cascade)
+  sessions     Session[]
+  invoices     Invoice[]
+  documents    Document[]
+
+  @@map("patients")
+}
+
+model Session {
+  id             String        @id @default(cuid())
+  patientId      String        @map("patient_id")
+  practitionerId String        @map("practitioner_id")
+  scheduledAt    DateTime      @map("scheduled_at")
+  duration       Int           // en minutes
+  status         SessionStatus @default(SCHEDULED)
+  notes          String?
+  objectives     Json?
+  exercises      Json?
+  evaluation     Json?
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  patient      Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  practitioner User      @relation(fields: [practitionerId], references: [id], onDelete: Cascade)
+  invoices     Invoice[]
+
+  @@map("sessions")
+}
+
+model Invoice {
+  id             String        @id @default(cuid())
+  patientId      String        @map("patient_id")
+  practitionerId String        @map("practitioner_id")
+  invoiceNumber  String        @unique @map("invoice_number")
+  amount         Decimal       @db.Decimal(10, 2)
+  status         InvoiceStatus @default(DRAFT)
+  dueDate        DateTime      @map("due_date")
+  paidAt         DateTime?     @map("paid_at")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  patient      Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  practitioner User      @relation(fields: [practitionerId], references: [id], onDelete: Cascade)
+  sessions     Session[]
+  payments     Payment[]
+
+  @@map("invoices")
+}
+
+model Payment {
+  id        String  @id @default(cuid())
+  invoiceId String  @map("invoice_id")
+  amount    Decimal @db.Decimal(10, 2)
+  method    String
+  reference String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  patientId String   @map("patient_id")
+  filename  String
+  filePath  String   @map("file_path")
+  fileType  String   @map("file_type")
+  fileSize  Int      @map("file_size")
+  category  String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+
+enum Role {
+  PRACTITIONER
+  ADMIN
+}
+
+enum SessionStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+}

@@ -1,0 +1,167 @@
+import { createClient } from '@supabase/supabase-js';
+import { env } from '../config/env';
+
+// Types Supabase générés automatiquement
+export type Database = {
+  public: {
+    Tables: {
+      users: {
+        Row: {
+          id: string;
+          email: string;
+          first_name: string;
+          last_name: string;
+          role: 'practitioner' | 'admin';
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          first_name: string;
+          last_name: string;
+          role: 'practitioner' | 'admin';
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          first_name?: string;
+          last_name?: string;
+          role?: 'practitioner' | 'admin';
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      patients: {
+        Row: {
+          id: string;
+          practitioner_id: string;
+          first_name: string;
+          last_name: string;
+          birth_date: string;
+          phone?: string;
+          email?: string;
+          address?: string;
+          medical_history?: string;
+          emergency_contact?: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          practitioner_id: string;
+          first_name: string;
+          last_name: string;
+          birth_date: string;
+          phone?: string;
+          email?: string;
+          address?: string;
+          medical_history?: string;
+          emergency_contact?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          practitioner_id?: string;
+          first_name?: string;
+          last_name?: string;
+          birth_date?: string;
+          phone?: string;
+          email?: string;
+          address?: string;
+          medical_history?: string;
+          emergency_contact?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      sessions: {
+        Row: {
+          id: string;
+          patient_id: string;
+          practitioner_id: string;
+          scheduled_at: string;
+          duration: number;
+          status: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+          notes?: string;
+          objectives?: string[];
+          exercises?: string[];
+          evaluation?: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          patient_id: string;
+          practitioner_id: string;
+          scheduled_at: string;
+          duration: number;
+          status?: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+          notes?: string;
+          objectives?: string[];
+          exercises?: string[];
+          evaluation?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          patient_id?: string;
+          practitioner_id?: string;
+          scheduled_at?: string;
+          duration?: number;
+          status?: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+          notes?: string;
+          objectives?: string[];
+          exercises?: string[];
+          evaluation?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+  };
+};
+
+// Configuration Supabase
+const supabaseUrl = env.supabase.url;
+const supabaseAnonKey = env.supabase.anonKey;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error("Variables d'environnement Supabase manquantes");
+}
+
+// Client Supabase avec types
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 10,
+    },
+  },
+});
+
+// Types utilitaires
+export type Tables<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Row'];
+export type Enums<T extends keyof Database['public']['Enums']> =
+  Database['public']['Enums'][T];
