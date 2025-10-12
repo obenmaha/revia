@@ -17,12 +17,16 @@ dist-ssr/
 build/
 out/
 
-# Environment variables
+# Environment variables - SÉCURITÉ RENFORCÉE
 .env
+.env.*.local
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.envrc
+*.env
+!.env.local.example
+!.env.example
+!.env.preview.example
+!.env.rollback.example
 
 # Editor directories and files
 .vscode/*

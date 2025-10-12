@@ -1,0 +1,41 @@
+# Configuration Gitleaks pour App-Kine
+# Détection des secrets et clés sensibles
+
+[gitleaks]
+  # Répertoires à ignorer
+  allowlist = [
+    { path = "env.local.example" },
+    { path = "env.example" },
+    { path = "env.preview.example" },
+    { path = "env.rollback.example" },
+    { path = "src/test/" },
+    { path = "__mocks__/" },
+    { path = "docs/" },
+    { path = "*.md" },
+  ]
+
+  # Règles de détection personnalisées
+  [[gitleaks.rules]]
+    description = "Clés Supabase Service Role"
+    regex = '''(?i)(service[_-]?role[_-]?key|supabase[_-]?service[_-]?role)'''
+    tags = ["supabase", "service-role", "critical"]
+
+  [[gitleaks.rules]]
+    description = "Clés Supabase Anon exposées"
+    regex = '''(?i)(eyJ[a-zA-Z0-9_-]{20,}\.eyJ[a-zA-Z0-9_-]{20,}\.[a-zA-Z0-9_-]{20,})'''
+    tags = ["supabase", "anon-key", "jwt"]
+
+  [[gitleaks.rules]]
+    description = "Clés API génériques"
+    regex = '''(?i)(api[_-]?key|secret[_-]?key|access[_-]?token)'''
+    tags = ["api", "key", "token"]
+
+  [[gitleaks.rules]]
+    description = "Mots de passe en dur"
+    regex = '''(?i)(password\s*=\s*["\']?[^"\'\s]+["\']?)'''
+    tags = ["password", "hardcoded"]
+
+  [[gitleaks.rules]]
+    description = "Clés privées"
+    regex = '''-----BEGIN (RSA )?PRIVATE KEY-----'''
+    tags = ["private-key", "rsa", "critical"]
