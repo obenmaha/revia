@@ -93,6 +93,13 @@ npm run scan:secrets
 npm run test src/test/env-security.test.ts
 ```
 
+### CI/CD Automatique
+- **Scan sur chaque push** vers main/develop/staging
+- **Scan sur chaque PR** vers main/develop/staging  
+- **Scan quotidien** à 2h du matin
+- **Validation des variables** d'environnement
+- **Tests de build** avec vérifications de sécurité
+
 ### Vérifications manuelles
 - [ ] Aucune vraie clé dans les fichiers versionnés
 - [ ] `.env.local` dans `.gitignore`
