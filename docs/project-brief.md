@@ -1,4 +1,4 @@
-# Project Brief - App-Kine
+# Project Brief - Revia
 
 ## Vision du Produit
 

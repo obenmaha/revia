@@ -1,9 +1,11 @@
 // Service de gestion des patients - Story 2.1
 import { supabase } from '../lib/supabase';
-import {
+import type {
   Patient,
   CreatePatientInput,
   SupabasePatient,
+} from '../types/patient';
+import {
   mapSupabasePatientToPatient,
   createPatientSchema,
   updatePatientSchema,

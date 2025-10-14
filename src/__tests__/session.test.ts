@@ -1,13 +1,16 @@
 // Tests pour la gestion des sessions - Story 2.2
 import { describe, it, expect } from 'vitest';
-import {
+import type {
   Session,
   CreateSessionInput,
   SessionType,
   SessionStatus,
-  SESSION_TYPE_OPTIONS,
 } from '../types/session';
-import { createSessionSchema, updateSessionSchema } from '../types/session';
+import {
+  SESSION_TYPE_OPTIONS,
+  createSessionSchema,
+  updateSessionSchema,
+} from '../types/session';
 
 describe('Types Session', () => {
   it('devrait valider la structure des données Session', () => {

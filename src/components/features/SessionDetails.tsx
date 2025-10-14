@@ -23,8 +23,8 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from '@/hooks/useSessions';
 import { useExercises, useExerciseStats } from '@/hooks/useExercises';
-import { Session } from '@/types/session';
-import { SessionBreadcrumb } from '@/components/ui/Breadcrumb';
+import type { Session } from '@/types/session';
+import { SessionBreadcrumb } from '@/components/ui/breadcrumb';
 import SessionStatistics from './SessionStatistics';
 import SessionNotes from './SessionNotes';
 import ExerciseList from './ExerciseList';

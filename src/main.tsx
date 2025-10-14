@@ -12,7 +12,7 @@ try {
   if (!rootElement) {
     throw new Error('Element #root non trouvé');
   }
-  
+
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
@@ -23,11 +23,11 @@ try {
       </QueryClientProvider>
     </StrictMode>
   );
-  
+
   console.log('✅ Application React chargée avec succès');
 } catch (error) {
   console.error('❌ Erreur lors du chargement de React:', error);
-  
+
   // Fallback en cas d'erreur
   const rootElement = document.getElementById('root');
   if (rootElement) {

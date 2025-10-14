@@ -1,16 +1,18 @@
 // Service de gestion des sessions - Story 2.2
 import { supabase } from '../lib/supabase';
-import {
+import type {
   Session,
   CreateSessionInput,
   SupabaseSession,
-  mapSupabaseSessionToSession,
-  createSessionSchema,
-  updateSessionSchema,
   SessionFilters,
   SessionStats,
   PaginatedSessions,
   SessionStatus,
+} from '../types/session';
+import {
+  mapSupabaseSessionToSession,
+  createSessionSchema,
+  updateSessionSchema,
 } from '../types/session';
 
 // Classe d'erreur personnalisée pour les services

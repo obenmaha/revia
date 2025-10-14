@@ -14,7 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ExerciseStats } from '@/types/exercise';
+import type { ExerciseStats } from '@/types/exercise';
 
 interface SessionStatisticsProps {
   stats: ExerciseStats;

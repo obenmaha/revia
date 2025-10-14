@@ -1,0 +1,81 @@
+# Quality Gate Decision - Story 1.5
+schema: 1
+story: "1.5"
+story_title: "Historique et Statistiques"
+gate: CONCERNS
+status_reason: "Architecture solide mais implémentation incomplète - données mockées uniquement, fonctionnalités critiques manquantes"
+reviewer: "Quinn (Test Architect)"
+updated: "2025-01-14T10:30:00Z"
+
+# Issues identifiées
+top_issues:
+  - id: "IMPL-001"
+    severity: high
+    finding: "Implémentation incomplète - données mockées au lieu d'intégration Supabase"
+    suggested_action: "Remplacer les données mockées par une intégration réelle avec Supabase"
+    suggested_owner: "dev"
+  - id: "TEST-001"
+    severity: high
+    finding: "Aucun test spécifique pour les fonctionnalités d'historique/statistiques"
+    suggested_action: "Créer des tests unitaires et d'intégration pour les calculs de statistiques"
+    suggested_owner: "dev"
+  - id: "EXPORT-001"
+    severity: medium
+    finding: "Fonctionnalités d'export CSV/PDF non implémentées"
+    suggested_action: "Développer les composants SportExport avec génération CSV/PDF"
+    suggested_owner: "dev"
+  - id: "VIZ-001"
+    severity: medium
+    finding: "Composants de visualisation non implémentés avec Recharts"
+    suggested_action: "Créer les composants SportStatistics avec graphiques interactifs"
+    suggested_owner: "dev"
+  - id: "DATA-001"
+    severity: low
+    finding: "Modèles de données dans l'histoire non alignés avec les types existants"
+    suggested_action: "Harmoniser les interfaces SportSession avec les types Supabase existants"
+    suggested_owner: "dev"
+
+# Waiver (non applicable)
+waiver: { active: false }
+
+# Score de qualité
+quality_score: 45  # 100 - (20×2 high) - (10×2 medium) - (5×1 low) = 45
+
+# Délai d'expiration
+expires: "2025-01-28T00:00:00Z"
+
+# Preuves de l'évaluation
+evidence:
+  tests_reviewed: 0
+  risks_identified: 5
+  trace:
+    ac_covered: []  # Aucun AC couvert par des tests
+    ac_gaps: [1, 2, 3, 4]  # Tous les AC manquent d'implémentation
+
+# Validation des exigences non-fonctionnelles
+nfr_validation:
+  security:
+    status: CONCERNS
+    notes: "Pas de validation des données d'export, risque d'exposition de données sensibles"
+  performance:
+    status: CONCERNS
+    notes: "Calculs de statistiques non optimisés pour de grandes quantités de données"
+  reliability:
+    status: CONCERNS
+    notes: "Pas de gestion d'erreurs pour les requêtes de données"
+  maintainability:
+    status: PASS
+    notes: "Architecture des composants bien structurée"
+
+# Recommandations
+recommendations:
+  immediate:  # Doit être corrigé avant production
+    - action: "Implémenter l'intégration Supabase réelle"
+      refs: ["src/pages/sport/SportHistoryPage.tsx", "src/hooks/useSportHistory.ts"]
+    - action: "Créer les tests de base pour les calculs de statistiques"
+      refs: ["src/__tests__/sport/statistics.test.ts"]
+  future:  # Peut être adressé plus tard
+    - action: "Optimiser les requêtes Supabase avec pagination"
+      refs: ["src/services/sportHistoryService.ts"]
+    - action: "Ajouter la mise en cache des statistiques"
+      refs: ["src/hooks/useSportStats.ts"]

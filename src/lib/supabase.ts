@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { env } from '../config/env';
+import type { Database } from '../types/supabase-generated';
 
 // Types pour les données complexes
 export interface Address {
@@ -44,192 +45,93 @@ export interface SessionEvaluation {
   nextSteps?: string[];
 }
 
-// Types Supabase générés automatiquement
+// Types Supabase basés sur les migrations réelles
 export type Database = {
   public: {
     Tables: {
-      users: {
-        Row: {
-          id: string;
-          email: string;
-          first_name: string;
-          last_name: string;
-          role: 'PRACTITIONER' | 'ADMIN';
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          email: string;
-          first_name: string;
-          last_name: string;
-          role?: 'PRACTITIONER' | 'ADMIN';
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          email?: string;
-          first_name?: string;
-          last_name?: string;
-          role?: 'PRACTITIONER' | 'ADMIN';
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      patients: {
-        Row: {
-          id: string;
-          practitioner_id: string;
-          first_name: string;
-          last_name: string;
-          birth_date: string;
-          phone?: string;
-          email?: string;
-          address?: Address;
-          medical_info?: MedicalInfo;
-          emergency_contact?: EmergencyContact;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          practitioner_id: string;
-          first_name: string;
-          last_name: string;
-          birth_date: string;
-          phone?: string;
-          email?: string;
-          address?: Address;
-          medical_info?: MedicalInfo;
-          emergency_contact?: EmergencyContact;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          practitioner_id?: string;
-          first_name?: string;
-          last_name?: string;
-          birth_date?: string;
-          phone?: string;
-          email?: string;
-          address?: Address;
-          medical_info?: MedicalInfo;
-          emergency_contact?: EmergencyContact;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
       sessions: {
         Row: {
           id: string;
-          patient_id: string;
-          practitioner_id: string;
-          scheduled_at: string;
-          duration: number;
-          status: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
-          notes?: string;
-          objectives?: SessionObjectives;
-          exercises?: SessionExercises;
-          evaluation?: SessionEvaluation;
+          user_id: string;
+          name: string;
+          date: string;
+          type: 'rehabilitation' | 'sport' | 'fitness' | 'other';
+          status: 'draft' | 'in_progress' | 'completed';
+          objectives: string | null;
+          notes: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
-          patient_id: string;
-          practitioner_id: string;
-          scheduled_at: string;
-          duration: number;
-          status?: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
-          notes?: string;
-          objectives?: SessionObjectives;
-          exercises?: SessionExercises;
-          evaluation?: SessionEvaluation;
+          user_id: string;
+          name: string;
+          date: string;
+          type: 'rehabilitation' | 'sport' | 'fitness' | 'other';
+          status?: 'draft' | 'in_progress' | 'completed';
+          objectives?: string | null;
+          notes?: string | null;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
           id?: string;
-          patient_id?: string;
-          practitioner_id?: string;
-          scheduled_at?: string;
+          user_id?: string;
+          name?: string;
+          date?: string;
+          type?: 'rehabilitation' | 'sport' | 'fitness' | 'other';
+          status?: 'draft' | 'in_progress' | 'completed';
+          objectives?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      exercises: {
+        Row: {
+          id: string;
+          session_id: string;
+          name: string;
+          duration: number;
+          intensity: number;
+          weight: number | null;
+          sets: number | null;
+          reps: number | null;
+          notes: string | null;
+          exercise_type: 'cardio' | 'musculation' | 'etirement' | 'autre';
+          order_index: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          session_id: string;
+          name: string;
+          duration: number;
+          intensity: number;
+          weight?: number | null;
+          sets?: number | null;
+          reps?: number | null;
+          notes?: string | null;
+          exercise_type: 'cardio' | 'musculation' | 'etirement' | 'autre';
+          order_index?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          session_id?: string;
+          name?: string;
           duration?: number;
-          status?: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
-          notes?: string;
-          objectives?: SessionObjectives;
-          exercises?: SessionExercises;
-          evaluation?: SessionEvaluation;
+          intensity?: number;
+          weight?: number | null;
+          sets?: number | null;
+          reps?: number | null;
+          notes?: string | null;
+          exercise_type?: 'cardio' | 'musculation' | 'etirement' | 'autre';
+          order_index?: number;
           created_at?: string;
           updated_at?: string;
-        };
-      };
-      invoices: {
-        Row: {
-          id: string;
-          patient_id: string;
-          practitioner_id: string;
-          invoice_number: string;
-          amount: number;
-          status: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE';
-          due_date: string;
-          paid_at?: string;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          patient_id: string;
-          practitioner_id: string;
-          invoice_number: string;
-          amount: number;
-          status?: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE';
-          due_date: string;
-          paid_at?: string;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          patient_id?: string;
-          practitioner_id?: string;
-          invoice_number?: string;
-          amount?: number;
-          status?: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE';
-          due_date?: string;
-          paid_at?: string;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      payments: {
-        Row: {
-          id: string;
-          invoice_id: string;
-          amount: number;
-          method: string;
-          reference?: string;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          invoice_id: string;
-          amount: number;
-          method: string;
-          reference?: string;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          invoice_id?: string;
-          amount?: number;
-          method?: string;
-          reference?: string;
-          created_at?: string;
         };
       };
     };
@@ -237,7 +139,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_session_stats: {
+        Args: { user_uuid: string };
+        Returns: unknown;
+      };
     };
     Enums: {
       [_ in never]: never;

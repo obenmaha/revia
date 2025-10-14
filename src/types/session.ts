@@ -54,18 +54,14 @@ export interface SupabaseSession {
 export const sessionTypeSchema = z.enum(
   ['rehabilitation', 'sport', 'fitness', 'other'],
   {
-    errorMap: () => ({
-      message: "Type d'activité invalide",
-    }),
+    message: "Type d'activité invalide",
   }
 );
 
 export const sessionStatusSchema = z.enum(
   ['draft', 'in_progress', 'completed'],
   {
-    errorMap: () => ({
-      message: 'Statut de session invalide',
-    }),
+    message: 'Statut de session invalide',
   }
 );
 

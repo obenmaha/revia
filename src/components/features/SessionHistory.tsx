@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useSessionsPaginated } from '@/hooks/useSessions';
-import { Session, SessionFilters } from '@/types/session';
+import type { Session, SessionFilters as SessionFiltersType } from '@/types/session';
 import SessionFilters from './SessionFilters';
 import SessionHistoryItem from './SessionHistoryItem';
 
@@ -27,10 +27,10 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
   className = '',
 }) => {
   const { toast } = useToast();
-  const [filters, setFilters] = useState<SessionFilters>({});
+  const [filters, setFilters] = useState<SessionFiltersType>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-  const [_savedFilters, setSavedFilters] = useState<SessionFilters>({});
+  const [_savedFilters, setSavedFilters] = useState<SessionFiltersType>({});
 
   const pageSize = 10;
 
@@ -55,12 +55,12 @@ const SessionHistory: React.FC<SessionHistoryProps> = ({
     }
   }, []);
 
-  const handleFiltersChange = (newFilters: SessionFilters) => {
+  const handleFiltersChange = (newFilters: SessionFiltersType) => {
     setFilters(newFilters);
     setCurrentPage(1); // Reset à la première page
   };
 
-  const handleSaveFilters = (filtersToSave: SessionFilters) => {
+  const handleSaveFilters = (filtersToSave: SessionFiltersType) => {
     setSavedFilters(filtersToSave);
     localStorage.setItem('session-filters', JSON.stringify(filtersToSave));
   };

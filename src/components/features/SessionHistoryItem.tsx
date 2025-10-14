@@ -24,7 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Session } from '@/types/session';
+import type { Session } from '@/types/session';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 

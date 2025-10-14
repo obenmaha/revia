@@ -1,0 +1,432 @@
+/* 🎨 Revia Brand Styles - Identité Visuelle CSS */
+
+/* ===== VARIABLES CSS ===== */
+:root {
+  /* Couleurs principales */
+  --revia-primary: #0288D1;
+  --revia-secondary: #43A047;
+  --revia-accent: #FFA000;
+  
+  /* Couleurs fonctionnelles */
+  --revia-error: #E53935;
+  --revia-warning: #FFC107;
+  --revia-success: #4CAF50;
+  
+  /* Couleurs neutres */
+  --revia-neutral: #F5F5F5;
+  --revia-text: #212121;
+  --revia-background: #FFFFFF;
+  
+  /* Gradients */
+  --revia-gradient-primary: linear-gradient(135deg, #0288D1 0%, #43A047 100%);
+  --revia-gradient-accent: linear-gradient(135deg, #0288D1 0%, #FFA000 100%);
+  
+  /* Typographie */
+  --revia-font-title: 'Montserrat', sans-serif;
+  --revia-font-body: 'Inter', sans-serif;
+  --revia-font-ui: 'Roboto', sans-serif;
+  
+  /* Espacement */
+  --revia-spacing-xs: 4px;
+  --revia-spacing-sm: 8px;
+  --revia-spacing-md: 16px;
+  --revia-spacing-lg: 24px;
+  --revia-spacing-xl: 32px;
+  
+  /* Rayons de bordure */
+  --revia-radius-sm: 4px;
+  --revia-radius-md: 8px;
+  --revia-radius-lg: 12px;
+  
+  /* Ombres */
+  --revia-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --revia-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --revia-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== TYPOGRAPHIE ===== */
+.revia-title-1 {
+  font-family: var(--revia-font-title);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--revia-text);
+}
+
+.revia-title-2 {
+  font-family: var(--revia-font-title);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--revia-text);
+}
+
+.revia-title-3 {
+  font-family: var(--revia-font-title);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--revia-text);
+}
+
+.revia-body {
+  font-family: var(--revia-font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--revia-text);
+}
+
+.revia-caption {
+  font-family: var(--revia-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--revia-text);
+}
+
+.revia-small {
+  font-family: var(--revia-font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--revia-text);
+}
+
+/* ===== BOUTONS ===== */
+.revia-btn {
+  font-family: var(--revia-font-ui);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  border: none;
+  border-radius: var(--revia-radius-md);
+  padding: var(--revia-spacing-md) var(--revia-spacing-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--revia-spacing-sm);
+}
+
+.revia-btn-primary {
+  background: var(--revia-gradient-primary);
+  color: var(--revia-background);
+  box-shadow: var(--revia-shadow-sm);
+}
+
+.revia-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--revia-shadow-md);
+}
+
+.revia-btn-secondary {
+  background: var(--revia-secondary);
+  color: var(--revia-background);
+  box-shadow: var(--revia-shadow-sm);
+}
+
+.revia-btn-secondary:hover {
+  background: #388E3C;
+  transform: translateY(-1px);
+  box-shadow: var(--revia-shadow-md);
+}
+
+.revia-btn-outline {
+  background: transparent;
+  color: var(--revia-primary);
+  border: 2px solid var(--revia-primary);
+}
+
+.revia-btn-outline:hover {
+  background: var(--revia-primary);
+  color: var(--revia-background);
+}
+
+.revia-btn-ghost {
+  background: transparent;
+  color: var(--revia-primary);
+}
+
+.revia-btn-ghost:hover {
+  background: rgba(2, 136, 209, 0.1);
+}
+
+/* ===== CARTES ===== */
+.revia-card {
+  background: var(--revia-background);
+  border-radius: var(--revia-radius-md);
+  box-shadow: var(--revia-shadow-md);
+  padding: var(--revia-spacing-lg);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.revia-card-header {
+  margin-bottom: var(--revia-spacing-md);
+  padding-bottom: var(--revia-spacing-md);
+  border-bottom: 1px solid var(--revia-neutral);
+}
+
+.revia-card-title {
+  font-family: var(--revia-font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--revia-text);
+  margin: 0;
+}
+
+.revia-card-body {
+  color: var(--revia-text);
+}
+
+/* ===== STATS CARDS ===== */
+.revia-stat-card {
+  background: var(--revia-background);
+  border-radius: var(--revia-radius-md);
+  box-shadow: var(--revia-shadow-sm);
+  padding: var(--revia-spacing-lg);
+  text-align: center;
+  border-left: 4px solid var(--revia-secondary);
+}
+
+.revia-stat-value {
+  font-family: var(--revia-font-title);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--revia-primary);
+  margin: 0;
+}
+
+.revia-stat-label {
+  font-family: var(--revia-font-body);
+  font-size: 14px;
+  color: var(--revia-text);
+  margin: var(--revia-spacing-xs) 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ===== FORMULAIRES ===== */
+.revia-input {
+  font-family: var(--revia-font-body);
+  font-size: 16px;
+  padding: var(--revia-spacing-md);
+  border: 2px solid var(--revia-neutral);
+  border-radius: var(--revia-radius-md);
+  background: var(--revia-background);
+  color: var(--revia-text);
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.revia-input:focus {
+  outline: none;
+  border-color: var(--revia-primary);
+  box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.1);
+}
+
+.revia-label {
+  font-family: var(--revia-font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--revia-text);
+  margin-bottom: var(--revia-spacing-sm);
+  display: block;
+}
+
+/* ===== BADGES ===== */
+.revia-badge {
+  font-family: var(--revia-font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  padding: var(--revia-spacing-xs) var(--revia-spacing-sm);
+  border-radius: var(--revia-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.revia-badge-success {
+  background: rgba(76, 175, 80, 0.1);
+  color: var(--revia-success);
+}
+
+.revia-badge-warning {
+  background: rgba(255, 193, 7, 0.1);
+  color: var(--revia-warning);
+}
+
+.revia-badge-error {
+  background: rgba(229, 57, 53, 0.1);
+  color: var(--revia-error);
+}
+
+.revia-badge-primary {
+  background: rgba(2, 136, 209, 0.1);
+  color: var(--revia-primary);
+}
+
+/* ===== NAVIGATION ===== */
+.revia-nav {
+  background: var(--revia-background);
+  box-shadow: var(--revia-shadow-sm);
+  padding: var(--revia-spacing-md) var(--revia-spacing-lg);
+}
+
+.revia-nav-brand {
+  font-family: var(--revia-font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--revia-primary);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.revia-nav-item {
+  font-family: var(--revia-font-ui);
+  font-size: 16px;
+  color: var(--revia-text);
+  text-decoration: none;
+  padding: var(--revia-spacing-sm) var(--revia-spacing-md);
+  border-radius: var(--revia-radius-sm);
+  transition: background-color 0.2s ease;
+}
+
+.revia-nav-item:hover {
+  background: rgba(2, 136, 209, 0.1);
+  color: var(--revia-primary);
+}
+
+/* ===== PROGRESS BARS ===== */
+.revia-progress {
+  background: var(--revia-neutral);
+  border-radius: var(--revia-radius-sm);
+  height: 8px;
+  overflow: hidden;
+}
+
+.revia-progress-bar {
+  background: var(--revia-gradient-primary);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* ===== ALERTES ===== */
+.revia-alert {
+  padding: var(--revia-spacing-md);
+  border-radius: var(--revia-radius-md);
+  margin-bottom: var(--revia-spacing-md);
+  border-left: 4px solid;
+}
+
+.revia-alert-success {
+  background: rgba(76, 175, 80, 0.1);
+  border-color: var(--revia-success);
+  color: var(--revia-success);
+}
+
+.revia-alert-warning {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: var(--revia-warning);
+  color: var(--revia-warning);
+}
+
+.revia-alert-error {
+  background: rgba(229, 57, 53, 0.1);
+  border-color: var(--revia-error);
+  color: var(--revia-error);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .revia-title-1 {
+    font-size: 28px;
+  }
+  
+  .revia-title-2 {
+    font-size: 20px;
+  }
+  
+  .revia-btn {
+    width: 100%;
+    margin-bottom: var(--revia-spacing-sm);
+  }
+  
+  .revia-card {
+    padding: var(--revia-spacing-md);
+  }
+}
+
+/* ===== UTILITAIRES ===== */
+.revia-text-center {
+  text-align: center;
+}
+
+.revia-text-primary {
+  color: var(--revia-primary);
+}
+
+.revia-text-secondary {
+  color: var(--revia-secondary);
+}
+
+.revia-text-accent {
+  color: var(--revia-accent);
+}
+
+.revia-bg-primary {
+  background: var(--revia-primary);
+}
+
+.revia-bg-secondary {
+  background: var(--revia-secondary);
+}
+
+.revia-bg-gradient {
+  background: var(--revia-gradient-primary);
+}
+
+.revia-shadow {
+  box-shadow: var(--revia-shadow-md);
+}
+
+.revia-rounded {
+  border-radius: var(--revia-radius-md);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes revia-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.revia-fade-in {
+  animation: revia-fade-in 0.3s ease;
+}
+
+@keyframes revia-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.revia-pulse {
+  animation: revia-pulse 2s infinite;
+}

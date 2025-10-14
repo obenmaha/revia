@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useExercises, useExerciseStats } from '@/hooks/useExercises';
-import { Exercise } from '@/types/exercise';
+import type { Exercise } from '@/types/exercise';
 import ExerciseForm from './ExerciseForm';
 import ExerciseList from './ExerciseList';
 

@@ -1,6 +1,6 @@
 // Tests simplifiés pour la gestion des patients - Story 2.1
 import { describe, it, expect } from 'vitest';
-import {
+import type {
   Patient,
   CreatePatientInput,
   Address,

@@ -8,7 +8,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
+  type DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -41,7 +41,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 import { useExercises } from '@/hooks/useExercises';
-import { Exercise, EXERCISE_TYPE_OPTIONS } from '@/types/exercise';
+import type { Exercise } from '@/types/exercise';
+import { EXERCISE_TYPE_OPTIONS } from '@/types/exercise';
 
 interface ExerciseListProps {
   sessionId: string;

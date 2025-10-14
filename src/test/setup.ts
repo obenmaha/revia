@@ -4,41 +4,41 @@ import { vi, beforeAll, afterEach, afterAll } from 'vitest';
 // Mock Supabase Client pour tous les tests
 vi.mock('@supabase/supabase-js', () => {
   const mockAuth = {
-    signInWithPassword: vi.fn().mockResolvedValue({ 
-      data: { user: null, session: null }, 
-      error: null 
+    signInWithPassword: vi.fn().mockResolvedValue({
+      data: { user: null, session: null },
+      error: null,
     }),
-    signUp: vi.fn().mockResolvedValue({ 
-      data: { user: null, session: null }, 
-      error: null 
+    signUp: vi.fn().mockResolvedValue({
+      data: { user: null, session: null },
+      error: null,
     }),
     signOut: vi.fn().mockResolvedValue({ error: null }),
-    getSession: vi.fn().mockResolvedValue({ 
-      data: { session: null }, 
-      error: null 
+    getSession: vi.fn().mockResolvedValue({
+      data: { session: null },
+      error: null,
     }),
-    onAuthStateChange: vi.fn().mockReturnValue({ 
-      data: { subscription: { unsubscribe: vi.fn() } } 
+    onAuthStateChange: vi.fn().mockReturnValue({
+      data: { subscription: { unsubscribe: vi.fn() } },
     }),
-    getUser: vi.fn().mockResolvedValue({ 
-      data: { user: null }, 
-      error: null 
+    getUser: vi.fn().mockResolvedValue({
+      data: { user: null },
+      error: null,
     }),
-    signInWithOAuth: vi.fn().mockResolvedValue({ 
-      data: { provider: 'google', url: 'mock-url' }, 
-      error: null 
+    signInWithOAuth: vi.fn().mockResolvedValue({
+      data: { provider: 'google', url: 'mock-url' },
+      error: null,
     }),
-    signInWithOtp: vi.fn().mockResolvedValue({ 
-      data: { user: null }, 
-      error: null 
+    signInWithOtp: vi.fn().mockResolvedValue({
+      data: { user: null },
+      error: null,
     }),
-    resetPasswordForEmail: vi.fn().mockResolvedValue({ 
-      data: {}, 
-      error: null 
+    resetPasswordForEmail: vi.fn().mockResolvedValue({
+      data: {},
+      error: null,
     }),
-    updateUser: vi.fn().mockResolvedValue({ 
-      data: { user: null }, 
-      error: null 
+    updateUser: vi.fn().mockResolvedValue({
+      data: { user: null },
+      error: null,
     }),
   };
 
@@ -92,9 +92,16 @@ vi.mock('@supabase/supabase-js', () => {
           download: vi.fn().mockResolvedValue({ data: null, error: null }),
           remove: vi.fn().mockResolvedValue({ data: null, error: null }),
           list: vi.fn().mockResolvedValue({ data: [], error: null }),
-          getPublicUrl: vi.fn().mockReturnValue({ data: { publicUrl: 'mock-url' } }),
-          createSignedUrl: vi.fn().mockResolvedValue({ data: { signedUrl: 'mock-signed-url' }, error: null }),
-          createSignedUrls: vi.fn().mockResolvedValue({ data: [], error: null }),
+          getPublicUrl: vi
+            .fn()
+            .mockReturnValue({ data: { publicUrl: 'mock-url' } }),
+          createSignedUrl: vi.fn().mockResolvedValue({
+            data: { signedUrl: 'mock-signed-url' },
+            error: null,
+          }),
+          createSignedUrls: vi
+            .fn()
+            .mockResolvedValue({ data: [], error: null }),
           update: vi.fn().mockResolvedValue({ data: null, error: null }),
           move: vi.fn().mockResolvedValue({ data: null, error: null }),
           copy: vi.fn().mockResolvedValue({ data: null, error: null }),
@@ -104,11 +111,19 @@ vi.mock('@supabase/supabase-js', () => {
       realtime: {
         channel: vi.fn(() => ({
           on: vi.fn().mockReturnThis(),
-          subscribe: vi.fn().mockResolvedValue({ status: 'SUBSCRIBED', error: null }),
-          unsubscribe: vi.fn().mockResolvedValue({ status: 'CLOSED', error: null }),
+          subscribe: vi
+            .fn()
+            .mockResolvedValue({ status: 'SUBSCRIBED', error: null }),
+          unsubscribe: vi
+            .fn()
+            .mockResolvedValue({ status: 'CLOSED', error: null }),
         })),
-        removeChannel: vi.fn().mockResolvedValue({ status: 'CLOSED', error: null }),
-        removeAllChannels: vi.fn().mockResolvedValue({ status: 'CLOSED', error: null }),
+        removeChannel: vi
+          .fn()
+          .mockResolvedValue({ status: 'CLOSED', error: null }),
+        removeAllChannels: vi
+          .fn()
+          .mockResolvedValue({ status: 'CLOSED', error: null }),
       },
     })),
   };

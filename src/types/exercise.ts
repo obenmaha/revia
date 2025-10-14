@@ -61,9 +61,7 @@ export interface SupabaseExercise {
 export const exerciseTypeSchema = z.enum(
   ['cardio', 'musculation', 'etirement', 'autre'],
   {
-    errorMap: () => ({
-      message: "Type d'exercice invalide",
-    }),
+    message: "Type d'exercice invalide",
   }
 );
 

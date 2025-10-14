@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .epic-box {
+        fill: #e3f2fd;
+        stroke: #1976d2;
+        stroke-width: 2;
+        rx: 8;
+      }
+      .epic-text {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        fill: #1976d2;
+        text-anchor: middle;
+      }
+      .story-box {
+        fill: #f3e5f5;
+        stroke: #7b1fa2;
+        stroke-width: 1;
+        rx: 4;
+      }
+      .story-text {
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        fill: #7b1fa2;
+        text-anchor: middle;
+      }
+      .dependency-arrow {
+        stroke: #666;
+        stroke-width: 2;
+        fill: none;
+        marker-end: url(#arrowhead);
+      }
+      .title {
+        font-family: Arial, sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        fill: #333;
+        text-anchor: middle;
+      }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" class="title">Revia Sport MVP - Dépendances Épiques</text>
+  
+  <!-- Epic S1: Infrastructure et Authentification -->
+  <rect x="50" y="60" width="140" height="80" class="epic-box"/>
+  <text x="120" y="85" class="epic-text">S1: Infrastructure</text>
+  <text x="120" y="100" class="epic-text">et Authentification</text>
+  
+  <!-- Stories S1 -->
+  <rect x="60" y="110" width="60" height="25" class="story-box"/>
+  <text x="90" y="125" class="story-text">S1.1 Config</text>
+  
+  <rect x="130" y="110" width="60" height="25" class="story-box"/>
+  <text x="160" y="125" class="story-text">S1.2 DB</text>
+  
+  <rect x="60" y="140" width="60" height="25" class="story-box"/>
+  <text x="90" y="155" class="story-text">S1.3 Auth</text>
+  
+  <rect x="130" y="140" width="60" height="25" class="story-box"/>
+  <text x="160" y="155" class="story-text">S1.4 UI</text>
+  
+  <rect x="90" y="170" width="60" height="25" class="story-box"/>
+  <text x="120" y="185" class="story-text">S1.5 Guest</text>
+  
+  <!-- Epic S2: Gestion des Sessions -->
+  <rect x="250" y="60" width="140" height="80" class="epic-box"/>
+  <text x="320" y="85" class="epic-text">S2: Gestion des</text>
+  <text x="320" y="100" class="epic-text">Sessions</text>
+  
+  <!-- Stories S2 -->
+  <rect x="260" y="110" width="60" height="25" class="story-box"/>
+  <text x="290" y="125" class="story-text">S2.1 Profil</text>
+  
+  <rect x="330" y="110" width="60" height="25" class="story-box"/>
+  <text x="360" y="125" class="story-text">S2.2 Créer</text>
+  
+  <rect x="260" y="140" width="60" height="25" class="story-box"/>
+  <text x="290" y="155" class="story-text">S2.3 Exercices</text>
+  
+  <rect x="330" y="140" width="60" height="25" class="story-box"/>
+  <text x="360" y="155" class="story-text">S2.4 Valider</text>
+  
+  <!-- Epic S3: Historique et Progression -->
+  <rect x="450" y="60" width="140" height="80" class="epic-box"/>
+  <text x="520" y="85" class="epic-text">S3: Historique</text>
+  <text x="520" y="100" class="epic-text">et Progression</text>
+  
+  <!-- Stories S3 -->
+  <rect x="460" y="110" width="60" height="25" class="story-box"/>
+  <text x="490" y="125" class="story-text">S3.1 Historique</text>
+  
+  <rect x="530" y="110" width="60" height="25" class="story-box"/>
+  <text x="560" y="125" class="story-text">S3.2 Détails</text>
+  
+  <rect x="490" y="140" width="60" height="25" class="story-box"/>
+  <text x="520" y="155" class="story-text">S3.3 Stats</text>
+  
+  <!-- Epic S4: Export et Partage -->
+  <rect x="150" y="250" width="140" height="80" class="epic-box"/>
+  <text x="220" y="275" class="epic-text">S4: Export</text>
+  <text x="220" y="290" class="epic-text">et Partage</text>
+  
+  <!-- Stories S4 -->
+  <rect x="160" y="300" width="60" height="25" class="story-box"/>
+  <text x="190" y="315" class="story-text">S4.1 Export</text>
+  
+  <rect x="230" y="300" width="60" height="25" class="story-box"/>
+  <text x="260" y="315" class="story-text">S4.2 Partage</text>
+  
+  <rect x="160" y="330" width="60" height="25" class="story-box"/>
+  <text x="190" y="345" class="story-text">S4.3 Filtres</text>
+  
+  <rect x="230" y="330" width="60" height="25" class="story-box"/>
+  <text x="260" y="345" class="story-text">S4.4 Résumé</text>
+  
+  <!-- Epic S5: Motivation et Engagement -->
+  <rect x="350" y="250" width="140" height="80" class="epic-box"/>
+  <text x="420" y="275" class="epic-text">S5: Motivation</text>
+  <text x="420" y="290" class="epic-text">et Engagement</text>
+  
+  <!-- Stories S5 -->
+  <rect x="360" y="300" width="60" height="25" class="story-box"/>
+  <text x="390" y="315" class="story-text">S5.1 Rappels</text>
+  
+  <rect x="430" y="300" width="60" height="25" class="story-box"/>
+  <text x="460" y="315" class="story-text">S5.2 Gamification</text>
+  
+  <rect x="360" y="330" width="60" height="25" class="story-box"/>
+  <text x="390" y="345" class="story-text">S5.3 Progression</text>
+  
+  <rect x="430" y="330" width="60" height="25" class="story-box"/>
+  <text x="460" y="345" class="story-text">S5.4 Objectifs</text>
+  
+  <!-- Dependencies -->
+  <!-- S1 to S2 -->
+  <line x1="190" y1="100" x2="250" y2="100" class="dependency-arrow"/>
+  
+  <!-- S2 to S3 -->
+  <line x1="390" y1="100" x2="450" y2="100" class="dependency-arrow"/>
+  
+  <!-- S2 to S4 -->
+  <line x1="320" y1="140" x2="220" y2="250" class="dependency-arrow"/>
+  
+  <!-- S3 to S4 -->
+  <line x1="520" y1="140" x2="220" y2="250" class="dependency-arrow"/>
+  
+  <!-- S2 to S5 -->
+  <line x1="320" y1="140" x2="420" y2="250" class="dependency-arrow"/>
+  
+  <!-- S3 to S5 -->
+  <line x1="520" y1="140" x2="420" y2="250" class="dependency-arrow"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="400" width="300" height="150" fill="#f9f9f9" stroke="#ccc" stroke-width="1" rx="5"/>
+  <text x="200" y="420" class="title" font-size="14">Légende des Dépendances</text>
+  
+  <text x="70" y="445" font-family="Arial, sans-serif" font-size="12" fill="#333">• S1 → S2 : Infrastructure nécessaire pour les sessions</text>
+  <text x="70" y="465" font-family="Arial, sans-serif" font-size="12" fill="#333">• S2 → S3 : Sessions nécessaires pour l'historique</text>
+  <text x="70" y="485" font-family="Arial, sans-serif" font-size="12" fill="#333">• S2 → S4 : Sessions nécessaires pour l'export</text>
+  <text x="70" y="505" font-family="Arial, sans-serif" font-size="12" fill="#333">• S3 → S4 : Historique nécessaire pour l'export complet</text>
+  <text x="70" y="525" font-family="Arial, sans-serif" font-size="12" fill="#333">• S2 → S5 : Sessions nécessaires pour la gamification</text>
+  <text x="70" y="545" font-family="Arial, sans-serif" font-size="12" fill="#333">• S3 → S5 : Progression nécessaire pour la motivation</text>
+  
+  <!-- V2 Cabinet Features -->
+  <rect x="500" y="400" width="200" height="150" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="5"/>
+  <text x="600" y="420" class="title" font-size="14" fill="#ff9800">V2 Annex</text>
+  <text x="600" y="440" class="title" font-size="12" fill="#ff9800">Fonctionnalités Cabinet</text>
+  
+  <text x="510" y="465" font-family="Arial, sans-serif" font-size="10" fill="#ff9800">• Gestion des Patients</text>
+  <text x="510" y="480" font-family="Arial, sans-serif" font-size="10" fill="#ff9800">• Planification & Calendrier</text>
+  <text x="510" y="495" font-family="Arial, sans-serif" font-size="10" fill="#ff9800">• Documentation Professionnelle</text>
+  <text x="510" y="510" font-family="Arial, sans-serif" font-size="10" fill="#ff9800">• Facturation</text>
+  <text x="510" y="525" font-family="Arial, sans-serif" font-size="10" fill="#ff9800">• Rappels & Communication</text>
+  <text x="510" y="540" font-family="Arial, sans-serif" font-size="10" fill="#ff9800">• Statistiques Cabinet</text>
+  
+  <!-- Arrow to V2 -->
+  <line x1="400" y1="475" x2="500" y2="475" class="dependency-arrow" stroke="#ff9800"/>
+  <text x="450" y="470" font-family="Arial, sans-serif" font-size="10" fill="#ff9800">Reporté à V2</text>
+</svg>

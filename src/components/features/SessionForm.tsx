@@ -1,12 +1,12 @@
 // Composant de formulaire de session - Story 2.2
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
+import type {
   Session,
   CreateSessionInput,
   SessionType,
-  SESSION_TYPE_OPTIONS,
 } from '../../types/session';
+import { SESSION_TYPE_OPTIONS } from '../../types/session';
 import { useSessionForm } from '../../hooks/useSessionForm';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';

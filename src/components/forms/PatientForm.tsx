@@ -1,7 +1,7 @@
 // Composant de formulaire de patient - Story 2.1
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Patient, CreatePatientInput } from '../../types/patient';
+import type { Patient, CreatePatientInput } from '../../types/patient';
 import { usePatientForm } from '../../hooks/usePatientForm';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';

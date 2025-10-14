@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import {
+import type {
   SessionFilters as SessionFiltersType,
   SessionType,
   SessionStatus,

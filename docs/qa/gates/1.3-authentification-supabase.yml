@@ -1,46 +1,19 @@
-schema: 1
-story: '1.3'
-story_title: 'Authentification Supabase'
-gate: PASS
-status_reason: 'Système d\'authentification robuste et sécurisé avec Supabase Auth natif'
-reviewer: 'Quinn (Test Architect)'
-updated: '2025-01-11T13:36:00Z'
-
-top_issues: [] # Aucun problème identifié
-
-waiver: { active: false }
-
-# Extended fields
-quality_score: 100 # Score parfait - aucune déduction
-expires: '2025-01-25T13:36:00Z' # 2 semaines
-
-evidence:
-  tests_reviewed: 5
-  risks_identified: 0
-  trace:
-    ac_covered: [1, 2, 3, 4, 5, 6] # Tous les AC couverts
-    ac_gaps: [] # Aucun gap
-
-nfr_validation:
-  security:
-    status: PASS
-    notes: 'Authentification Supabase native avec tokens automatiques, sécurité intégrée, conformité RGPD'
-  performance:
-    status: PASS
-    notes: 'Gestion automatique des tokens, Store Zustand avec persistence, React Query optimisé'
-  reliability:
-    status: PASS
-    notes: 'Gestion d\'erreurs robuste, validation Zod complète, protection contre les attaques'
-  maintainability:
-    status: PASS
-    notes: 'Architecture claire avec AuthService, useAuth Hook, AuthStore, schémas Zod réutilisables'
-
-recommendations:
-  immediate: [] # Aucune action immédiate requise
-  future: # Améliorations futures
-    - action: 'Ajouter des tests d\'intégration pour les flux d\'authentification'
-      refs: ['src/services/authService.ts']
-    - action: 'Ajouter des métriques de sécurité et d\'utilisation'
-      refs: ['src/hooks/useAuth.ts']
-    - action: 'Implémenter un système d\'audit des connexions'
-      refs: ['src/stores/authStore.ts']
+# risk_summary (paste into gate file):
+risk_summary:
+  totals:
+    critical: 0 # score 9
+    high: 2 # score 6
+    medium: 4 # score 4
+    low: 4 # score 2-3
+  highest:
+    id: SEC-001
+    score: 6
+    title: 'Attaques par force brute'
+  recommendations:
+    must_fix:
+      - 'Configurer le rate limiting automatique Supabase'
+      - 'Implémenter le monitoring des tokens d\'authentification'
+      - 'Renforcer la validation des entrées avec Zod'
+    monitor:
+      - 'Surveiller les tentatives de connexion suspectes'
+      - 'Monitorer les performances d\'authentification'

@@ -1,0 +1,19 @@
+# risk_summary (paste into gate file):
+risk_summary:
+  totals:
+    critical: 1 # score 9
+    high: 3 # score 6
+    medium: 4 # score 4
+    low: 4 # score 2-3
+  highest:
+    id: SEC-001
+    score: 9
+    title: 'Violation des politiques RLS'
+  recommendations:
+    must_fix:
+      - 'Audit complet des politiques RLS'
+      - 'Tests de sécurité automatisés pour toutes les politiques'
+      - 'Monitoring des accès non autorisés en temps réel'
+    monitor:
+      - 'Surveiller les performances des requêtes et utilisation des index'
+      - 'Auditer régulièrement la conformité RGPD'
