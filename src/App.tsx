@@ -1,11 +1,13 @@
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect, Suspense, lazy } from 'react';
 import './App.css';
-import { AppLayout } from './components/layouts/AppLayout';
-import { ModeToggle } from './components/features/ModeToggle';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './stores/authStore';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+
+// Lazy load layouts and heavy components
+const AppLayout = lazy(() => import('./components/layouts/AppLayout').then(m => ({ default: m.AppLayout })));
+const ModeToggle = lazy(() => import('./components/features/ModeToggle').then(m => ({ default: m.ModeToggle })));
 
 // Lazy loading des pages pour optimiser le bundle size
 const SportDashboardPage = lazy(() => import('./pages/sport/SportDashboardPage').then(m => ({ default: m.SportDashboardPage })));
@@ -276,7 +278,9 @@ function LoginPage() {
 
         {/* Sélecteur de mode */}
         <div style={{ marginTop: '30px' }}>
-          <ModeToggle />
+          <Suspense fallback={<div>...</div>}>
+            <ModeToggle />
+          </Suspense>
         </div>
       </div>
     </div>
