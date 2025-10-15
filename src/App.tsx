@@ -8,6 +8,8 @@ import { SportHistoryPage } from './pages/sport/SportHistoryPage';
 import { SportProfilePage } from './pages/sport/SportProfilePage';
 import { GuestDashboardPage } from './pages/guest/GuestDashboardPage';
 import ProfilePage from './pages/ProfilePage';
+import { LegalMentionsPage } from './pages/legal/LegalMentionsPage';
+import { LegalCGUPage } from './pages/legal/LegalCGUPage';
 import { ModeToggle } from './components/features/ModeToggle';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './stores/authStore';
@@ -608,6 +610,10 @@ function App() {
         <Route path="dashboard" element={<GuestDashboardPage />} />
         <Route path="" element={<Navigate to="/guest/dashboard" replace />} />
       </Route>
+
+      {/* Routes légales - Accessibles sans authentification */}
+      <Route path="/legal/mentions" element={<LegalMentionsPage />} />
+      <Route path="/legal/cgu" element={<LegalCGUPage />} />
 
       {/* Redirection par défaut - basée sur le mode configuré */}
       <Route path="/" element={<DefaultRedirect />} />

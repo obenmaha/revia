@@ -16,6 +16,8 @@ import {
   Loader2,
   AlertTriangle,
   CheckCircle,
+  FileText,
+  ExternalLink,
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useUserProfile, type UserProfileFormData } from '../hooks/useUserProfile';
@@ -815,6 +817,51 @@ export function ProfilePage({}: ProfilePageProps) {
           <PreferencesCard />
         </TabsContent>
       </Tabs>
+
+      {/* Section liens légaux */}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5" />
+            Informations légales
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <h4 className="font-semibold text-gray-900">Mentions légales</h4>
+              <p className="text-sm text-gray-600 mb-3">
+                Informations sur l'éditeur, l'hébergement et les droits de propriété intellectuelle.
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/legal/mentions')}
+                className="w-full justify-start"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Consulter les mentions légales
+                <ExternalLink className="h-3 w-3 ml-2" />
+              </Button>
+            </div>
+            
+            <div className="space-y-2">
+              <h4 className="font-semibold text-gray-900">Conditions générales</h4>
+              <p className="text-sm text-gray-600 mb-3">
+                Conditions d'utilisation de l'application et protection des données personnelles.
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/legal/cgu')}
+                className="w-full justify-start"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Consulter les CGU
+                <ExternalLink className="h-3 w-3 ml-2" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
