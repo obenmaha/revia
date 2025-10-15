@@ -13,7 +13,8 @@
  * Usage: npx ts-node scripts/rls-smoke.ts
  */
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '../src/types/supabase';
 
 // Environment variables
@@ -484,7 +485,7 @@ class RLSTester {
 }
 
 // Run tests if executed directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const tester = new RLSTester();
   tester.run().then(success => {
     process.exit(success ? 0 : 1);
