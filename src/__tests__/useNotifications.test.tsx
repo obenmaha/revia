@@ -1,35 +1,38 @@
 // Tests unitaires pour useNotifications - FR9
+import React from 'react';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { useNotifications, useScheduleSessionReminder } from '../hooks/useNotifications';
 
-// Mock Supabase
-const mockSupabase = {
-  from: vi.fn(() => ({
-    select: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        single: vi.fn(() => Promise.resolve({ data: null, error: null }))
-      }))
-    })),
-    insert: vi.fn(() => ({
+// Unmock the hook for this test file
+vi.unmock('@/hooks/useNotifications');
+
+// Mock Supabase - must be defined inline in vi.mock
+vi.mock('../lib/supabase', () => ({
+  supabase: {
+    from: vi.fn(() => ({
       select: vi.fn(() => ({
-        single: vi.fn(() => Promise.resolve({ data: {}, error: null }))
-      }))
-    })),
-    update: vi.fn(() => ({
-      eq: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          single: vi.fn(() => Promise.resolve({ data: null, error: null }))
+        }))
+      })),
+      insert: vi.fn(() => ({
         select: vi.fn(() => ({
           single: vi.fn(() => Promise.resolve({ data: {}, error: null }))
         }))
+      })),
+      update: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn(() => Promise.resolve({ data: {}, error: null }))
+          }))
+        }))
       }))
     }))
-  }))
-};
-
-vi.mock('../lib/supabase', () => ({
-  supabase: mockSupabase
+  }
 }));
+
+import { useNotifications, useScheduleSessionReminder } from '../hooks/useNotifications';
 
 // Mock Notification API
 const mockNotification = {
@@ -43,13 +46,11 @@ Object.defineProperty(window, 'Notification', {
   writable: true
 });
 
-// Mock app store
-const mockAppStore = {
-  addNotification: vi.fn()
-};
-
+// Mock app store - must be defined inline in vi.mock
 vi.mock('../stores/appStore', () => ({
-  useAppStore: () => mockAppStore
+  useAppStore: () => ({
+    addNotification: vi.fn()
+  })
 }));
 
 // Helper pour wrapper les hooks avec QueryClient

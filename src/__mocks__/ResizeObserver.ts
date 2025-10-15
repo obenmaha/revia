@@ -1,8 +1,10 @@
+import { vi } from 'vitest';
+
 // Mock pour ResizeObserver
 export class ResizeObserver {
-  observe = jest.fn();
-  unobserve = jest.fn();
-  disconnect = jest.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
 }
 
 // Mock global ResizeObserver

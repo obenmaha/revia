@@ -1,38 +1,42 @@
+import { vi } from 'vitest';
+import type { UseNotificationsReturn } from '@/hooks/useNotifications';
+
 // Mock pour useNotifications hook
-export const useNotifications = () => ({
-  isSupported: true,
+export const useNotifications = vi.fn((): UseNotificationsReturn => ({
+  // État des préférences
+  preferences: null,
+  isLoading: false,
+  isError: false,
+  error: null,
+
+  // État des permissions
   permission: 'granted' as NotificationPermission,
-  requestPermission: jest.fn().mockResolvedValue('granted' as NotificationPermission),
-  showNotification: jest.fn().mockResolvedValue(undefined),
-  closeNotification: jest.fn().mockResolvedValue(undefined),
-  clearAllNotifications: jest.fn().mockResolvedValue(undefined),
-  getNotifications: jest.fn().mockResolvedValue([]),
-  onNotificationClick: jest.fn(),
-  onNotificationClose: jest.fn(),
-  onNotificationError: jest.fn(),
-  onNotificationShow: jest.fn(),
-  onNotificationPermissionChange: jest.fn(),
-  isEnabled: true,
-  isBlocked: false,
-  isDenied: false,
-  isDefault: false,
-  isGranted: true,
-  canRequest: true,
-  canShow: true,
-  canClose: true,
-  canClear: true,
-  canGet: true,
-  canListen: true,
-  canRequestPermission: true,
-  canShowNotification: true,
-  canCloseNotification: true,
-  canClearAllNotifications: true,
-  canGetNotifications: true,
-  canListenToEvents: true,
-  canRequestPermissionAsync: true,
-  canShowNotificationAsync: true,
-  canCloseNotificationAsync: true,
-  canClearAllNotificationsAsync: true,
-  canGetNotificationsAsync: true,
-  canListenToEventsAsync: true,
-});
+  isSupported: true,
+
+  // Actions
+  updatePreferences: vi.fn().mockResolvedValue(undefined),
+  requestPermission: vi.fn().mockResolvedValue(true),
+  scheduleLocalReminder: vi.fn().mockResolvedValue(undefined),
+  cancelReminder: vi.fn(),
+  cancelAllReminders: vi.fn(),
+
+  // États des mutations
+  isUpdating: false,
+  isRequestingPermission: false,
+
+  // Erreurs des mutations
+  updateError: null,
+  permissionError: null,
+
+  // Refetch
+  refetch: vi.fn(),
+}));
+
+// Mock pour useScheduleSessionReminder
+export const useScheduleSessionReminder = vi.fn(() => ({
+  scheduleSessionReminder: vi.fn().mockResolvedValue({
+    reminderTime: new Date(),
+    delay: 0,
+    cancelled: false,
+  }),
+}));
