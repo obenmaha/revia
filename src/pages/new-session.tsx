@@ -31,6 +31,7 @@ import { cn } from '../lib/utils';
 import { generateDuplicateDates } from '../utils/duplicateDates';
 import { SessionService } from '../services/sessionService';
 import type { CreateSessionInput } from '../types/session';
+import { analytics } from '../lib/analytics';
 
 interface SessionFormData {
   name: string;
@@ -136,16 +137,39 @@ export function NewSessionPage() {
         );
 
         console.log(`${createdSessions.length} séances créées avec duplication`);
+        
+        // Analytics: Session créée avec duplication
+        analytics.track('session_created', {
+          session_type: formData.type as 'cardio' | 'strength' | 'flexibility' | 'sport',
+          has_duplicates: true,
+          duplicate_type: formData.duplicateType,
+          duplicate_count: createdSessions.length
+        });
       } else {
         // Créer une seule session
         const createdSession = await SessionService.createSession(sessionData);
         console.log('Séance créée:', createdSession);
+        
+        // Analytics: Session créée simple
+        analytics.track('session_created', {
+          session_type: formData.type as 'cardio' | 'strength' | 'flexibility' | 'sport',
+          has_duplicates: false
+        });
       }
       
       // Redirection vers le dashboard
       navigate('/sport/dashboard');
     } catch (error) {
       console.error('Erreur lors de la création:', error);
+      
+      // Analytics: Erreur lors de la création de session
+      analytics.track('error_occurred', {
+        error_type: 'validation',
+        error_message: error instanceof Error ? error.message : 'Erreur inconnue',
+        component: 'new-session',
+        user_action: 'create_session'
+      });
+      
       // TODO: Afficher un message d'erreur à l'utilisateur
     } finally {
       setIsSubmitting(false);

@@ -5,6 +5,7 @@ import { CreateExerciseInput } from '../types/exercise';
 import { ExerciseService } from '../services/exerciseService';
 import { SessionService } from '../services/sessionService';
 import { useSessionDraft } from './useSessionDraft';
+import { analytics } from '../lib/analytics';
 
 // Interface pour le retour du hook
 export interface UseValidateSessionReturn {
@@ -79,6 +80,26 @@ export function useValidateSession(sessionId: string): UseValidateSessionReturn 
       // Effacer le brouillon après validation réussie
       clearDraft();
 
+      // Analytics: Session validée avec succès
+      const exerciseCount = variables.exercises.length;
+      const totalDuration = variables.exercises.reduce((total, exercise) => {
+        return total + (exercise.duration || 0);
+      }, 0);
+      const averageRpe = variables.exercises.reduce((total, exercise) => {
+        return total + (exercise.intensity || 0);
+      }, 0) / exerciseCount;
+      const hasPainLevels = variables.exercises.some(exercise => 
+        exercise.painLevel !== undefined && exercise.painLevel !== null
+      );
+
+      analytics.track('session_validated', {
+        session_id: variables.sessionId,
+        exercise_count: exerciseCount,
+        total_duration_minutes: Math.round(totalDuration / 60),
+        average_rpe: Math.round(averageRpe * 10) / 10,
+        has_pain_levels: hasPainLevels
+      });
+
       console.log(`Session ${variables.sessionId} validée avec succès`);
     },
     onError: error => {
@@ -87,6 +108,15 @@ export function useValidateSession(sessionId: string): UseValidateSessionReturn 
           ? error.message
           : 'Erreur inconnue lors de la validation';
       setError(errorMessage);
+      
+      // Analytics: Erreur lors de la validation
+      analytics.track('error_occurred', {
+        error_type: 'validation',
+        error_message: errorMessage,
+        component: 'useValidateSession',
+        user_action: 'validate_session'
+      });
+      
       console.error('Erreur de validation:', errorMessage);
     },
   });

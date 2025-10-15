@@ -22,6 +22,7 @@ import type {
 } from '@/types/guest';
 import { encrypt, decrypt, isExpired, wipeEncryptionKeys, isWebCryptoSupported } from '@/lib/crypto';
 import { guestDataSchema } from '@/types/guest';
+import { analytics } from '@/lib/analytics';
 
 const STORAGE_KEY = 'revia_guest_data';
 const TTL_DAYS = 30;
@@ -219,6 +220,13 @@ export const useGuestStore = create<GuestStoreState & GuestStoreActions>((set, g
     await saveToStorage(newData);
 
     set({ data: newData, lastSync: Date.now() });
+
+    // Analytics: Session guest créée
+    analytics.track('guest_session_created', {
+      session_type: sessionData.type as 'cardio' | 'strength' | 'flexibility' | 'sport',
+      is_first_session: state.data.sessions.length === 0
+    });
+
     return session;
   },
 
@@ -454,6 +462,12 @@ export const useGuestStore = create<GuestStoreState & GuestStoreActions>((set, g
         isLoading: false,
         lastSync: Date.now(),
         expiresAt: parsed?.metadata.expires_at || Date.now() + (TTL_DAYS * 24 * 60 * 60 * 1000),
+      });
+
+      // Analytics: Mode guest activé
+      analytics.track('guest_mode_entered', {
+        entry_point: 'homepage', // TODO: Détecter le point d'entrée réel
+        user_agent: navigator.userAgent
       });
     } catch (error) {
       set({

@@ -19,6 +19,7 @@ import type {
   MigrationConflict,
   ConflictResolutionStrategy,
 } from '@/types/guest';
+import { analytics } from '@/lib/analytics';
 import type { SportSession, SportExercise, SportSessionWithExercises } from '@/types/sport';
 import { decrypt } from '@/lib/crypto';
 
@@ -173,6 +174,17 @@ export async function migrateGuestToAccount(
 
     console.info(`[migration] Found ${guestData.sessions.length} sessions and ${guestData.exercises.length} exercises`);
 
+    // Analytics: Migration démarrée
+    const daysSinceFirstSession = guestData.sessions.length > 0 
+      ? Math.floor((Date.now() - new Date(guestData.sessions[0].created_at).getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
+
+    analytics.track('guest_migration_started', {
+      session_count: guestData.sessions.length,
+      exercise_count: guestData.exercises.length,
+      days_since_first_session: daysSinceFirstSession
+    });
+
     // Step 2: Fetch existing server sessions for conflict detection
     console.info('[migration] Fetching existing server sessions');
     const { data: serverSessions, error: fetchError } = await supabase
@@ -294,6 +306,17 @@ export async function migrateGuestToAccount(
     }
 
     result.success = result.errors.length === 0;
+    
+    // Analytics: Migration terminée avec succès
+    if (result.success) {
+      analytics.track('guest_migration_completed', {
+        sessions_migrated: result.sessions_migrated,
+        exercises_migrated: result.exercises_migrated,
+        conflicts_resolved: result.conflicts_resolved,
+        migration_strategy: strategy
+      });
+    }
+    
     console.info(`[migration] Complete: ${result.sessions_migrated} sessions, ${result.exercises_migrated} exercises migrated`);
 
     return result;
@@ -302,6 +325,14 @@ export async function migrateGuestToAccount(
     console.error('[migration] Migration failed:', msg);
     result.errors.push(msg);
     result.success = false;
+    
+    // Analytics: Migration échouée
+    analytics.track('guest_migration_failed', {
+      error_type: error instanceof Error ? error.constructor.name : 'UnknownError',
+      sessions_count: result.sessions_migrated,
+      exercises_count: result.exercises_migrated
+    });
+    
     return result;
   }
 }
