@@ -1,14 +1,204 @@
 name: CI
-on: { pull_request: { branches: [main] } }
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
 jobs:
-  quality:
+  # Build and type checking
+  build:
+    name: Build & Type Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with: { node-version: '20', cache: 'npm' }
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm run lint
-      - run: npm test -- --coverage
-      - run: npm run build
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc -b --noEmit
+
+      - name: Build application
+        run: npm run build
+
+      - name: Check bundle size
+        run: node scripts/check-bundle.mjs
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  # Linting
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Prettier check
+        run: npm run format:check
+
+  # Unit and integration tests
+  test:
+    name: Unit & Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:run -- --coverage
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage/coverage-final.json
+          flags: unittests
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  # RLS smoke tests
+  rls-smoke:
+    name: RLS Smoke Tests
+    runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.SUPABASE_TEST_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_TEST_ANON_KEY }}
+      TEST_USER_A_EMAIL: ${{ secrets.TEST_USER_A_EMAIL }}
+      TEST_USER_A_PASSWORD: ${{ secrets.TEST_USER_A_PASSWORD }}
+      TEST_USER_B_EMAIL: ${{ secrets.TEST_USER_B_EMAIL }}
+      TEST_USER_B_PASSWORD: ${{ secrets.TEST_USER_B_PASSWORD }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run RLS smoke tests
+        run: npx ts-node scripts/rls-smoke.ts
+
+  # E2E and accessibility tests
+  e2e:
+    name: E2E & Accessibility Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Run accessibility tests
+        run: npx playwright test playwright/a11y-focus.spec.ts
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  # Security scanning
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run secret scanning
+        run: npm run scan:secrets
+        continue-on-error: true
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  # Final status check
+  ci-success:
+    name: All CI Checks Passed
+    runs-on: ubuntu-latest
+    needs: [build, lint, test, rls-smoke, e2e, security]
+    if: always()
+    steps:
+      - name: Check all jobs
+        run: |
+          if [ "${{ needs.build.result }}" != "success" ] || \
+             [ "${{ needs.lint.result }}" != "success" ] || \
+             [ "${{ needs.test.result }}" != "success" ] || \
+             [ "${{ needs.rls-smoke.result }}" != "success" ] || \
+             [ "${{ needs.e2e.result }}" != "success" ]; then
+            echo "One or more CI jobs failed"
+            exit 1
+          fi
+          echo "All CI jobs passed successfully!"
