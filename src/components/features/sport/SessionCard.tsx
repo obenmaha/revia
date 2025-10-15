@@ -94,10 +94,13 @@ export function SessionCard({
   return (
     <Card
       className={cn(
-        'transition-all duration-200 hover:shadow-md',
+        'transition-all duration-200 hover:shadow-md focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2',
         getStatusColor(),
         className
       )}
+      role="article"
+      aria-labelledby={`session-title-${session.id}`}
+      aria-describedby={`session-details-${session.id}`}
     >
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
@@ -107,21 +110,30 @@ export function SessionCard({
                 'w-10 h-10 rounded-full flex items-center justify-center text-white text-lg',
                 SESSION_COLORS[session.type]
               )}
+              aria-hidden="true"
             >
               {SESSION_ICONS[session.type]}
             </div>
             <div>
-              <CardTitle className="text-lg">{session.name}</CardTitle>
-              <div className="text-sm text-gray-600">
+              <CardTitle 
+                id={`session-title-${session.id}`}
+                className="text-lg"
+              >
+                {session.name}
+              </CardTitle>
+              <div 
+                id={`session-details-${session.id}`}
+                className="text-sm text-muted-foreground"
+              >
                 {formatDate(session.date)} • {session.time}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm font-medium text-gray-700">
+            <div className="text-sm font-medium text-foreground">
               {session.duration} min
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
               {session.exercises} exercices
             </div>
           </div>
@@ -130,13 +142,17 @@ export function SessionCard({
 
       <CardContent className="pt-0">
         <div className="flex items-center justify-between mb-4">
-          <div className="text-sm text-gray-600">{getStatusText()}</div>
+          <div className="text-sm text-muted-foreground" aria-label={`Statut: ${getStatusText()}`}>
+            {getStatusText()}
+          </div>
           {session.status === 'completed' && session.rpe && (
-            <div className="text-sm text-gray-600">RPE: {session.rpe}/10</div>
+            <div className="text-sm text-muted-foreground" aria-label={`RPE: ${session.rpe} sur 10`}>
+              RPE: {session.rpe}/10
+            </div>
           )}
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-2" role="group" aria-label="Actions disponibles">
           {variant === 'upcoming' && session.status === 'draft' && (
             <>
               <Button onClick={onStart} className="flex-1" size="sm">
@@ -187,6 +203,7 @@ export function SessionCard({
                 variant="outline"
                 className="flex-1"
                 size="sm"
+                aria-label="Voir les détails de la séance"
               >
                 Voir les détails
               </Button>
@@ -226,13 +243,13 @@ export function SessionList({
 }: SessionListProps) {
   if (sessions.length === 0) {
     return (
-      <div className={cn('text-center py-8', className)}>
-        <div className="text-gray-500 text-lg mb-2">
+      <div className={cn('text-center py-8', className)} role="status" aria-live="polite">
+        <div className="text-muted-foreground text-lg mb-2">
           {variant === 'upcoming' && 'Aucune séance programmée'}
           {variant === 'completed' && 'Aucune séance terminée'}
           {variant === 'draft' && 'Aucun brouillon'}
         </div>
-        <div className="text-gray-400 text-sm">
+        <div className="text-muted-foreground/70 text-sm">
           {variant === 'upcoming' &&
             'Créez votre première séance pour commencer'}
           {variant === 'completed' && 'Vos séances terminées apparaîtront ici'}
@@ -243,16 +260,17 @@ export function SessionList({
   }
 
   return (
-    <div className={cn('space-y-4', className)}>
-      {sessions.map(session => (
-        <SessionCard
-          key={session.id}
-          session={session}
-          onStart={() => onStart(session)}
-          onEdit={() => onEdit(session)}
-          onDuplicate={() => onDuplicate(session)}
-          variant={variant}
-        />
+    <div className={cn('space-y-4', className)} role="list" aria-label={`Liste des séances ${variant === 'upcoming' ? 'à venir' : variant === 'completed' ? 'terminées' : 'brouillons'}`}>
+      {sessions.map((session, index) => (
+        <div key={session.id} role="listitem" aria-posinset={index + 1} aria-setsize={sessions.length}>
+          <SessionCard
+            session={session}
+            onStart={() => onStart(session)}
+            onEdit={() => onEdit(session)}
+            onDuplicate={() => onDuplicate(session)}
+            variant={variant}
+          />
+        </div>
       ))}
     </div>
   );
