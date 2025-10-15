@@ -1,6 +1,7 @@
 # 📱 Mockup Interface Mobile Revia
 
 ## Écran de Splash
+
 ```
 ┌─────────────────────────┐
 │                         │
@@ -16,6 +17,7 @@
 ```
 
 ## Dashboard Principal
+
 ```
 ┌─────────────────────────┐
 │ ☰  REVIA        🔔     │
@@ -42,6 +44,7 @@
 ```
 
 ## Écran de Tracking d'Exercice
+
 ```
 ┌─────────────────────────┐
 │ ← Exercice 1/5    ⏸️   │
@@ -66,6 +69,7 @@
 ```
 
 ## Carte de Statistiques
+
 ```
 ┌─────────────────────────┐
 │  📈 Performance         │
@@ -85,6 +89,7 @@
 ```
 
 ## Palette de Couleurs - Swatches
+
 ```
 ┌─────────────────────────┐
 │  Palette Revia          │
@@ -108,6 +113,7 @@
 ```
 
 ## Typographie - Échantillon
+
 ```
 ┌─────────────────────────┐
 │  Typography Revia       │
@@ -129,6 +135,7 @@
 ```
 
 ## Boutons - Styles
+
 ```
 ┌─────────────────────────┐
 │  Button Styles          │
@@ -153,6 +160,7 @@
 ```
 
 ## Icônes - Set
+
 ```
 ┌─────────────────────────┐
 │  Icon Set Revia         │
@@ -169,6 +177,7 @@
 ```
 
 ## Hero Banner - Pitch Deck
+
 ```
 ┌─────────────────────────────────────────┐
 │                                         │
@@ -192,8 +201,9 @@
 ## 🎨 Spécifications Techniques
 
 ### Couleurs
+
 - **Primary**: #0288D1 (Blue)
-- **Secondary**: #43A047 (Green)  
+- **Secondary**: #43A047 (Green)
 - **Accent**: #FFA000 (Orange)
 - **Error**: #E53935 (Red)
 - **Warning**: #FFC107 (Amber)
@@ -203,20 +213,23 @@
 - **Background**: #FFFFFF (White)
 
 ### Typographie
+
 - **Titres**: Montserrat Bold, UPPERCASE
 - **Corps**: Inter Regular, 16px
 - **UI**: Roboto Medium, 16px
 - **Contraste**: WCAG AA (4.5:1 minimum)
 
 ### Espacement
+
 - **Grille**: 8px
 - **Marges**: 16px, 24px, 32px
 - **Padding**: 8px, 16px, 24px
 - **Coins arrondis**: 4px-8px
 
 ### Responsive
+
 - **Mobile**: 320px-768px
 - **Tablet**: 768px-1024px
 - **Desktop**: 1024px+
 
-*Cette identité visuelle garantit une expérience utilisateur cohérente et professionnelle pour Revia.*
+_Cette identité visuelle garantit une expérience utilisateur cohérente et professionnelle pour Revia._

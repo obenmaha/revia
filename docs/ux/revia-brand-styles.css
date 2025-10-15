@@ -3,41 +3,41 @@
 /* ===== VARIABLES CSS ===== */
 :root {
   /* Couleurs principales */
-  --revia-primary: #0288D1;
-  --revia-secondary: #43A047;
-  --revia-accent: #FFA000;
-  
+  --revia-primary: #0288d1;
+  --revia-secondary: #43a047;
+  --revia-accent: #ffa000;
+
   /* Couleurs fonctionnelles */
-  --revia-error: #E53935;
-  --revia-warning: #FFC107;
-  --revia-success: #4CAF50;
-  
+  --revia-error: #e53935;
+  --revia-warning: #ffc107;
+  --revia-success: #4caf50;
+
   /* Couleurs neutres */
-  --revia-neutral: #F5F5F5;
+  --revia-neutral: #f5f5f5;
   --revia-text: #212121;
-  --revia-background: #FFFFFF;
-  
+  --revia-background: #ffffff;
+
   /* Gradients */
-  --revia-gradient-primary: linear-gradient(135deg, #0288D1 0%, #43A047 100%);
-  --revia-gradient-accent: linear-gradient(135deg, #0288D1 0%, #FFA000 100%);
-  
+  --revia-gradient-primary: linear-gradient(135deg, #0288d1 0%, #43a047 100%);
+  --revia-gradient-accent: linear-gradient(135deg, #0288d1 0%, #ffa000 100%);
+
   /* Typographie */
   --revia-font-title: 'Montserrat', sans-serif;
   --revia-font-body: 'Inter', sans-serif;
   --revia-font-ui: 'Roboto', sans-serif;
-  
+
   /* Espacement */
   --revia-spacing-xs: 4px;
   --revia-spacing-sm: 8px;
   --revia-spacing-md: 16px;
   --revia-spacing-lg: 24px;
   --revia-spacing-xl: 32px;
-  
+
   /* Rayons de bordure */
   --revia-radius-sm: 4px;
   --revia-radius-md: 8px;
   --revia-radius-lg: 12px;
-  
+
   /* Ombres */
   --revia-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --revia-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -135,7 +135,7 @@
 }
 
 .revia-btn-secondary:hover {
-  background: #388E3C;
+  background: #388e3c;
   transform: translateY(-1px);
   box-shadow: var(--revia-shadow-md);
 }
@@ -350,16 +350,16 @@
   .revia-title-1 {
     font-size: 28px;
   }
-  
+
   .revia-title-2 {
     font-size: 20px;
   }
-  
+
   .revia-btn {
     width: 100%;
     margin-bottom: var(--revia-spacing-sm);
   }
-  
+
   .revia-card {
     padding: var(--revia-spacing-md);
   }
@@ -419,7 +419,8 @@
 }
 
 @keyframes revia-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Card,
   CardContent,
@@ -15,60 +15,81 @@ import {
   SelectValue,
 } from '../../components/ui/select';
 import { SessionList } from '../../components/features/sport/SessionCard';
-import { Search, Filter, Calendar, TrendingUp, Download } from 'lucide-react';
-
-// Données mockées
-const mockSessions = [
-  {
-    id: '1',
-    name: 'Cardio Intense',
-    type: 'cardio' as const,
-    date: '2024-01-14',
-    time: '18:00',
-    duration: 45,
-    status: 'completed' as const,
-    exercises: 4,
-    rpe: 8,
-    painLevel: 2,
-  },
-  {
-    id: '2',
-    name: 'Musculation Bras',
-    type: 'musculation' as const,
-    date: '2024-01-12',
-    time: '19:30',
-    duration: 60,
-    status: 'completed' as const,
-    exercises: 6,
-    rpe: 7,
-    painLevel: 1,
-  },
-  {
-    id: '3',
-    name: 'Yoga Relaxation',
-    type: 'yoga' as const,
-    date: '2024-01-10',
-    time: '20:00',
-    duration: 30,
-    status: 'completed' as const,
-    exercises: 8,
-    rpe: 4,
-    painLevel: 0,
-  },
-];
-
-const mockStats = {
-  totalSessions: 23,
-  thisWeek: 4,
-  thisMonth: 12,
-  averageRPE: 6.2,
-  totalDuration: 18.5,
-};
+import {
+  Search,
+  Filter,
+  Calendar,
+  TrendingUp,
+  Download,
+  Loader2,
+} from 'lucide-react';
+import {
+  useSportHistory,
+  useSportHistoryStats,
+} from '../../hooks/useSportHistory';
+import { useSportStats } from '../../hooks/useSportStats';
+import type { HistoryFilters } from '../../hooks/useSportHistory';
 
 export function SportHistoryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [periodFilter, setPeriodFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculer les filtres de date basés sur la période
+  const dateFilters = useMemo(() => {
+    const now = new Date();
+    const filters: Partial<HistoryFilters> = {};
+
+    if (periodFilter !== 'all') {
+      const startDate = new Date();
+      switch (periodFilter) {
+        case 'week':
+          startDate.setDate(now.getDate() - 7);
+          break;
+        case 'month':
+          startDate.setMonth(now.getMonth() - 1);
+          break;
+        case 'year':
+          startDate.setFullYear(now.getFullYear() - 1);
+          break;
+      }
+      filters.startDate = startDate.toISOString().split('T')[0];
+      filters.endDate = now.toISOString().split('T')[0];
+    }
+
+    return filters;
+  }, [periodFilter]);
+
+  // Construire les filtres pour les hooks
+  const historyFilters: HistoryFilters = {
+    ...dateFilters,
+    type: typeFilter === 'all' ? undefined : (typeFilter as any),
+    searchQuery: searchQuery || undefined,
+    page: currentPage,
+    limit: 10,
+  };
+
+  // Utiliser les hooks réels
+  const {
+    sessions,
+    totalCount,
+    isLoading: historyLoading,
+    error: historyError,
+    hasNextPage,
+    hasPreviousPage,
+    refetch: refetchHistory,
+  } = useSportHistory(historyFilters);
+
+  const {
+    stats: historyStats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useSportHistoryStats(historyFilters);
+
+  const { stats: globalStats, isLoading: globalStatsLoading } = useSportStats({
+    period: 'month',
+  });
 
   const handleStartSession = (session: { id: string; name: string }) => {
     console.log('Démarrer séance:', session);
@@ -82,13 +103,30 @@ export function SportHistoryPage() {
     console.log('Dupliquer séance:', session);
   };
 
-  const filteredSessions = mockSessions.filter(session => {
-    const matchesSearch = session.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesType = typeFilter === 'all' || session.type === typeFilter;
-    return matchesSearch && matchesType;
-  });
+  const handleExport = () => {
+    console.log('Exporter les données');
+  };
+
+  // Transformer les données pour le composant SessionList
+  const transformedSessions = sessions.map(session => ({
+    id: session.id,
+    name: session.name,
+    type: session.type,
+    date: session.date,
+    time: new Date(session.created_at).toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+    duration: session.duration_minutes || 0,
+    status: session.status,
+    exercises: session.sport_exercises?.length || 0,
+    rpe: session.rpe_score || 0,
+    painLevel: session.pain_level || 0,
+  }));
+
+  // Gestion des états de chargement et d'erreur
+  const isLoading = historyLoading || statsLoading || globalStatsLoading;
+  const hasError = historyError || statsError;
 
   return (
     <div className="p-4 space-y-6">
@@ -98,23 +136,66 @@ export function SportHistoryPage() {
         <p className="text-gray-600">Consultez vos séances passées</p>
       </div>
 
+      {/* Gestion des erreurs */}
+      {hasError && (
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="p-4">
+            <div className="text-red-800">
+              <p className="font-medium">
+                Erreur lors du chargement des données
+              </p>
+              <p className="text-sm mt-1">
+                {historyError?.message ||
+                  statsError?.message ||
+                  "Une erreur inattendue s'est produite"}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Statistiques rapides */}
       <div className="grid grid-cols-2 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600">
-              {mockStats.totalSessions}
-            </div>
-            <div className="text-sm text-gray-600">Séances totales</div>
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-blue-600">
+                  {historyStats?.totalSessions ||
+                    globalStats?.total_sessions ||
+                    0}
+                </div>
+                <div className="text-sm text-gray-600">Séances totales</div>
+              </>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">
-              {mockStats.totalDuration}h
-            </div>
-            <div className="text-sm text-gray-600">Temps total</div>
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-green-600" />
+              </div>
+            ) : (
+              <>
+                <div className="text-2xl font-bold text-green-600">
+                  {Math.round(
+                    ((historyStats?.totalDuration ||
+                      globalStats?.total_duration_minutes ||
+                      0) /
+                      60) *
+                      10
+                  ) / 10}
+                  h
+                </div>
+                <div className="text-sm text-gray-600">Temps total</div>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -186,20 +267,28 @@ export function SportHistoryPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center">
-              <div className="text-lg font-semibold text-gray-900">
-                {mockStats.thisWeek}
-              </div>
-              <div className="text-sm text-gray-600">Cette semaine</div>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-4">
+              <Loader2 className="h-6 w-6 animate-spin text-gray-600" />
             </div>
-            <div className="text-center">
-              <div className="text-lg font-semibold text-gray-900">
-                {mockStats.averageRPE}/10
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <div className="text-lg font-semibold text-gray-900">
+                  {globalStats?.weekly_frequency || 0}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Fréquence hebdomadaire
+                </div>
               </div>
-              <div className="text-sm text-gray-600">RPE moyen</div>
+              <div className="text-center">
+                <div className="text-lg font-semibold text-gray-900">
+                  {historyStats?.averageRPE || globalStats?.average_rpe || 0}/10
+                </div>
+                <div className="text-sm text-gray-600">RPE moyen</div>
+              </div>
             </div>
-          </div>
+          )}
         </CardContent>
       </Card>
 
@@ -209,34 +298,72 @@ export function SportHistoryPage() {
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center space-x-2">
               <Calendar className="h-5 w-5" />
-              <span>Séances terminées</span>
+              <span>Séances terminées ({totalCount})</span>
             </CardTitle>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={handleExport}>
               <Download className="h-4 w-4 mr-1" />
               Exporter
             </Button>
           </div>
         </CardHeader>
         <CardContent>
-          {filteredSessions.length === 0 ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-gray-600" />
+              <span className="ml-2 text-gray-600">
+                Chargement des séances...
+              </span>
+            </div>
+          ) : transformedSessions.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-gray-500 text-lg mb-2">
                 Aucune séance trouvée
               </div>
               <div className="text-gray-400 text-sm">
-                {searchQuery || typeFilter !== 'all'
+                {searchQuery || typeFilter !== 'all' || periodFilter !== 'all'
                   ? 'Aucune séance ne correspond à vos critères'
                   : 'Vos séances terminées apparaîtront ici'}
               </div>
             </div>
           ) : (
-            <SessionList
-              sessions={filteredSessions}
-              onStart={handleStartSession}
-              onEdit={handleEditSession}
-              onDuplicate={handleDuplicateSession}
-              variant="completed"
-            />
+            <>
+              <SessionList
+                sessions={transformedSessions}
+                onStart={handleStartSession}
+                onEdit={handleEditSession}
+                onDuplicate={handleDuplicateSession}
+                variant="completed"
+              />
+
+              {/* Pagination */}
+              {(hasNextPage || hasPreviousPage) && (
+                <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setCurrentPage(prev => Math.max(1, prev - 1))
+                    }
+                    disabled={!hasPreviousPage}
+                  >
+                    Précédent
+                  </Button>
+
+                  <span className="text-sm text-gray-600">
+                    Page {currentPage} sur {Math.ceil(totalCount / 10)}
+                  </span>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(prev => prev + 1)}
+                    disabled={!hasNextPage}
+                  >
+                    Suivant
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>

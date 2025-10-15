@@ -44,11 +44,13 @@ Revia est une application web moderne destinée aux **patients en rééducation*
 ## 🔐 Sécurité
 
 ### Variables d'Environnement
+
 - **Configuration sécurisée** des variables d'environnement
 - **Protection des secrets** avec garde-fous automatiques
 - **Documentation complète** : [docs/security/env.md](docs/security/env.md)
 
 ### Règles pour les Agents
+
 - **Règles strictes** pour éviter les fuites de données
 - **Documentation** : [docs/agent-rules.md](docs/agent-rules.md)
 

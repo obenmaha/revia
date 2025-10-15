@@ -25,12 +25,16 @@ console.log('🔧 Génération des types Supabase...\n');
 const migrationsDir = join(rootDir, 'supabase', 'migrations');
 if (!existsSync(migrationsDir)) {
   console.error('❌ Erreur: Aucun dossier de migrations trouvé');
-  console.error('   Créez d\'abord vos migrations SQL dans supabase/migrations/');
+  console.error(
+    "   Créez d'abord vos migrations SQL dans supabase/migrations/"
+  );
   process.exit(1);
 }
 
 // Méthode 1: Essayer avec le projet Supabase distant
-console.log('📡 Tentative de génération depuis le projet Supabase distant...\n');
+console.log(
+  '📡 Tentative de génération depuis le projet Supabase distant...\n'
+);
 
 try {
   // Lire les variables d'environnement
@@ -39,7 +43,9 @@ try {
 
   if (existsSync(envPath)) {
     const envContent = readFileSync(envPath, 'utf-8');
-    const urlMatch = envContent.match(/VITE_SUPABASE_URL=https:\/\/([^.]+)\.supabase\.co/);
+    const urlMatch = envContent.match(
+      /VITE_SUPABASE_URL=https:\/\/([^.]+)\.supabase\.co/
+    );
     if (urlMatch) {
       projectRef = urlMatch[1];
       console.log(`✅ Projet Supabase détecté: ${projectRef}\n`);
@@ -55,7 +61,7 @@ try {
         `npx supabase gen types typescript --project-id ${projectRef} > "${output}"`,
         {
           stdio: 'inherit',
-          cwd: rootDir
+          cwd: rootDir,
         }
       );
       console.log(`\n✅ Types générés avec succès: ${output}\n`);
@@ -77,13 +83,10 @@ try {
   const output = join(rootDir, 'src', 'types', 'supabase-generated.ts');
 
   // Utiliser supabase db diff pour générer les types
-  execSync(
-    `npx supabase gen types typescript --local > "${output}"`,
-    {
-      stdio: 'inherit',
-      cwd: rootDir
-    }
-  );
+  execSync(`npx supabase gen types typescript --local > "${output}"`, {
+    stdio: 'inherit',
+    cwd: rootDir,
+  });
 
   console.log(`\n✅ Types générés avec succès: ${output}\n`);
   addTypeExports(output);
@@ -94,7 +97,7 @@ try {
   console.error('   npm install -g supabase\n');
 
   // Méthode 3: Créer un fichier de types de base manuellement
-  console.log('📝 Création d\'un fichier de types de base...\n');
+  console.log("📝 Création d'un fichier de types de base...\n");
   createBasicTypes();
 }
 
@@ -126,7 +129,7 @@ export type Document = Tables<'documents'>;
     writeFileSync(filePath, content, 'utf-8');
     console.log('✅ Exports de types ajoutés\n');
   } catch (error) {
-    console.warn('⚠️  Impossible d\'ajouter les exports de types');
+    console.warn("⚠️  Impossible d'ajouter les exports de types");
   }
 }
 
@@ -432,7 +435,9 @@ export type Updates<T extends keyof Database['public']['Tables']> = Database['pu
 
   writeFileSync(output, basicTypes, 'utf-8');
   console.log(`✅ Types de base créés: ${output}\n`);
-  console.log('⚠️  Note: Ces types sont basiques. Pour une génération complète:');
+  console.log(
+    '⚠️  Note: Ces types sont basiques. Pour une génération complète:'
+  );
   console.log('   1. Installez Supabase CLI: npm install -g supabase');
   console.log('   2. Relancez: npm run types:generate\n');
 }

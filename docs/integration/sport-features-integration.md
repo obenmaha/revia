@@ -28,6 +28,7 @@ L'application utilise un système de modes pour séparer les fonctionnalités :
 ### 2. Base de Données
 
 #### Tables Existantes (Préservées)
+
 - `users` - Utilisateurs/praticiens
 - `patients` - Patients du cabinet
 - `sessions` - Séances de kinésithérapie
@@ -36,6 +37,7 @@ L'application utilise un système de modes pour séparer les fonctionnalités :
 - `documents` - Documents patients
 
 #### Nouvelles Tables Sport
+
 - `sport_sessions` - Sessions d'entraînement sportif
 - `sport_exercises` - Exercices dans les sessions sport
 
@@ -50,8 +52,8 @@ CREATE POLICY "Users can view own sport sessions" ON sport_sessions
 CREATE POLICY "Users can view sport exercises for own sessions" ON sport_exercises
   FOR SELECT USING (
     EXISTS (
-      SELECT 1 FROM sport_sessions 
-      WHERE sport_sessions.id = sport_exercises.session_id 
+      SELECT 1 FROM sport_sessions
+      WHERE sport_sessions.id = sport_exercises.session_id
       AND sport_sessions.user_id = auth.uid()
     )
   );
@@ -65,7 +67,9 @@ CREATE POLICY "Users can view sport exercises for own sessions" ON sport_exercis
 
 ```typescript
 // Même système Auth pour les deux modes
-const { data: { user } } = await supabase.auth.getUser();
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 
 // RLS automatique selon l'utilisateur connecté
 // - Mode Cabinet : Données des patients du praticien
@@ -172,7 +176,7 @@ En cas de problème, les données originales restent intactes :
 const sanitizedData = GDPRComplianceService.sanitizeDataForExport(sessions, {
   includePersonalData: false,
   anonymizeData: true,
-  includeLegalNotice: true
+  includeLegalNotice: true,
 });
 ```
 
@@ -192,7 +196,7 @@ const exportResult = await SportExportService.exportCSV({
   format: 'csv',
   period: 'month',
   includePersonalData: false,
-  includeLegalNotice: true
+  includeLegalNotice: true,
 });
 ```
 
@@ -265,7 +269,7 @@ describe('Tests de migration', () => {
 ```typescript
 // Tests de performance des nouvelles fonctionnalités
 describe('Tests de performance', () => {
-  it('devrait charger l\'historique en moins de 2 secondes', async () => {
+  it("devrait charger l'historique en moins de 2 secondes", async () => {
     const startTime = performance.now();
     await loadSportHistory();
     const loadTime = performance.now() - startTime;
@@ -350,6 +354,7 @@ src/components/features/
 L'intégration des fonctionnalités sport dans App-Kine respecte l'architecture existante tout en apportant de nouvelles capacités. La séparation des modes garantit l'isolation des données et la compatibilité avec les fonctionnalités existantes.
 
 **Points clés de l'intégration :**
+
 - ✅ Aucun impact sur les fonctionnalités existantes
 - ✅ Migration transparente des données
 - ✅ Sécurité et conformité RGPD
@@ -359,8 +364,10 @@ L'intégration des fonctionnalités sport dans App-Kine respecte l'architecture 
 - ✅ Maintenance simplifiée
 
 **Prochaines étapes :**
+
 1. Exécution des tests de migration
 2. Déploiement en staging
 3. Tests utilisateur
 4. Déploiement en production
 5. Monitoring et ajustements
+

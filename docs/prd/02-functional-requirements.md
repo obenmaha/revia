@@ -7,6 +7,7 @@
 **FR1** : L'application doit permettre la création d'un profil léger avec prénom/pseudo, objectifs simples (texte), et préférences utilisateur.
 
 **Détails** :
+
 - Nom d'affichage ou pseudo (obligatoire)
 - Objectifs sportifs en texte libre (optionnel)
 - Préférences utilisateur (notifications, thème, etc.)
@@ -17,6 +18,7 @@
 **FR2** : L'application doit permettre de programmer une séance avec date, type, et objectifs rapides.
 
 **Détails** :
+
 - Sélection de date et heure
 - Type de séance (cardio, musculation, yoga, autre)
 - Objectifs de la séance en texte libre
@@ -27,6 +29,7 @@
 **FR3** : L'application doit permettre de dupliquer une séance sur dates multiples (fonctionnalité clé UX MVP).
 
 **Détails** :
+
 - Duplication d'une séance existante
 - Sélection de dates multiples
 - Options de récurrence (quotidien, tous les 2 jours, hebdomadaire)
@@ -37,6 +40,7 @@
 **FR4** : L'application doit permettre d'enregistrer les exercices de la séance (nom, séries/répétitions/temps au besoin), RPE & douleur (échelle simple), et note rapide.
 
 **Détails** :
+
 - Nom de l'exercice
 - Nombre de séries et répétitions
 - Poids ou durée selon le type d'exercice
@@ -49,6 +53,7 @@
 **FR5** : L'application doit permettre de valider la séance (mise à jour des statistiques + feedback).
 
 **Détails** :
+
 - Validation finale de la séance
 - Mise à jour automatique des statistiques
 - Feedback de félicitations
@@ -59,6 +64,7 @@
 **FR6** : L'application doit fournir un historique chronologique avec filtres par période.
 
 **Détails** :
+
 - Liste chronologique des séances
 - Filtres par période (semaine, mois, année)
 - Filtres par type de séance
@@ -69,6 +75,7 @@
 **FR7** : L'application doit afficher des statistiques simples : fréquence/semaine, durée totale, tendance RPE.
 
 **Détails** :
+
 - Fréquence d'entraînement par semaine
 - Durée totale des séances
 - Tendance du RPE dans le temps
@@ -79,6 +86,7 @@
 **FR8** : L'application doit implémenter une gamification basique : streaks + quelques badges (paliers).
 
 **Détails** :
+
 - Système de streaks (jours consécutifs)
 - Badges de progression (première séance, régularité, etc.)
 - Paliers de récompenses
@@ -89,6 +97,7 @@
 **FR9** : L'application doit envoyer des rappels (notifications locales/email simples ; opt-in).
 
 **Détails** :
+
 - Notifications locales pour les séances programmées
 - Emails de rappel (optionnel)
 - Paramètres de notification personnalisables
@@ -105,6 +114,7 @@
 **FR10.3** : Les données Guest doivent être chiffrées localement et supprimées automatiquement après migration ou expiration.
 
 **Détails** :
+
 - Aucune inscription requise
 - Données stockées localement
 - Onboarding en 1 clic
@@ -122,6 +132,7 @@
 **FR11.3** : L'export doit être limité aux données strictement nécessaires (principe de minimisation).
 
 **Détails** :
+
 - Export CSV des séances validées
 - Export PDF avec graphiques basiques
 - Mentions légales RGPD incluses

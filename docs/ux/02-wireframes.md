@@ -234,14 +234,11 @@ interface StreakCounterProps {
 }
 
 // Usage
-<StreakCounter 
-  currentStreak={7} 
-  bestStreak={15} 
-  variant="detailed" 
-/>
+<StreakCounter currentStreak={7} bestStreak={15} variant="detailed" />;
 ```
 
 **Design :**
+
 - **Compact** : 🔥 7 jours
 - **Detailed** : Carte avec progression et historique
 
@@ -258,15 +255,16 @@ interface BadgeProps {
 }
 
 // Usage
-<Badge 
+<Badge
   type="milestone"
   name="Régulier"
   description="7 séances consécutives"
   earned={true}
-/>
+/>;
 ```
 
 **Design :**
+
 - **Earned** : Badge coloré avec animation
 - **Locked** : Badge grisé avec progression
 - **Special** : Badge avec effet spécial
@@ -282,15 +280,16 @@ interface RPEScaleProps {
 }
 
 // Usage
-<RPEScale 
-  value={7} 
+<RPEScale
+  value={7}
   onChange={setRPE}
   label="RPE (Rate of Perceived Exertion)"
   showLabels={true}
-/>
+/>;
 ```
 
 **Design :**
+
 - Échelle de 1 à 10 avec couleurs
 - Labels descriptifs (Très facile → Très difficile)
 - Animation au changement de valeur
@@ -307,16 +306,17 @@ interface SessionCardProps {
 }
 
 // Usage
-<SessionCard 
+<SessionCard
   session={session}
   onStart={handleStart}
   onEdit={handleEdit}
   onDuplicate={handleDuplicate}
   variant="upcoming"
-/>
+/>;
 ```
 
 **Design :**
+
 - **Upcoming** : Carte avec CTA "Commencer"
 - **Completed** : Carte avec statistiques et RPE
 - **Draft** : Carte avec CTA "Continuer"

@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -143,7 +142,13 @@ export function SessionCard({
               <Button onClick={onStart} className="flex-1" size="sm">
                 Continuer
               </Button>
-              <Button onClick={onEdit} variant="outline" size="sm">
+              <Button 
+                onClick={onEdit} 
+                variant="outline" 
+                size="sm"
+                aria-label="Modifier la séance"
+                title="Modifier la séance"
+              >
                 ✏️
               </Button>
             </>
@@ -154,10 +159,22 @@ export function SessionCard({
               <Button onClick={onStart} className="flex-1" size="sm">
                 {session.status === 'in_progress' ? 'Reprendre' : 'Commencer'}
               </Button>
-              <Button onClick={onEdit} variant="outline" size="sm">
+              <Button 
+                onClick={onEdit} 
+                variant="outline" 
+                size="sm"
+                aria-label="Modifier la séance"
+                title="Modifier la séance"
+              >
                 ✏️
               </Button>
-              <Button onClick={onDuplicate} variant="outline" size="sm">
+              <Button 
+                onClick={onDuplicate} 
+                variant="outline" 
+                size="sm"
+                aria-label="Dupliquer la séance"
+                title="Dupliquer la séance"
+              >
                 📋
               </Button>
             </>
@@ -173,7 +190,13 @@ export function SessionCard({
               >
                 Voir les détails
               </Button>
-              <Button onClick={onDuplicate} variant="outline" size="sm">
+              <Button 
+                onClick={onDuplicate} 
+                variant="outline" 
+                size="sm"
+                aria-label="Dupliquer la séance"
+                title="Dupliquer la séance"
+              >
                 📋
               </Button>
             </>

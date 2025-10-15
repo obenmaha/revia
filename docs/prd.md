@@ -429,7 +429,6 @@ Afin de maintenir ma régularité dans les exercices.
 5. L'interface est engageante
 6. Les statistiques personnelles sont affichées
 
-
 ## Checklist Results Report
 
 _Cette section sera remplie après l'exécution de la checklist PM_

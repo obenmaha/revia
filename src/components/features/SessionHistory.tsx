@@ -7,7 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useSessionsPaginated } from '@/hooks/useSessions';
-import type { Session, SessionFilters as SessionFiltersType } from '@/types/session';
+import type {
+  Session,
+  SessionFilters as SessionFiltersType,
+} from '@/types/session';
 import SessionFilters from './SessionFilters';
 import SessionHistoryItem from './SessionHistoryItem';
 

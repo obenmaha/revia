@@ -70,6 +70,11 @@ function getRuntimeConfig(): Partial<EnvConfig> {
 
   // Fallback vers les variables d'environnement Vite
   console.log("🔄 Utilisation des variables d'environnement Vite");
+  
+  // Valeurs par défaut pour le développement
+  const defaultSupabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
+  const defaultAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key';
+  
   return {
     app: {
       name: import.meta.env.VITE_APP_NAME || 'App-Kine',
@@ -78,19 +83,19 @@ function getRuntimeConfig(): Partial<EnvConfig> {
       logLevel: import.meta.env.VITE_LOG_LEVEL || 'info',
     },
     api: {
-      baseUrl: import.meta.env.VITE_SUPABASE_URL || '',
-      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+      baseUrl: defaultSupabaseUrl,
+      anonKey: defaultAnonKey,
       serviceRoleKey: '', // INTERDIT côté frontend - sécurité critique
       timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '10000', 10),
     },
     supabase: {
-      url: import.meta.env.VITE_SUPABASE_URL || '',
-      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+      url: defaultSupabaseUrl,
+      anonKey: defaultAnonKey,
       serviceRoleKey: '', // INTERDIT côté frontend - sécurité critique
     },
     services: {
-      email: import.meta.env.VITE_EMAIL_SERVICE_URL || '',
-      sms: import.meta.env.VITE_SMS_SERVICE_URL || '',
+      email: import.meta.env.VITE_EMAIL_SERVICE_URL || 'https://api.emailservice.com',
+      sms: import.meta.env.VITE_SMS_SERVICE_URL || 'https://api.smsservice.com',
     },
   };
 }
@@ -108,11 +113,19 @@ export const env: EnvConfig = {
 // Fonction utilitaire pour valider les variables d'environnement
 export const validateEnv = (): boolean => {
   // Vérifier que l'URL Supabase est valide
-  new URL(env.supabase.url);
+  if (!env.supabase.url || env.supabase.url === '' || env.supabase.url === 'https://placeholder.supabase.co') {
+    throw new Error('VITE_SUPABASE_URL est requis et doit être une URL Supabase valide (pas de placeholder)');
+  }
+  
+  try {
+    new URL(env.supabase.url);
+  } catch (error) {
+    throw new Error(`VITE_SUPABASE_URL n'est pas une URL valide: ${env.supabase.url}`);
+  }
 
   // Vérifier que les clés Supabase sont présentes
-  if (!env.supabase.anonKey) {
-    throw new Error('VITE_SUPABASE_ANON_KEY est requis');
+  if (!env.supabase.anonKey || env.supabase.anonKey === '' || env.supabase.anonKey === 'placeholder-key') {
+    throw new Error('VITE_SUPABASE_ANON_KEY est requis et doit être une clé Supabase valide (pas de placeholder)');
   }
 
   // SÉCURITÉ CRITIQUE: Vérifier qu'aucune clé service_role n'est exposée côté frontend
@@ -138,9 +151,34 @@ if (env.app.debug) {
   console.log("Configuration de l'environnement:", env);
 }
 
-try {
-  validateEnv();
-} catch (error) {
-  console.error("Erreur de validation des variables d'environnement:", error);
-  throw error;
+// Mode de développement : validation plus permissive
+const isDevelopment = import.meta.env.DEV || env.app.debug;
+
+if (isDevelopment) {
+  // En développement, on vérifie si les variables sont des placeholders
+  const hasPlaceholderUrl = env.supabase.url === 'https://placeholder.supabase.co';
+  const hasPlaceholderKey = env.supabase.anonKey === 'placeholder-key';
+  
+  if (hasPlaceholderUrl || hasPlaceholderKey) {
+    console.warn("⚠️  Configuration Supabase avec des valeurs placeholder détectée");
+    console.warn("📝 Pour une configuration complète, créez un fichier .env.local avec vos vraies clés Supabase");
+    console.warn("🔗 Voir env.local.example pour un exemple de configuration");
+    console.warn("🚀 L'application fonctionnera en mode développement avec des fonctionnalités limitées");
+  } else {
+    try {
+      validateEnv();
+      console.log("✅ Configuration des variables d'environnement valide");
+    } catch (error) {
+      console.warn("⚠️  Variables d'environnement invalides:", error);
+      console.warn("📝 Vérifiez votre configuration dans .env.local");
+    }
+  }
+} else {
+  // En production, validation stricte
+  try {
+    validateEnv();
+  } catch (error) {
+    console.error("Erreur de validation des variables d'environnement:", error);
+    throw error;
+  }
 }

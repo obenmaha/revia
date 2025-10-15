@@ -1,0 +1,44 @@
+# Quality Gate Decision - Story 2.1: Profil Patient/Sportif
+
+schema: 2
+story: '2.1'
+story_title: 'Profil Patient/Sportif'
+gate: 'PASS'
+status_reason: 'Architecture technique robuste avec validation Zod complète et interface utilisateur moderne'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-01-14T10:00:00Z'
+
+waiver: { active: false }
+
+top_issues: []
+
+risk_summary:
+  totals: { critical: 0, high: 0, medium: 0, low: 0 }
+  recommendations:
+    must_fix: []
+    monitor: []
+
+quality_score: 97
+expires: '2025-01-28T00:00:00Z'
+
+evidence:
+  tests_reviewed: 10
+  risks_identified: 0
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6]
+    ac_gaps: []
+
+nfr_validation:
+  security: { status: PASS, notes: 'RLS activé, chiffrement automatique et conformité RGPD native' }
+  performance: { status: PASS, notes: 'Interface mobile-first avec animations Framer Motion' }
+  reliability: { status: PASS, notes: 'Service PatientsService avec gestion d\'erreurs robuste' }
+  maintainability: { status: PASS, notes: 'Architecture claire avec séparation des responsabilités' }
+
+recommendations:
+  immediate: []
+  future:
+    - action: 'Ajouter des tests d\'intégration pour les opérations CRUD'
+      refs: ['src/services/patientsService.ts']
+    - action: 'Implémenter des tests E2E pour les flux utilisateur'
+      refs: ['src/pages/PatientProfilePage.tsx']
+

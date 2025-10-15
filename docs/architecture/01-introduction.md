@@ -11,12 +11,14 @@ Ce document complète l'architecture existante en définissant comment les nouve
 ### Existing Project Analysis
 
 **Current Project State:**
+
 - **Primary Purpose:** Application de gestion de cabinet de kinésithérapie avec gestion des patients, séances et facturation
 - **Current Tech Stack:** React 19 + Vite + TypeScript + Tailwind + Zustand + TanStack Query + Supabase
 - **Architecture Style:** Serverless "Full Supabase + Edge Functions" avec architecture modulaire
 - **Deployment Method:** Vercel (Frontend) + Supabase (Backend)
 
 **Available Documentation:**
+
 - Architecture technique existante (docs/architecture-technique.md)
 - PRD v1.0 et v1.1 avec spécifications détaillées
 - Spécifications techniques complètes
@@ -24,6 +26,7 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - Types TypeScript et modèles de données Supabase
 
 **Identified Constraints:**
+
 - Architecture Supabase existante à préserver
 - RLS (Row Level Security) déjà implémenté
 - Structure de base de données cabinet existante
@@ -32,6 +35,6 @@ Ce document complète l'architecture existante en définissant comment les nouve
 
 ### Change Log
 
-| Change | Date | Version | Description | Author |
-|--------|------|---------|-------------|--------|
-| Création | 2025-01-14 | 1.0 | Architecture Sport MVP | BMad Orchestrator |
+| Change   | Date       | Version | Description            | Author            |
+| -------- | ---------- | ------- | ---------------------- | ----------------- |
+| Création | 2025-01-14 | 1.0     | Architecture Sport MVP | BMad Orchestrator |

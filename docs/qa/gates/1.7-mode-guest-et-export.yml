@@ -1,0 +1,145 @@
+# Quality Gate Decision - Story 1.7: Mode Guest et Export
+
+schema: 1
+story: '1.7'
+story_title: 'Mode Guest et Export'
+gate: 'PASS_WITH_CONDITIONS'
+status_reason: 'Architecture technique validée avec conditions strictes de sécurité et conformité RGPD'
+reviewer: 'Winston (Architect)'
+updated: '2025-01-15T10:00:00Z'
+
+waiver: { active: false }
+
+top_issues:
+  - 'Audit de sécurité obligatoire avant développement'
+  - 'Validation RGPD par un DPO requis'
+  - 'Tests de performance sur le chiffrement mobile'
+
+risk_summary:
+  totals: { critical: 2, high: 3, medium: 2, low: 1 }
+  recommendations:
+    must_fix:
+      - 'Audit de sécurité complet par un expert'
+      - 'Validation juridique de la conformité RGPD'
+      - 'Tests de performance du chiffrement sur mobile'
+    monitor:
+      - 'Limite de taille localStorage (~5-10MB)'
+      - 'Performance du chiffrement/déchiffrement'
+      - 'Expiration automatique après 30 jours'
+    future:
+      - 'Implémentation d\'un système de compression pour localStorage'
+      - 'Optimisation du chiffrement pour les devices bas de gamme'
+
+quality_score: 75
+expires: '2025-01-29T00:00:00Z'
+
+evidence:
+  tests_reviewed: 0
+  risks_identified: 8
+  trace:
+    ac_covered: [1, 2, 3, 4]
+    ac_gaps: []
+
+nfr_validation:
+  security: { status: CRITICAL, notes: 'Chiffrement AES-256-GCM obligatoire, validation stricte, conformité RGPD stricte' }
+  performance: { status: HIGH_RISK, notes: 'Limite localStorage, performance chiffrement mobile, migration asynchrone' }
+  reliability: { status: MONITOR, notes: 'Migration avec rollback, validation intégrité données' }
+  maintainability: { status: PASS, notes: 'Architecture modulaire avec services spécialisés' }
+
+technical_validation:
+  architecture_compatibility: PASS
+  stack_technology: PASS
+  database_integration: PASS
+  security_compliance: CRITICAL
+  performance_considerations: HIGH_RISK
+
+dependencies_analysis:
+  new_dependencies:
+    - 'crypto-js (chiffrement client-side)'
+  existing_dependencies:
+    - 'localStorage-api (stockage Guest)'
+    - 'supabase (migration vers compte)'
+  compatibility: PASS
+
+implementation_plan:
+  phase_1:
+    - 'Audit de sécurité complet par un expert'
+    - 'Validation juridique RGPD par un DPO'
+    - 'Implémentation du service de chiffrement'
+  phase_2:
+    - 'Développement du mode Guest avec limitations strictes'
+    - 'Tests de performance sur mobile'
+  phase_3:
+    - 'Implémentation de la migration sécurisée'
+    - 'Tests de conformité RGPD complets'
+
+recommendations:
+  immediate:
+    - action: 'Audit de sécurité complet par un expert sécurité'
+      refs: ['src/services/encryptionService.ts']
+    - action: 'Validation RGPD par un Data Protection Officer (DPO)'
+      refs: ['src/services/gdprService.ts']
+    - action: 'Tests de performance du chiffrement sur devices mobiles'
+      refs: ['src/services/encryptionService.ts']
+  future:
+    - action: 'Implémentation d\'un système de compression pour localStorage'
+      refs: ['src/services/guestService.ts']
+    - action: 'Optimisation du chiffrement pour les devices bas de gamme'
+      refs: ['src/services/encryptionService.ts']
+
+security_considerations:
+  - 'Chiffrement AES-256-GCM obligatoire pour toutes les données Guest'
+  - 'Validation stricte des données avant chiffrement'
+  - 'Protection contre les injections XSS/CSRF'
+  - 'Consentement explicite avant migration'
+  - 'Suppression complète et vérifiable des données'
+  - 'Expiration automatique après 30 jours'
+  - 'Aucune transmission de données sans consentement'
+
+performance_considerations:
+  - 'Limite de taille localStorage (~5-10MB selon navigateur)'
+  - 'Limite de 100 sessions maximum en mode Guest'
+  - 'Performance du chiffrement/déchiffrement (optimiser pour mobile)'
+  - 'Migration asynchrone avec indicateur de progression'
+  - 'Nettoyage régulier des données expirées'
+  - 'Export optimisé pour éviter le blocage de l\'UI'
+
+rgpd_compliance:
+  - 'Consentement explicite avant migration'
+  - 'Droit à l\'oubli : suppression complète et vérifiable'
+  - 'Minimisation des données : collecte uniquement nécessaire'
+  - 'Transparence : mentions légales dans tous les exports'
+  - 'Sécurité des données : chiffrement obligatoire'
+  - 'Logs de consentement pour traçabilité'
+
+technical_constraints:
+  - 'React 19 avec TypeScript strict'
+  - 'LocalStorage pour le stockage Guest (limite ~5-10MB)'
+  - 'crypto-js pour le chiffrement client-side (AES-256-GCM)'
+  - 'Expiration automatique après 30 jours'
+  - 'Conformité RGPD stricte (consentement explicite, droit à l\'oubli)'
+  - 'Migration sécurisée vers Supabase avec validation'
+  - 'Support du mode hors ligne limité (localStorage uniquement)'
+  - 'Interface responsive mobile-first'
+  - 'Aucune dépendance serveur pour le mode Guest'
+
+pre_development_requirements:
+  - 'Audit de sécurité complet par un expert'
+  - 'Validation juridique de la conformité RGPD'
+  - 'Préparation de la documentation RGPD complète'
+  - 'Définition des KPIs de sécurité et conformité'
+
+post_development_requirements:
+  - 'Audit de sécurité complet par un tiers'
+  - 'Validation RGPD par un DPO'
+  - 'Tests de charge sur le chiffrement/déchiffrement'
+  - 'Procédure de gestion des incidents de sécurité'
+  - 'Plan de communication sur la protection des données'
+
+integration_points:
+  story_1_4: 'Validation de séances en mode Guest'
+  story_1_5: 'Statistiques et historique en mode Guest'
+  story_1_6: 'Gamification en mode Guest (localStorage)'
+  export_service: 'Extension pour l\'export des données Guest'
+  migration: 'Migration sécurisée vers compte Supabase'
+

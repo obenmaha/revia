@@ -4,46 +4,53 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
+
+// Mock pour éviter les erreurs de DOM
+Object.defineProperty(window, 'getComputedStyle', {
+  value: () => ({
+    getPropertyValue: () => '',
+  }),
+});
 import { SportExportModal } from '@/components/features/sport/SportExport/SportExportModal';
 import { SportCSVExport } from '@/components/features/sport/SportExport/SportCSVExport';
 import { SportPDFExport } from '@/components/features/sport/SportExport/SportPDFExport';
 
-// Mock des composants d'export
+// Mock des composants d'export - Utiliser les vrais composants mais avec des mocks pour les dépendances
 vi.mock('@/components/features/sport/SportExport/SportExportModal', () => ({
-  SportExportModal: ({ isOpen, onClose, onExport }: any) => 
+  SportExportModal: ({ isOpen, onClose, onExport }: any) =>
     isOpen ? (
       <div data-testid="export-modal">
-        <button onClick={() => onExport('csv')}>Export CSV</button>
-        <button onClick={() => onExport('pdf')}>Export PDF</button>
+        <button onClick={() => onExport({ format: 'csv', period: 'month' })}>Export CSV</button>
+        <button onClick={() => onExport({ format: 'pdf', period: 'month' })}>Export PDF</button>
         <button onClick={onClose}>Fermer</button>
       </div>
-    ) : null
+    ) : null,
 }));
 
 vi.mock('@/components/features/sport/SportExport/SportCSVExport', () => ({
   SportCSVExport: ({ onExport, isExporting }: any) => (
     <div data-testid="csv-export">
-      <button 
+      <button
         onClick={() => onExport({ format: 'csv', period: 'month' })}
         disabled={isExporting}
       >
         {isExporting ? 'Export en cours...' : 'Exporter CSV'}
       </button>
     </div>
-  )
+  ),
 }));
 
 vi.mock('@/components/features/sport/SportExport/SportPDFExport', () => ({
   SportPDFExport: ({ onExport, isExporting }: any) => (
     <div data-testid="pdf-export">
-      <button 
+      <button
         onClick={() => onExport({ format: 'pdf', period: 'month' })}
         disabled={isExporting}
       >
         {isExporting ? 'Export en cours...' : 'Exporter PDF'}
       </button>
     </div>
-  )
+  ),
 }));
 
 // Mock des hooks
@@ -64,16 +71,16 @@ vi.mock('@/hooks/useSportHistory', () => ({
             id: 'ex-1',
             name: 'Course',
             duration_seconds: 1800,
-            exercise_type: 'cardio'
-          }
-        ]
-      }
+            exercise_type: 'cardio',
+          },
+        ],
+      },
     ],
     totalCount: 1,
     isLoading: false,
     error: null,
-    refetch: vi.fn()
-  }))
+    refetch: vi.fn(),
+  })),
 }));
 
 vi.mock('@/hooks/useSportStats', () => ({
@@ -87,12 +94,18 @@ vi.mock('@/hooks/useSportStats', () => ({
       best_streak: 12,
       sessions_by_type: { cardio: 6, musculation: 4 },
       monthly_progression: [
-        { month: '2025-01', sessions_count: 10, total_duration: 600, average_rpe: 6.5, streak: 5 }
-      ]
+        {
+          month: '2025-01',
+          sessions_count: 10,
+          total_duration: 600,
+          average_rpe: 6.5,
+          streak: 5,
+        },
+      ],
     },
     isLoading: false,
-    error: null
-  }))
+    error: null,
+  })),
 }));
 
 // Mock des services d'export
@@ -104,7 +117,7 @@ const mockExportService = {
 };
 
 vi.mock('@/services/sportExportService', () => ({
-  SportExportService: mockExportService
+  SportExportService: mockExportService,
 }));
 
 // Mock de la bibliothèque de génération PDF
@@ -118,13 +131,13 @@ vi.mock('jspdf', () => ({
     setTextColor: vi.fn(),
     rect: vi.fn(),
     line: vi.fn(),
-  }))
+  })),
 }));
 
 // Mock de la bibliothèque de génération CSV
 vi.mock('papaparse', () => ({
-  unparse: vi.fn((data) => 'mock-csv-data'),
-  parse: vi.fn()
+  unparse: vi.fn(data => 'mock-csv-data'),
+  parse: vi.fn(),
 }));
 
 const createTestWrapper = () => {
@@ -142,10 +155,10 @@ const createTestWrapper = () => {
   );
 };
 
-describe('Tests d\'intégration - Exports Sport', () => {
+describe("Tests d'intégration - Exports Sport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Mock des réponses Supabase
     vi.mocked(supabase.from).mockReturnValue({
       select: vi.fn().mockReturnThis(),
@@ -167,28 +180,28 @@ describe('Tests d\'intégration - Exports Sport', () => {
             rpe_score: 7,
             pain_level: 2,
             created_at: '2025-01-15T10:00:00Z',
-            updated_at: '2025-01-15T10:00:00Z'
-          }
+            updated_at: '2025-01-15T10:00:00Z',
+          },
         ],
-        error: null
-      })
+        error: null,
+      }),
     } as any);
 
     // Mock des fonctions d'export
     mockExportService.exportCSV.mockResolvedValue({
       success: true,
       data: 'mock-csv-data',
-      filename: 'sport-sessions-2025-01.csv'
+      filename: 'sport-sessions-2025-01.csv',
     });
 
     mockExportService.exportPDF.mockResolvedValue({
       success: true,
       data: 'mock-pdf-data',
-      filename: 'sport-sessions-2025-01.pdf'
+      filename: 'sport-sessions-2025-01.pdf',
     });
 
     mockExportService.validateExportData.mockReturnValue(true);
-    mockExportService.sanitizeExportData.mockImplementation((data) => data);
+    mockExportService.sanitizeExportData.mockImplementation(data => data);
   });
 
   afterEach(() => {
@@ -198,34 +211,38 @@ describe('Tests d\'intégration - Exports Sport', () => {
   describe('Export CSV - Intégration complète', () => {
     it('devrait exporter les données CSV avec succès', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
         expect(mockOnExport).toHaveBeenCalledWith({
           format: 'csv',
-          period: 'month'
+          period: 'month',
         });
       });
     });
 
-    it('devrait gérer les erreurs d\'export CSV', async () => {
-      mockExportService.exportCSV.mockRejectedValue(new Error('Erreur d\'export'));
-
-      const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
+    it("devrait gérer les erreurs d'export CSV", async () => {
+      mockExportService.exportCSV.mockRejectedValue(
+        new Error("Erreur d'export")
       );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      const mockOnExport = vi.fn();
+
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -235,13 +252,14 @@ describe('Tests d\'intégration - Exports Sport', () => {
 
     it('devrait valider les données avant export', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -251,13 +269,14 @@ describe('Tests d\'intégration - Exports Sport', () => {
 
     it('devrait nettoyer les données sensibles avant export', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -269,34 +288,38 @@ describe('Tests d\'intégration - Exports Sport', () => {
   describe('Export PDF - Intégration complète', () => {
     it('devrait exporter les données PDF avec succès', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportPDFExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter pdf/i });
+      render(<SportPDFExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter pdf/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
         expect(mockOnExport).toHaveBeenCalledWith({
           format: 'pdf',
-          period: 'month'
+          period: 'month',
         });
       });
     });
 
-    it('devrait gérer les erreurs d\'export PDF', async () => {
-      mockExportService.exportPDF.mockRejectedValue(new Error('Erreur d\'export PDF'));
-
-      const mockOnExport = vi.fn();
-      
-      render(
-        <SportPDFExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
+    it("devrait gérer les erreurs d'export PDF", async () => {
+      mockExportService.exportPDF.mockRejectedValue(
+        new Error("Erreur d'export PDF")
       );
 
-      const exportButton = screen.getByRole('button', { name: /exporter pdf/i });
+      const mockOnExport = vi.fn();
+
+      render(<SportPDFExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter pdf/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -306,13 +329,14 @@ describe('Tests d\'intégration - Exports Sport', () => {
 
     it('devrait générer un PDF avec les métadonnées appropriées', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportPDFExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter pdf/i });
+      render(<SportPDFExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter pdf/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -321,41 +345,45 @@ describe('Tests d\'intégration - Exports Sport', () => {
             format: 'pdf',
             period: 'month',
             includeMetadata: true,
-            includeLegalNotice: true
+            includeLegalNotice: true,
           })
         );
       });
     });
   });
 
-  describe('Modal d\'export - Intégration complète', () => {
-    it('devrait afficher la modal d\'export correctement', () => {
+  describe("Modal d'export - Intégration complète", () => {
+    it("devrait afficher la modal d'export correctement", () => {
       const mockOnClose = vi.fn();
       const mockOnExport = vi.fn();
 
       render(
-        <SportExportModal 
-          isOpen={true} 
-          onClose={mockOnClose} 
-          onExport={mockOnExport} 
+        <SportExportModal
+          isOpen={true}
+          onClose={mockOnClose}
+          onExport={mockOnExport}
         />,
         { wrapper: createTestWrapper() }
       );
 
       expect(screen.getByTestId('export-modal')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /export csv/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /export pdf/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /export csv/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /export pdf/i })
+      ).toBeInTheDocument();
     });
 
-    it('devrait gérer la sélection du format d\'export', async () => {
+    it("devrait gérer la sélection du format d'export", async () => {
       const mockOnClose = vi.fn();
       const mockOnExport = vi.fn();
 
       render(
-        <SportExportModal 
-          isOpen={true} 
-          onClose={mockOnClose} 
-          onExport={mockOnExport} 
+        <SportExportModal
+          isOpen={true}
+          onClose={mockOnClose}
+          onExport={mockOnExport}
         />,
         { wrapper: createTestWrapper() }
       );
@@ -376,10 +404,10 @@ describe('Tests d\'intégration - Exports Sport', () => {
       const mockOnExport = vi.fn();
 
       render(
-        <SportExportModal 
-          isOpen={true} 
-          onClose={mockOnClose} 
-          onExport={mockOnExport} 
+        <SportExportModal
+          isOpen={true}
+          onClose={mockOnClose}
+          onExport={mockOnExport}
         />,
         { wrapper: createTestWrapper() }
       );
@@ -394,13 +422,14 @@ describe('Tests d\'intégration - Exports Sport', () => {
   describe('Intégration avec Supabase', () => {
     it('devrait récupérer les données de session depuis Supabase', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -410,13 +439,14 @@ describe('Tests d\'intégration - Exports Sport', () => {
 
     it('devrait appliquer les filtres de période correctement', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -435,18 +465,19 @@ describe('Tests d\'intégration - Exports Sport', () => {
         range: vi.fn().mockReturnThis(),
         then: vi.fn().mockResolvedValue({
           data: null,
-          error: { message: 'Erreur de base de données' }
-        })
+          error: { message: 'Erreur de base de données' },
+        }),
       } as any);
 
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -469,7 +500,7 @@ describe('Tests d\'intégration - Exports Sport', () => {
         rpe_score: 7,
         pain_level: 2,
         created_at: '2025-01-15T10:00:00Z',
-        updated_at: '2025-01-15T10:00:00Z'
+        updated_at: '2025-01-15T10:00:00Z',
       }));
 
       vi.mocked(supabase.from).mockReturnValue({
@@ -481,26 +512,27 @@ describe('Tests d\'intégration - Exports Sport', () => {
         range: vi.fn().mockReturnThis(),
         then: vi.fn().mockResolvedValue({
           data: largeDataset,
-          error: null
-        })
+          error: null,
+        }),
       } as any);
 
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
         expect(mockExportService.exportCSV).toHaveBeenCalledWith(
           expect.objectContaining({
             data: expect.arrayContaining([
-              expect.objectContaining({ id: 'session-0' })
-            ])
+              expect.objectContaining({ id: 'session-0' }),
+            ]),
           })
         );
       });
@@ -508,13 +540,14 @@ describe('Tests d\'intégration - Exports Sport', () => {
 
     it('devrait optimiser les requêtes Supabase', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -542,7 +575,7 @@ describe('Tests d\'intégration - Exports Sport', () => {
         internal_notes: 'Note interne sensible',
         debug_info: 'Debug information',
         created_at: '2025-01-15T10:00:00Z',
-        updated_at: '2025-01-15T10:00:00Z'
+        updated_at: '2025-01-15T10:00:00Z',
       };
 
       vi.mocked(supabase.from).mockReturnValue({
@@ -554,18 +587,19 @@ describe('Tests d\'intégration - Exports Sport', () => {
         range: vi.fn().mockReturnThis(),
         then: vi.fn().mockResolvedValue({
           data: [sensitiveData],
-          error: null
-        })
+          error: null,
+        }),
       } as any);
 
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportCSVExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter csv/i });
+      render(<SportCSVExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter csv/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
@@ -573,8 +607,8 @@ describe('Tests d\'intégration - Exports Sport', () => {
           expect.arrayContaining([
             expect.not.objectContaining({
               internal_notes: expect.anything(),
-              debug_info: expect.anything()
-            })
+              debug_info: expect.anything(),
+            }),
           ])
         );
       });
@@ -582,20 +616,21 @@ describe('Tests d\'intégration - Exports Sport', () => {
 
     it('devrait inclure les mentions légales dans les exports', async () => {
       const mockOnExport = vi.fn();
-      
-      render(
-        <SportPDFExport onExport={mockOnExport} isExporting={false} />,
-        { wrapper: createTestWrapper() }
-      );
 
-      const exportButton = screen.getByRole('button', { name: /exporter pdf/i });
+      render(<SportPDFExport onExport={mockOnExport} isExporting={false} />, {
+        wrapper: createTestWrapper(),
+      });
+
+      const exportButton = screen.getByRole('button', {
+        name: /exporter pdf/i,
+      });
       fireEvent.click(exportButton);
 
       await waitFor(() => {
         expect(mockExportService.exportPDF).toHaveBeenCalledWith(
           expect.objectContaining({
             includeLegalNotice: true,
-            includeMetadata: true
+            includeMetadata: true,
           })
         );
       });

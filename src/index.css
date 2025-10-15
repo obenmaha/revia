@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Revia Brand Styles */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Roboto:wght@400;500;600&display=swap');
+
+/* Revia Brand Variables */
+:root {
+  /* Couleurs principales */
+  --revia-primary: #0288d1;
+  --revia-secondary: #43a047;
+  --revia-accent: #ffa000;
+
+  /* Couleurs fonctionnelles */
+  --revia-error: #e53935;
+  --revia-warning: #ffc107;
+  --revia-success: #4caf50;
+
+  /* Couleurs neutres */
+  --revia-neutral: #f5f5f5;
+  --revia-text: #212121;
+  --revia-background: #ffffff;
+
+  /* Gradients */
+  --revia-gradient-primary: linear-gradient(135deg, #0288d1 0%, #43a047 100%);
+  --revia-gradient-accent: linear-gradient(135deg, #0288d1 0%, #ffa000 100%);
+
+  /* Typographie */
+  --revia-font-title: 'Montserrat', sans-serif;
+  --revia-font-body: 'Inter', sans-serif;
+  --revia-font-ui: 'Roboto', sans-serif;
+
+  /* Espacement */
+  --revia-spacing-xs: 4px;
+  --revia-spacing-sm: 8px;
+  --revia-spacing-md: 16px;
+  --revia-spacing-lg: 24px;
+  --revia-spacing-xl: 32px;
+
+  /* Rayons de bordure */
+  --revia-radius-sm: 4px;
+  --revia-radius-md: 8px;
+  --revia-radius-lg: 12px;
+
+  /* Ombres */
+  --revia-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --revia-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --revia-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

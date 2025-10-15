@@ -28,8 +28,8 @@ export class MigrationValidator {
         migratedSessions: 0,
         originalExercises: 0,
         migratedExercises: 0,
-        dataIntegrity: true
-      }
+        dataIntegrity: true,
+      },
     };
 
     try {
@@ -97,10 +97,11 @@ export class MigrationValidator {
       }
 
       result.success = result.errors.length === 0;
-
     } catch (error) {
       result.success = false;
-      result.errors.push(`Erreur lors de la validation: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+      result.errors.push(
+        `Erreur lors de la validation: ${error instanceof Error ? error.message : 'Erreur inconnue'}`
+      );
     }
 
     return result;
@@ -109,17 +110,24 @@ export class MigrationValidator {
   /**
    * Valider l'intégrité des données migrées
    */
-  private static async validateDataIntegrity(): Promise<{ isValid: boolean; errors: string[] }> {
+  private static async validateDataIntegrity(): Promise<{
+    isValid: boolean;
+    errors: string[];
+  }> {
     const errors: string[] = [];
 
     try {
       // Vérifier que toutes les sessions sport ont des données cohérentes
       const { data: sessions, error: sessionsError } = await supabase
         .from('sport_sessions')
-        .select('id, name, date, type, status, rpe_score, pain_level, duration_minutes');
+        .select(
+          'id, name, date, type, status, rpe_score, pain_level, duration_minutes'
+        );
 
       if (sessionsError) {
-        errors.push(`Erreur lors de la récupération des sessions: ${sessionsError.message}`);
+        errors.push(
+          `Erreur lors de la récupération des sessions: ${sessionsError.message}`
+        );
         return { isValid: false, errors };
       }
 
@@ -133,26 +141,45 @@ export class MigrationValidator {
           errors.push(`Session ${session.id}: date manquante`);
         }
 
-        if (session.rpe_score && (session.rpe_score < 1 || session.rpe_score > 10)) {
-          errors.push(`Session ${session.id}: RPE invalide (${session.rpe_score})`);
+        if (
+          session.rpe_score &&
+          (session.rpe_score < 1 || session.rpe_score > 10)
+        ) {
+          errors.push(
+            `Session ${session.id}: RPE invalide (${session.rpe_score})`
+          );
         }
 
-        if (session.pain_level && (session.pain_level < 1 || session.pain_level > 10)) {
-          errors.push(`Session ${session.id}: niveau de douleur invalide (${session.pain_level})`);
+        if (
+          session.pain_level &&
+          (session.pain_level < 1 || session.pain_level > 10)
+        ) {
+          errors.push(
+            `Session ${session.id}: niveau de douleur invalide (${session.pain_level})`
+          );
         }
 
-        if (session.duration_minutes && (session.duration_minutes <= 0 || session.duration_minutes > 480)) {
-          errors.push(`Session ${session.id}: durée invalide (${session.duration_minutes} min)`);
+        if (
+          session.duration_minutes &&
+          (session.duration_minutes <= 0 || session.duration_minutes > 480)
+        ) {
+          errors.push(
+            `Session ${session.id}: durée invalide (${session.duration_minutes} min)`
+          );
         }
       });
 
       // Vérifier que tous les exercices ont des sessions parentes valides
       const { data: exercises, error: exercisesError } = await supabase
         .from('sport_exercises')
-        .select('id, session_id, name, exercise_type, sets, reps, weight_kg, duration_seconds');
+        .select(
+          'id, session_id, name, exercise_type, sets, reps, weight_kg, duration_seconds'
+        );
 
       if (exercisesError) {
-        errors.push(`Erreur lors de la récupération des exercices: ${exercisesError.message}`);
+        errors.push(
+          `Erreur lors de la récupération des exercices: ${exercisesError.message}`
+        );
         return { isValid: false, errors };
       }
 
@@ -167,32 +194,48 @@ export class MigrationValidator {
         }
 
         if (exercise.sets && (exercise.sets < 0 || exercise.sets > 100)) {
-          errors.push(`Exercice ${exercise.id}: nombre de séries invalide (${exercise.sets})`);
+          errors.push(
+            `Exercice ${exercise.id}: nombre de séries invalide (${exercise.sets})`
+          );
         }
 
         if (exercise.reps && (exercise.reps < 0 || exercise.reps > 1000)) {
-          errors.push(`Exercice ${exercise.id}: nombre de répétitions invalide (${exercise.reps})`);
+          errors.push(
+            `Exercice ${exercise.id}: nombre de répétitions invalide (${exercise.reps})`
+          );
         }
 
-        if (exercise.weight_kg && (exercise.weight_kg < 0 || exercise.weight_kg > 1000)) {
-          errors.push(`Exercice ${exercise.id}: poids invalide (${exercise.weight_kg} kg)`);
+        if (
+          exercise.weight_kg &&
+          (exercise.weight_kg < 0 || exercise.weight_kg > 1000)
+        ) {
+          errors.push(
+            `Exercice ${exercise.id}: poids invalide (${exercise.weight_kg} kg)`
+          );
         }
 
-        if (exercise.duration_seconds && (exercise.duration_seconds < 0 || exercise.duration_seconds > 3600)) {
-          errors.push(`Exercice ${exercise.id}: durée invalide (${exercise.duration_seconds} sec)`);
+        if (
+          exercise.duration_seconds &&
+          (exercise.duration_seconds < 0 || exercise.duration_seconds > 3600)
+        ) {
+          errors.push(
+            `Exercice ${exercise.id}: durée invalide (${exercise.duration_seconds} sec)`
+          );
         }
       });
 
       // Vérifier que tous les exercices ont des sessions parentes existantes
       const sessionIds = new Set(sessions?.map(s => s.id) || []);
-      const orphanExercises = exercises?.filter(e => !sessionIds.has(e.session_id)) || [];
+      const orphanExercises =
+        exercises?.filter(e => !sessionIds.has(e.session_id)) || [];
 
       if (orphanExercises.length > 0) {
         errors.push(`${orphanExercises.length} exercices orphelins détectés`);
       }
-
     } catch (error) {
-      errors.push(`Erreur lors de la validation de l'intégrité: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+      errors.push(
+        `Erreur lors de la validation de l'intégrité: ${error instanceof Error ? error.message : 'Erreur inconnue'}`
+      );
     }
 
     return { isValid: errors.length === 0, errors };
@@ -201,7 +244,10 @@ export class MigrationValidator {
   /**
    * Valider les contraintes de base de données
    */
-  private static async validateConstraints(): Promise<{ isValid: boolean; errors: string[] }> {
+  private static async validateConstraints(): Promise<{
+    isValid: boolean;
+    errors: string[];
+  }> {
     const errors: string[] = [];
 
     try {
@@ -212,7 +258,9 @@ export class MigrationValidator {
         .not('type', 'in', ['cardio', 'musculation', 'flexibility', 'other']);
 
       if (invalidTypes && invalidTypes.length > 0) {
-        errors.push(`Types de session invalides détectés: ${invalidTypes.map(s => s.id).join(', ')}`);
+        errors.push(
+          `Types de session invalides détectés: ${invalidTypes.map(s => s.id).join(', ')}`
+        );
       }
 
       const { data: invalidStatuses } = await supabase
@@ -221,20 +269,30 @@ export class MigrationValidator {
         .not('status', 'in', ['draft', 'in_progress', 'completed']);
 
       if (invalidStatuses && invalidStatuses.length > 0) {
-        errors.push(`Statuts de session invalides détectés: ${invalidStatuses.map(s => s.id).join(', ')}`);
+        errors.push(
+          `Statuts de session invalides détectés: ${invalidStatuses.map(s => s.id).join(', ')}`
+        );
       }
 
       const { data: invalidExerciseTypes } = await supabase
         .from('sport_exercises')
         .select('id, exercise_type')
-        .not('exercise_type', 'in', ['cardio', 'musculation', 'flexibility', 'other']);
+        .not('exercise_type', 'in', [
+          'cardio',
+          'musculation',
+          'flexibility',
+          'other',
+        ]);
 
       if (invalidExerciseTypes && invalidExerciseTypes.length > 0) {
-        errors.push(`Types d'exercice invalides détectés: ${invalidExerciseTypes.map(e => e.id).join(', ')}`);
+        errors.push(
+          `Types d'exercice invalides détectés: ${invalidExerciseTypes.map(e => e.id).join(', ')}`
+        );
       }
-
     } catch (error) {
-      errors.push(`Erreur lors de la validation des contraintes: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+      errors.push(
+        `Erreur lors de la validation des contraintes: ${error instanceof Error ? error.message : 'Erreur inconnue'}`
+      );
     }
 
     return { isValid: errors.length === 0, errors };
@@ -243,7 +301,10 @@ export class MigrationValidator {
   /**
    * Valider les performances des requêtes
    */
-  private static async validatePerformance(): Promise<{ isValid: boolean; warnings: string[] }> {
+  private static async validatePerformance(): Promise<{
+    isValid: boolean;
+    warnings: string[];
+  }> {
     const warnings: string[] = [];
 
     try {
@@ -259,7 +320,9 @@ export class MigrationValidator {
       const sessionsTime = performance.now() - startTime;
 
       if (sessionsTime > 1000) {
-        warnings.push(`Requête des sessions lente: ${sessionsTime.toFixed(2)}ms`);
+        warnings.push(
+          `Requête des sessions lente: ${sessionsTime.toFixed(2)}ms`
+        );
       }
 
       // Test de récupération des exercices
@@ -273,23 +336,30 @@ export class MigrationValidator {
       const exercisesTime = performance.now() - exerciseStartTime;
 
       if (exercisesTime > 1000) {
-        warnings.push(`Requête des exercices lente: ${exercisesTime.toFixed(2)}ms`);
+        warnings.push(
+          `Requête des exercices lente: ${exercisesTime.toFixed(2)}ms`
+        );
       }
 
       // Test de la fonction de statistiques
       const statsStartTime = performance.now();
 
-      const { error: statsError } = await supabase
-        .rpc('get_sport_stats', { user_uuid: '00000000-0000-0000-0000-000000000000', period_days: 30 });
+      const { error: statsError } = await supabase.rpc('get_sport_stats', {
+        user_uuid: '00000000-0000-0000-0000-000000000000',
+        period_days: 30,
+      });
 
       const statsTime = performance.now() - statsStartTime;
 
       if (statsTime > 2000) {
-        warnings.push(`Fonction de statistiques lente: ${statsTime.toFixed(2)}ms`);
+        warnings.push(
+          `Fonction de statistiques lente: ${statsTime.toFixed(2)}ms`
+        );
       }
-
     } catch (error) {
-      warnings.push(`Erreur lors de la validation des performances: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+      warnings.push(
+        `Erreur lors de la validation des performances: ${error instanceof Error ? error.message : 'Erreur inconnue'}`
+      );
     }
 
     return { isValid: warnings.length === 0, warnings };
@@ -310,22 +380,29 @@ export class MigrationValidator {
   /**
    * Exécuter la migration des données
    */
-  static async executeMigration(): Promise<{ success: boolean; message: string; migratedCount: number }> {
+  static async executeMigration(): Promise<{
+    success: boolean;
+    message: string;
+    migratedCount: number;
+  }> {
     try {
       // Exécuter la migration des sessions
-      const { data: sessionsResult, error: sessionsError } = await supabase
-        .rpc('migrate_sessions_to_sport_sessions');
+      const { data: sessionsResult, error: sessionsError } = await supabase.rpc(
+        'migrate_sessions_to_sport_sessions'
+      );
 
       if (sessionsError) {
         throw new Error(`Erreur migration sessions: ${sessionsError.message}`);
       }
 
       // Exécuter la migration des exercices
-      const { data: exercisesResult, error: exercisesError } = await supabase
-        .rpc('migrate_exercises_to_sport_exercises');
+      const { data: exercisesResult, error: exercisesError } =
+        await supabase.rpc('migrate_exercises_to_sport_exercises');
 
       if (exercisesError) {
-        throw new Error(`Erreur migration exercices: ${exercisesError.message}`);
+        throw new Error(
+          `Erreur migration exercices: ${exercisesError.message}`
+        );
       }
 
       const totalMigrated = (sessionsResult || 0) + (exercisesResult || 0);
@@ -333,14 +410,13 @@ export class MigrationValidator {
       return {
         success: true,
         message: `Migration réussie: ${sessionsResult} sessions et ${exercisesResult} exercices migrés`,
-        migratedCount: totalMigrated
+        migratedCount: totalMigrated,
       };
-
     } catch (error) {
       return {
         success: false,
         message: `Erreur lors de la migration: ${error instanceof Error ? error.message : 'Erreur inconnue'}`,
-        migratedCount: 0
+        migratedCount: 0,
       };
     }
   }
@@ -374,12 +450,14 @@ ${validation.errors.length > 0 ? validation.errors.map(e => `- ${e}`).join('\n')
 ${validation.warnings.length > 0 ? validation.warnings.map(w => `- ${w}`).join('\n') : 'Aucun avertissement'}
 
 ## Recommandations
-${validation.success ? 
-  'Migration réussie. Les données sont prêtes pour la Story 1.5.' : 
-  'Corriger les erreurs avant de procéder au développement.'
+${
+  validation.success
+    ? 'Migration réussie. Les données sont prêtes pour la Story 1.5.'
+    : 'Corriger les erreurs avant de procéder au développement.'
 }
     `;
 
     return report;
   }
 }
+

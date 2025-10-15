@@ -45,6 +45,7 @@
 4. **Documenter la procédure de configuration**
 
 ### Exemple de correction :
+
 ```diff
 - VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 + VITE_SUPABASE_ANON_KEY=YOUR-ANON-KEY-HERE
@@ -54,12 +55,14 @@
 ## 📋 Checklist pour les Agents
 
 ### Avant de modifier des fichiers d'environnement :
+
 - [ ] Vérifier que le fichier est un template (`.example`)
 - [ ] S'assurer qu'aucune vraie clé n'est présente
 - [ ] Utiliser des placeholders explicites
 - [ ] Ajouter des commentaires d'avertissement
 
 ### Avant de créer une PR :
+
 - [ ] Scanner les secrets : `npm run scan:secrets`
 - [ ] Vérifier que les tests passent
 - [ ] S'assurer que `.env.local` n'est pas modifié
@@ -68,6 +71,7 @@
 ## 🛡️ Tests de Sécurité
 
 ### Tests obligatoires :
+
 ```bash
 # Scanner les secrets
 npm run scan:secrets
@@ -88,6 +92,7 @@ npm run build
 ## 🚨 En Cas de Doute
 
 Si vous n'êtes pas sûr de la sécurité d'une action :
+
 1. **ARRÊTER** l'action
 2. **CONSULTER** cette documentation
 3. **DEMANDER** clarification si nécessaire

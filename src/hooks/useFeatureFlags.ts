@@ -38,11 +38,12 @@ export function useIsMobile(): boolean {
 }
 
 // Hook pour obtenir le mode actuel de l'application
-export function useAppMode(): 'sport' | 'cabinet' {
-  const { SPORT_MODE, CABINET_MODE } = useFeatureFlags();
+export function useAppMode(): 'sport' | 'cabinet' | 'guest' {
+  const { SPORT_MODE, CABINET_MODE, GUEST_MODE } = useFeatureFlags();
 
   if (SPORT_MODE) return 'sport';
   if (CABINET_MODE) return 'cabinet';
+  if (GUEST_MODE) return 'guest';
 
   // Par défaut, mode cabinet pour préserver l'existant
   return 'cabinet';

@@ -60,10 +60,10 @@ export class SportExportService {
     try {
       // Récupération des données
       const sessions = await this.getSessionsForExport(filters);
-      
+
       // Validation des données
       if (!this.validateExportData(sessions)) {
-        throw new Error('Données d\'export invalides');
+        throw new Error("Données d'export invalides");
       }
 
       // Nettoyage des données sensibles
@@ -73,7 +73,7 @@ export class SportExportService {
       const csvData = Papa.unparse(sanitizedSessions, {
         header: true,
         delimiter: ',',
-        encoding: 'UTF-8'
+        encoding: 'UTF-8',
       });
 
       // Génération du nom de fichier
@@ -82,14 +82,14 @@ export class SportExportService {
       return {
         success: true,
         data: csvData,
-        filename
+        filename,
       };
     } catch (error) {
-      console.error('Erreur lors de l\'export CSV:', error);
+      console.error("Erreur lors de l'export CSV:", error);
       return {
         success: false,
         filename: '',
-        error: error instanceof Error ? error.message : 'Erreur inconnue'
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
       };
     }
   }
@@ -101,10 +101,10 @@ export class SportExportService {
     try {
       // Récupération des données
       const sessions = await this.getSessionsForExport(filters);
-      
+
       // Validation des données
       if (!this.validateExportData(sessions)) {
-        throw new Error('Données d\'export invalides');
+        throw new Error("Données d'export invalides");
       }
 
       // Nettoyage des données sensibles
@@ -112,13 +112,13 @@ export class SportExportService {
 
       // Génération du PDF
       const pdf = new jsPDF();
-      
+
       // Configuration du PDF
       pdf.setFontSize(16);
       pdf.setTextColor(0, 0, 0);
-      
+
       // En-tête
-      pdf.text('Rapport d\'Entraînement Sport', 20, 20);
+      pdf.text("Rapport d'Entraînement Sport", 20, 20);
       pdf.text(`Période: ${this.getPeriodLabel(filters.period)}`, 20, 30);
       pdf.text(`Généré le: ${new Date().toLocaleDateString('fr-FR')}`, 20, 40);
 
@@ -155,12 +155,20 @@ export class SportExportService {
         if (session.exercises && session.exercises.length > 0) {
           pdf.text('Exercices:', 20, yPosition);
           yPosition += 6;
-          
+
           session.exercises.forEach(exercise => {
-            pdf.text(`- ${exercise.name} (${exercise.exercise_type})`, 25, yPosition);
+            pdf.text(
+              `- ${exercise.name} (${exercise.exercise_type})`,
+              25,
+              yPosition
+            );
             yPosition += 5;
             if (exercise.sets > 0) {
-              pdf.text(`  ${exercise.sets} séries x ${exercise.reps} reps`, 25, yPosition);
+              pdf.text(
+                `  ${exercise.sets} séries x ${exercise.reps} reps`,
+                25,
+                yPosition
+              );
               yPosition += 5;
             }
             if (exercise.weight_kg > 0) {
@@ -168,7 +176,11 @@ export class SportExportService {
               yPosition += 5;
             }
             if (exercise.duration_seconds > 0) {
-              pdf.text(`  Durée: ${Math.round(exercise.duration_seconds / 60)}min`, 25, yPosition);
+              pdf.text(
+                `  Durée: ${Math.round(exercise.duration_seconds / 60)}min`,
+                25,
+                yPosition
+              );
               yPosition += 5;
             }
           });
@@ -188,14 +200,14 @@ export class SportExportService {
       return {
         success: true,
         data: pdf.output('blob'),
-        filename
+        filename,
       };
     } catch (error) {
-      console.error('Erreur lors de l\'export PDF:', error);
+      console.error("Erreur lors de l'export PDF:", error);
       return {
         success: false,
         filename: '',
-        error: error instanceof Error ? error.message : 'Erreur inconnue'
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
       };
     }
   }
@@ -203,8 +215,12 @@ export class SportExportService {
   /**
    * Récupération des sessions pour l'export
    */
-  private static async getSessionsForExport(filters: ExportFilters): Promise<SportSession[]> {
-    const { data: { user } } = await supabase.auth.getUser();
+  private static async getSessionsForExport(
+    filters: ExportFilters
+  ): Promise<SportSession[]> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) {
       throw new Error('Utilisateur non authentifié');
     }
@@ -215,13 +231,15 @@ export class SportExportService {
     // Construction de la requête
     let query = supabase
       .from('sport_sessions')
-      .select(`
+      .select(
+        `
         *,
         sport_exercises (
           id, name, exercise_type, sets, reps, weight_kg,
           duration_seconds, rest_seconds, order_index, notes
         )
-      `)
+      `
+      )
       .eq('user_id', user.id)
       .gte('date', startDate)
       .lte('date', endDate)
@@ -235,7 +253,9 @@ export class SportExportService {
     const { data: sessions, error } = await query;
 
     if (error) {
-      throw new Error(`Erreur lors de la récupération des données: ${error.message}`);
+      throw new Error(
+        `Erreur lors de la récupération des données: ${error.message}`
+      );
     }
 
     return sessions || [];
@@ -250,15 +270,16 @@ export class SportExportService {
     }
 
     // Vérifier que toutes les sessions ont les champs requis
-    return sessions.every(session => 
-      session.id &&
-      session.name &&
-      session.date &&
-      session.type &&
-      session.status &&
-      typeof session.duration_minutes === 'number' &&
-      typeof session.rpe_score === 'number' &&
-      typeof session.pain_level === 'number'
+    return sessions.every(
+      session =>
+        session.id &&
+        session.name &&
+        session.date &&
+        session.type &&
+        session.status &&
+        typeof session.duration_minutes === 'number' &&
+        typeof session.rpe_score === 'number' &&
+        typeof session.pain_level === 'number'
     );
   }
 
@@ -277,26 +298,31 @@ export class SportExportService {
       pain_level: session.pain_level,
       objectives: session.objectives || undefined,
       notes: session.notes || undefined,
-      exercises: (session.sport_exercises as SportExercise[] || []).map(exercise => ({
-        id: exercise.id,
-        name: exercise.name,
-        exercise_type: exercise.exercise_type,
-        sets: exercise.sets,
-        reps: exercise.reps,
-        weight_kg: exercise.weight_kg,
-        duration_seconds: exercise.duration_seconds,
-        rest_seconds: exercise.rest_seconds,
-        order_index: exercise.order_index,
-        notes: exercise.notes || undefined
-      })),
-      created_at: session.created_at
+      exercises: ((session.sport_exercises as SportExercise[]) || []).map(
+        exercise => ({
+          id: exercise.id,
+          name: exercise.name,
+          exercise_type: exercise.exercise_type,
+          sets: exercise.sets,
+          reps: exercise.reps,
+          weight_kg: exercise.weight_kg,
+          duration_seconds: exercise.duration_seconds,
+          rest_seconds: exercise.rest_seconds,
+          order_index: exercise.order_index,
+          notes: exercise.notes || undefined,
+        })
+      ),
+      created_at: session.created_at,
     }));
   }
 
   /**
    * Calcul de la plage de dates selon la période
    */
-  private static calculateDateRange(filters: ExportFilters): { startDate: string; endDate: string } {
+  private static calculateDateRange(filters: ExportFilters): {
+    startDate: string;
+    endDate: string;
+  } {
     const now = new Date();
     let startDate: Date;
     let endDate: Date = now;
@@ -306,13 +332,23 @@ export class SportExportService {
         startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         break;
       case 'month':
-        startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+        startDate = new Date(
+          now.getFullYear(),
+          now.getMonth() - 1,
+          now.getDate()
+        );
         break;
       case 'year':
-        startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+        startDate = new Date(
+          now.getFullYear() - 1,
+          now.getMonth(),
+          now.getDate()
+        );
         break;
       case 'custom':
-        startDate = filters.startDate ? new Date(filters.startDate) : new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        startDate = filters.startDate
+          ? new Date(filters.startDate)
+          : new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         endDate = filters.endDate ? new Date(filters.endDate) : now;
         break;
       default:
@@ -321,14 +357,17 @@ export class SportExportService {
 
     return {
       startDate: startDate.toISOString().split('T')[0],
-      endDate: endDate.toISOString().split('T')[0]
+      endDate: endDate.toISOString().split('T')[0],
     };
   }
 
   /**
    * Génération du nom de fichier
    */
-  private static generateFilename(format: 'csv' | 'pdf', period: string): string {
+  private static generateFilename(
+    format: 'csv' | 'pdf',
+    period: string
+  ): string {
     const date = new Date().toISOString().split('T')[0];
     const periodLabel = this.getPeriodLabel(period);
     return `sport-sessions-${periodLabel}-${date}.${format}`;
@@ -339,11 +378,16 @@ export class SportExportService {
    */
   private static getPeriodLabel(period: string): string {
     switch (period) {
-      case 'week': return 'semaine';
-      case 'month': return 'mois';
-      case 'year': return 'annee';
-      case 'custom': return 'personnalise';
-      default: return 'mois';
+      case 'week':
+        return 'semaine';
+      case 'month':
+        return 'mois';
+      case 'year':
+        return 'annee';
+      case 'custom':
+        return 'personnalise';
+      default:
+        return 'mois';
     }
   }
 
@@ -356,10 +400,15 @@ export class SportExportService {
 
     pdf.setFontSize(8);
     pdf.setTextColor(100, 100, 100);
-    
+
     pdf.text('Mentions légales:', 20, yPosition);
     pdf.text('- Données personnelles protégées par le RGPD', 20, yPosition + 6);
-    pdf.text('- Export généré le ' + new Date().toLocaleString('fr-FR'), 20, yPosition + 12);
+    pdf.text(
+      '- Export généré le ' + new Date().toLocaleString('fr-FR'),
+      20,
+      yPosition + 12
+    );
     pdf.text('- Usage personnel uniquement', 20, yPosition + 18);
   }
 }
+

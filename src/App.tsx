@@ -1,54 +1,107 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { AppLayout } from './components/layouts/AppLayout';
 import { SportDashboardPage } from './pages/sport/SportDashboardPage';
 import { SportSessionCreatePage } from './pages/sport/SportSessionCreatePage';
 import { SportHistoryPage } from './pages/sport/SportHistoryPage';
 import { SportProfilePage } from './pages/sport/SportProfilePage';
+import { GuestDashboardPage } from './pages/guest/GuestDashboardPage';
 import { ModeToggle } from './components/features/ModeToggle';
+import { useAuth } from './hooks/useAuth';
+import { useAuthStore } from './stores/authStore';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
-// État d'authentification simplifié
-function useSimpleAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const login = async (email: string, _password: string) => {
-    console.log('🔐 Tentative de connexion avec:', email);
-    setIsLoading(true);
-
-    try {
-      // Simulation d'une connexion
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('✅ Connexion réussie');
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('❌ Erreur de connexion:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const logout = () => {
-    console.log('🚪 Déconnexion');
-    setIsAuthenticated(false);
-  };
-
-  return { isAuthenticated, isLoading, login, logout };
+// Composant pour la redirection par défaut basée sur le mode configuré
+function DefaultRedirect() {
+  const sportMode = import.meta.env.VITE_SPORT_MODE === 'true' || import.meta.env.VITE_APP_MODE === 'sport';
+  const cabinetMode = import.meta.env.VITE_CABINET_MODE === 'true' || import.meta.env.VITE_APP_MODE === 'cabinet';
+  const guestMode = import.meta.env.VITE_GUEST_MODE === 'true' || import.meta.env.VITE_APP_MODE === 'guest';
+  
+  let defaultRoute = '/dashboard'; // Par défaut cabinet
+  
+  if (sportMode) {
+    defaultRoute = '/sport/dashboard';
+  } else if (cabinetMode) {
+    defaultRoute = '/dashboard';
+  } else if (guestMode) {
+    defaultRoute = '/guest/dashboard';
+  }
+  
+  console.log('🔄 Redirection par défaut vers:', defaultRoute);
+  return <Navigate to={defaultRoute} replace />;
 }
 
 // Page de connexion
 function LoginPage() {
-  const { login, isLoading } = useSimpleAuth();
+  const { login, register, isLoading, isAuthenticated } = useAuth();
+  const { setUser } = useAuthStore();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  // Redirection automatique après authentification
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Déterminer le mode par défaut basé sur les variables d'environnement
+      const sportMode = import.meta.env.VITE_SPORT_MODE === 'true' || import.meta.env.VITE_APP_MODE === 'sport';
+      const cabinetMode = import.meta.env.VITE_CABINET_MODE === 'true' || import.meta.env.VITE_APP_MODE === 'cabinet';
+      const guestMode = import.meta.env.VITE_GUEST_MODE === 'true' || import.meta.env.VITE_APP_MODE === 'guest';
+      
+      let defaultRoute = '/dashboard'; // Par défaut cabinet
+      
+      if (sportMode) {
+        defaultRoute = '/sport/dashboard';
+      } else if (cabinetMode) {
+        defaultRoute = '/dashboard';
+      } else if (guestMode) {
+        defaultRoute = '/guest/dashboard';
+      }
+      
+      console.log('✅ Utilisateur authentifié - Redirection vers:', defaultRoute);
+      navigate(defaultRoute);
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('🔐 Soumission du formulaire:', { email, password });
+    
+    // Mode développement temporaire - contourne l'authentification
+    if (email === 'dev@test.com' && password === 'dev123') {
+      console.log('🔧 Mode développement - Connexion simulée');
+      // Simuler une connexion réussie en mettant à jour l'état
+      const mockUser = {
+        id: 'dev-user-123',
+        email: 'dev@test.com',
+        firstName: 'Dev',
+        lastName: 'User',
+        role: 'PRACTITIONER' as const,
+        isActive: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      
+      setUser(mockUser);
+      console.log('✅ Connexion développement réussie - État mis à jour');
+      return;
+    }
+    
     try {
-      await login(email, password);
-      console.log('✅ Login terminé');
+      if (isRegistering) {
+        await register({ 
+          email, 
+          password, 
+          firstName: 'Test',
+          lastName: 'User',
+          role: 'PRACTITIONER'
+        });
+        console.log('✅ Inscription terminée');
+      } else {
+        await login({ email, password });
+        console.log('✅ Login terminé');
+      }
     } catch (error) {
       console.error('❌ Erreur dans handleSubmit:', error);
     }
@@ -82,7 +135,7 @@ function LoginPage() {
             textAlign: 'center',
           }}
         >
-          🔐 Connexion
+          {isRegistering ? '📝 Inscription' : '🔐 Connexion'}
         </h1>
 
         <form onSubmit={handleSubmit}>
@@ -151,9 +204,28 @@ function LoginPage() {
               fontSize: '16px',
               fontWeight: 'bold',
               cursor: isLoading ? 'not-allowed' : 'pointer',
+              marginBottom: '10px',
             }}
           >
-            {isLoading ? 'Connexion...' : 'Se connecter'}
+            {isLoading ? 'Traitement...' : (isRegistering ? 'S\'inscrire' : 'Se connecter')}
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => setIsRegistering(!isRegistering)}
+            style={{
+              width: '100%',
+              padding: '8px',
+              backgroundColor: 'transparent',
+              color: '#2563eb',
+              border: '1px solid #2563eb',
+              borderRadius: '6px',
+              fontSize: '14px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+          >
+            {isRegistering ? 'Déjà un compte ? Se connecter' : 'Pas de compte ? S\'inscrire'}
           </button>
         </form>
 
@@ -167,6 +239,21 @@ function LoginPage() {
         >
           Version de démonstration - Tous les emails/mots de passe fonctionnent
         </p>
+        
+        <div
+          style={{
+            textAlign: 'center',
+            marginTop: '10px',
+            padding: '10px',
+            backgroundColor: '#f0f9ff',
+            border: '1px solid #0ea5e9',
+            borderRadius: '6px',
+            fontSize: '12px',
+            color: '#0369a1',
+          }}
+        >
+          <strong>🔧 Mode Dev :</strong> Utilisez <code>dev@test.com</code> / <code>dev123</code> pour tester sans Supabase
+        </div>
 
         {/* Sélecteur de mode */}
         <div style={{ marginTop: '30px' }}>
@@ -177,49 +264,10 @@ function LoginPage() {
   );
 }
 
-// Route protégée
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useSimpleAuth();
-
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'Arial, sans-serif',
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              border: '4px solid #e5e7eb',
-              borderTop: '4px solid #2563eb',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-              margin: '0 auto 16px',
-            }}
-          ></div>
-          <p>Chargement...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
-}
 
 // Dashboard principal
 function Dashboard() {
-  const { logout } = useSimpleAuth();
+  const { logout } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
@@ -539,9 +587,22 @@ function App() {
         <Route path="" element={<Navigate to="/sport/dashboard" replace />} />
       </Route>
 
-      {/* Redirection par défaut */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      {/* Routes protégées - Mode Guest */}
+      <Route
+        path="/guest/*"
+        element={
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="dashboard" element={<GuestDashboardPage />} />
+        <Route path="" element={<Navigate to="/guest/dashboard" replace />} />
+      </Route>
+
+      {/* Redirection par défaut - basée sur le mode configuré */}
+      <Route path="/" element={<DefaultRedirect />} />
+      <Route path="*" element={<DefaultRedirect />} />
     </Routes>
   );
 }

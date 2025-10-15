@@ -8,18 +8,20 @@ import {
 } from '../ui/card';
 import { useFeatureFlags, useAppMode } from '../../hooks/useFeatureFlags';
 import { useNavigate } from 'react-router-dom';
-import { Dumbbell, Stethoscope } from 'lucide-react';
+import { Dumbbell, Stethoscope, User } from 'lucide-react';
 
 export function ModeToggle() {
   const navigate = useNavigate();
   const appMode = useAppMode();
-  const { SPORT_MODE, CABINET_MODE } = useFeatureFlags();
+  const { SPORT_MODE, CABINET_MODE, GUEST_MODE } = useFeatureFlags();
 
-  const handleModeChange = (mode: 'sport' | 'cabinet') => {
+  const handleModeChange = (mode: 'sport' | 'cabinet' | 'guest') => {
     if (mode === 'sport') {
       navigate('/sport/dashboard');
-    } else {
+    } else if (mode === 'cabinet') {
       navigate('/dashboard');
+    } else if (mode === 'guest') {
+      navigate('/guest/dashboard');
     }
   };
 
@@ -58,15 +60,34 @@ export function ModeToggle() {
           </div>
         </Button>
 
+        {/* Mode Guest */}
+        {GUEST_MODE && (
+          <Button
+            variant={appMode === 'guest' ? 'default' : 'outline'}
+            className="w-full h-20 flex flex-col items-center justify-center space-y-2"
+            onClick={() => handleModeChange('guest')}
+          >
+            <User className="h-8 w-8" />
+            <div className="text-center">
+              <div className="font-semibold">Mode Guest</div>
+              <div className="text-xs opacity-75">Accès limité</div>
+            </div>
+          </Button>
+        )}
+
         {/* Informations sur les modes */}
         <div className="text-xs text-gray-500 text-center space-y-1">
           <div>
             Mode actuel:{' '}
-            <strong>{appMode === 'sport' ? 'Sport' : 'Cabinet'}</strong>
+            <strong>
+              {appMode === 'sport' ? 'Sport' : 
+               appMode === 'cabinet' ? 'Cabinet' : 
+               appMode === 'guest' ? 'Guest' : 'Inconnu'}
+            </strong>
           </div>
           <div>
             Feature flags: Sport={SPORT_MODE ? 'ON' : 'OFF'}, Cabinet=
-            {CABINET_MODE ? 'ON' : 'OFF'}
+            {CABINET_MODE ? 'ON' : 'OFF'}, Guest={GUEST_MODE ? 'ON' : 'OFF'}
           </div>
         </div>
       </CardContent>

@@ -15,6 +15,7 @@ npm run types:generate
 ```
 
 Cette commande va :
+
 1. ✅ Tenter de générer les types depuis votre projet Supabase distant
 2. ✅ En cas d'échec, créer des types de base à partir de vos migrations locales
 3. ✅ Créer le fichier `src/types/supabase-generated.ts`
@@ -61,6 +62,7 @@ npx supabase gen types typescript --project-id YOUR_PROJECT_ID
 ```
 
 **Avantages:**
+
 - ✅ Types toujours à jour avec votre base de données
 - ✅ Inclut toutes les fonctions, vues et énumérations
 - ✅ Reflète l'état actuel de production
@@ -73,10 +75,12 @@ npx supabase gen types typescript --local
 ```
 
 **Avantages:**
+
 - ✅ Fonctionne hors ligne
 - ✅ Basé sur vos migrations SQL
 
 **Inconvénients:**
+
 - ⚠️ Nécessite Docker Desktop
 - ⚠️ Peut différer de la production
 
@@ -85,10 +89,12 @@ npx supabase gen types typescript --local
 Le script crée automatiquement des types de base si les méthodes 1 et 2 échouent.
 
 **Avantages:**
+
 - ✅ Toujours fonctionnel
 - ✅ Pas de dépendances externes
 
 **Inconvénients:**
+
 - ⚠️ Peut ne pas refléter toutes les colonnes/tables
 - ⚠️ Nécessite une mise à jour manuelle
 
@@ -134,7 +140,12 @@ export const supabase = createClient<Database>(url, key);
 ### 2. Utiliser les Types dans les Services
 
 ```typescript
-import type { Database, Tables, Inserts, Updates } from '../types/supabase-generated';
+import type {
+  Database,
+  Tables,
+  Inserts,
+  Updates,
+} from '../types/supabase-generated';
 
 // Type pour une ligne de table
 type Patient = Tables<'patients'>;
@@ -183,12 +194,14 @@ supabase login
 ### Erreur: "Docker Desktop is a prerequisite"
 
 **Option 1:** Utiliser la méthode distante (recommandée)
+
 ```bash
 supabase login
 npm run types:generate
 ```
 
 **Option 2:** Installer Docker Desktop
+
 ```bash
 # Télécharger depuis: https://docs.docker.com/desktop
 ```

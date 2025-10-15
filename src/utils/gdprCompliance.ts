@@ -64,9 +64,9 @@ export class GDPRComplianceService {
     anonymizeData: true,
     includeLegalNotice: true,
     dataRetentionPeriod: 365, // 1 an
-    exportPurpose: 'Suivi personnel d\'entraînement sportif',
+    exportPurpose: "Suivi personnel d'entraînement sportif",
     dataController: 'App-Kine',
-    dataProcessor: 'Utilisateur'
+    dataProcessor: 'Utilisateur',
   };
 
   /**
@@ -77,12 +77,12 @@ export class GDPRComplianceService {
     config: Partial<GDPRComplianceConfig> = {}
   ): SanitizedData {
     const finalConfig = { ...this.DEFAULT_CONFIG, ...config };
-    
+
     // Anonymisation des IDs
     const anonymizedSessions = this.anonymizeSessionIds(sessions);
-    
+
     // Suppression des données sensibles
-    const sanitizedSessions = anonymizedSessions.map(session => 
+    const sanitizedSessions = anonymizedSessions.map(session =>
       this.sanitizeSession(session, finalConfig)
     );
 
@@ -95,7 +95,7 @@ export class GDPRComplianceService {
     return {
       sessions: sanitizedSessions,
       metadata,
-      legalNotice
+      legalNotice,
     };
   }
 
@@ -108,21 +108,26 @@ export class GDPRComplianceService {
 
     return sessions.map(session => {
       if (!idMapping.has(session.id)) {
-        idMapping.set(session.id, `SESSION_${counter.toString().padStart(4, '0')}`);
+        idMapping.set(
+          session.id,
+          `SESSION_${counter.toString().padStart(4, '0')}`
+        );
         counter++;
       }
 
       const anonymizedId = idMapping.get(session.id)!;
-      
+
       return {
         ...session,
         id: anonymizedId,
         user_id: 'ANONYMIZED_USER', // Toujours anonymiser l'ID utilisateur
-        sport_exercises: (session.sport_exercises as SportExercise[] || []).map((exercise, index) => ({
+        sport_exercises: (
+          (session.sport_exercises as SportExercise[]) || []
+        ).map((exercise, index) => ({
           ...exercise,
           id: `EXERCISE_${anonymizedId}_${index + 1}`,
-          session_id: anonymizedId
-        }))
+          session_id: anonymizedId,
+        })),
       };
     });
   }
@@ -131,7 +136,7 @@ export class GDPRComplianceService {
    * Sanitisation d'une session individuelle
    */
   private static sanitizeSession(
-    session: SportSession, 
+    session: SportSession,
     config: GDPRComplianceConfig
   ): SanitizedSession {
     const sanitized: SanitizedSession = {
@@ -143,7 +148,7 @@ export class GDPRComplianceService {
       duration_minutes: session.duration_minutes,
       rpe_score: session.rpe_score,
       pain_level: session.pain_level,
-      created_at: session.created_at
+      created_at: session.created_at,
     };
 
     // Ajout des champs optionnels si autorisés
@@ -157,9 +162,9 @@ export class GDPRComplianceService {
     }
 
     // Sanitisation des exercices
-    sanitized.exercises = (session.sport_exercises as SportExercise[] || []).map(exercise => 
-      this.sanitizeExercise(exercise, config)
-    );
+    sanitized.exercises = (
+      (session.sport_exercises as SportExercise[]) || []
+    ).map(exercise => this.sanitizeExercise(exercise, config));
 
     return sanitized;
   }
@@ -168,7 +173,7 @@ export class GDPRComplianceService {
    * Sanitisation d'un exercice
    */
   private static sanitizeExercise(
-    exercise: SportExercise, 
+    exercise: SportExercise,
     config: GDPRComplianceConfig
   ): SanitizedExercise {
     const sanitized: SanitizedExercise = {
@@ -180,7 +185,7 @@ export class GDPRComplianceService {
       weight_kg: exercise.weight_kg,
       duration_seconds: exercise.duration_seconds,
       rest_seconds: exercise.rest_seconds,
-      order_index: exercise.order_index
+      order_index: exercise.order_index,
     };
 
     // Ajout des notes si autorisées
@@ -200,7 +205,10 @@ export class GDPRComplianceService {
     // Suppression des informations personnelles potentielles
     let sanitized = text
       // Suppression des emails
-      .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, '[EMAIL_REDACTED]')
+      .replace(
+        /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+        '[EMAIL_REDACTED]'
+      )
       // Suppression des numéros de téléphone
       .replace(/\b(?:\+33|0)[1-9](?:[0-9]{8})\b/g, '[PHONE_REDACTED]')
       // Suppression des adresses IP
@@ -208,7 +216,10 @@ export class GDPRComplianceService {
       // Suppression des noms propres potentiels (mots commençant par une majuscule)
       .replace(/\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/g, '[NAME_REDACTED]')
       // Suppression des informations médicales sensibles
-      .replace(/\b(?:diabète|hypertension|asthme|cancer|sida|vih)\b/gi, '[MEDICAL_REDACTED]')
+      .replace(
+        /\b(?:diabète|hypertension|asthme|cancer|sida|vih)\b/gi,
+        '[MEDICAL_REDACTED]'
+      )
       // Suppression des informations financières
       .replace(/\b(?:\d{4}[-\s]?){3}\d{4}\b/g, '[CARD_REDACTED]')
       // Suppression des codes postaux
@@ -225,7 +236,9 @@ export class GDPRComplianceService {
   /**
    * Génération des métadonnées d'export
    */
-  private static generateExportMetadata(config: GDPRComplianceConfig): ExportMetadata {
+  private static generateExportMetadata(
+    config: GDPRComplianceConfig
+  ): ExportMetadata {
     return {
       exportDate: new Date().toISOString(),
       dataRetentionPeriod: config.dataRetentionPeriod,
@@ -233,7 +246,7 @@ export class GDPRComplianceService {
       dataController: config.dataController,
       dataProcessor: config.dataProcessor,
       anonymized: config.anonymizeData,
-      version: '1.0.0'
+      version: '1.0.0',
     };
   }
 
@@ -242,8 +255,9 @@ export class GDPRComplianceService {
    */
   private static generateLegalNotice(config: GDPRComplianceConfig): string {
     const exportDate = new Date().toLocaleDateString('fr-FR');
-    const retentionDate = new Date(Date.now() + config.dataRetentionPeriod * 24 * 60 * 60 * 1000)
-      .toLocaleDateString('fr-FR');
+    const retentionDate = new Date(
+      Date.now() + config.dataRetentionPeriod * 24 * 60 * 60 * 1000
+    ).toLocaleDateString('fr-FR');
 
     return `
 MENTIONS LÉGALES - EXPORT DE DONNÉES PERSONNELLES
@@ -307,12 +321,12 @@ VERSION: 1.0.0 - ${exportDate}
     const sensitivePatterns = [
       /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/, // emails
       /\b(?:\+33|0)[1-9](?:[0-9]{8})\b/, // téléphones
-      /\b(?:diabète|hypertension|asthme|cancer|sida|vih)\b/i // médical
+      /\b(?:diabète|hypertension|asthme|cancer|sida|vih)\b/i, // médical
     ];
 
     data.sessions.forEach(session => {
       const textToCheck = `${session.name} ${session.objectives || ''} ${session.notes || ''}`;
-      
+
       sensitivePatterns.forEach(pattern => {
         if (pattern.test(textToCheck)) {
           violations.push('Données sensibles non supprimées détectées');
@@ -322,7 +336,9 @@ VERSION: 1.0.0 - ${exportDate}
 
     // Recommandations
     if (data.sessions.length > 1000) {
-      recommendations.push('Considérer la pagination pour les gros volumes de données');
+      recommendations.push(
+        'Considérer la pagination pour les gros volumes de données'
+      );
     }
 
     if (!data.legalNotice) {
@@ -332,7 +348,7 @@ VERSION: 1.0.0 - ${exportDate}
     return {
       isCompliant: violations.length === 0,
       violations,
-      recommendations
+      recommendations,
     };
   }
 
@@ -355,13 +371,13 @@ VERSION: 1.0.0 - ${exportDate}
     }
 
     // Vérification des données personnelles
-    const hasPersonalData = data.sessions.some(session => 
-      session.objectives || session.notes
+    const hasPersonalData = data.sessions.some(
+      session => session.objectives || session.notes
     );
-    
+
     if (hasPersonalData) {
       issues.push('Données personnelles présentes');
-      mitigation.push('Vérifier la nécessité de ces données dans l\'export');
+      mitigation.push("Vérifier la nécessité de ces données dans l'export");
     }
 
     // Détermination du niveau de risque
@@ -375,7 +391,8 @@ VERSION: 1.0.0 - ${exportDate}
     return {
       riskLevel,
       issues,
-      mitigation
+      mitigation,
     };
   }
 }
+

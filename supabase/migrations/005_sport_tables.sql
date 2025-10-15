@@ -392,3 +392,4 @@ COMMENT ON COLUMN sport_exercises.weight_kg IS 'Poids en kilogrammes';
 COMMENT ON COLUMN sport_exercises.duration_seconds IS 'Durée de l''exercice en secondes';
 COMMENT ON COLUMN sport_exercises.rest_seconds IS 'Temps de repos en secondes';
 COMMENT ON COLUMN sport_exercises.order_index IS 'Ordre d''exécution dans la session';
+

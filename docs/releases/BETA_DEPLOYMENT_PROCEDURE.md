@@ -10,6 +10,7 @@
 ## 📋 Pre-Deployment Checklist
 
 ### ✅ Code Quality & Build
+
 - [x] Build succeeds: `npm run build` (7.88s, 213kB gzipped)
 - [x] Test pass rate acceptable: 191/204 (93.6%)
 - [x] Git branch clean: `chore/fix-loop-20251013`
@@ -18,6 +19,7 @@
   - `5e91732` - Emergency Build Fixes
 
 ### ⏳ REQUIRED Manual Validation (BEFORE Merge)
+
 - [ ] **P0**: Manual E2E validation of guest conversion flow
 - [ ] **P0**: Create Playwright E2E test for guest conversion
 - [ ] **P0**: Manual validation of authentication flows in staging
@@ -25,6 +27,7 @@
 - [ ] **P1**: Smoke tests in staging environment
 
 ### 📚 Documentation
+
 - [x] Release plan created: `docs/releases/v1.4.0-beta-release-plan.md`
 - [x] QA gate completed: `docs/qa/gates/pre-beta-validation-20250114.md`
 - [x] PRD v4.0 aligned: `docs/prd.md`
@@ -35,6 +38,7 @@
 ## 🚀 Deployment Steps
 
 ### Step 1: Code Freeze (24h before launch)
+
 **When**: 2025-01-14 (Day before launch)
 
 ```bash
@@ -44,11 +48,13 @@ git log --oneline -5
 ```
 
 **Verify**:
+
 - All PRs reviewed and approved
 - No pending changes in working directory
 - Branch `chore/fix-loop-20251013` is clean
 
 ### Step 2: Final Testing (12h before launch)
+
 **When**: 2025-01-14 Evening
 
 ```bash
@@ -63,16 +69,19 @@ du -sh dist/
 ```
 
 **Expected Results**:
+
 - Tests: 191/204 passing (93.6%)
 - Build: Success in < 10s
 - Bundle: ~213kB gzipped
 
 ### Step 3: Environment Verification (6h before launch)
+
 **When**: 2025-01-15 Morning (6am)
 
 #### 3.1 Verify Production Environment Variables
 
 **Vercel Production**:
+
 ```bash
 # Required environment variables
 VITE_SUPABASE_URL=https://[PROJECT_ID].supabase.co
@@ -84,6 +93,7 @@ NODE_ENV=production
 ```
 
 **Check via Vercel Dashboard**:
+
 1. Navigate to: https://vercel.com/[TEAM]/revia/settings/environment-variables
 2. Verify all required variables are set for **Production**
 3. Ensure no secrets are exposed in public variables
@@ -91,6 +101,7 @@ NODE_ENV=production
 #### 3.2 Test Supabase Connection
 
 **Supabase Production DB**:
+
 1. Navigate to: https://supabase.com/dashboard/project/[PROJECT_ID]
 2. Verify RLS policies are enabled:
    - `sessions` table: User isolation ✅
@@ -105,6 +116,7 @@ NODE_ENV=production
 #### 3.3 Run Staging Smoke Tests
 
 **Deploy to Staging First**:
+
 ```bash
 # Assuming staging branch exists
 git checkout staging
@@ -113,12 +125,14 @@ git push origin staging
 ```
 
 **Wait for Vercel deployment**, then:
+
 ```bash
 # Test staging deployment
 PREPROD_URL=https://revia-staging.vercel.app npm run smoke:preprod
 ```
 
 **Manual Validation Checklist**:
+
 - [ ] Login with test account
 - [ ] Create new session
 - [ ] Add exercises to session
@@ -133,6 +147,7 @@ PREPROD_URL=https://revia-staging.vercel.app npm run smoke:preprod
   - [ ] Password reset flow
 
 ### Step 4: Create Release Tag
+
 **When**: 2025-01-15 (After all validations pass)
 
 ```bash
@@ -154,9 +169,11 @@ git push origin v1.4.0-beta
 ```
 
 ### Step 5: Merge to Main
+
 **When**: 2025-01-15 (After tag creation)
 
 **Option A: Via GitHub UI** (Recommended)
+
 1. Go to: https://github.com/[ORG]/revia/compare/main...chore/fix-loop-20251013
 2. Click "Create Pull Request"
 3. Title: `Release v1.4.0-beta: MVP Scope Lock + Emergency Build Fixes`
@@ -166,6 +183,7 @@ git push origin v1.4.0-beta
 7. **Merge via "Squash and merge"** or **"Create a merge commit"** (preserve history)
 
 **Option B: Via Git CLI**
+
 ```bash
 # Switch to main
 git checkout main
@@ -182,14 +200,17 @@ git push origin main
 ```
 
 ### Step 6: Deploy to Production (Vercel Auto-Deploy)
+
 **When**: Immediately after merge to `main`
 
 **Vercel will automatically deploy**:
+
 1. Monitor deployment: https://vercel.com/[TEAM]/revia/deployments
 2. Wait for "Ready" status (~2-3 minutes)
 3. Verify deployment URL: https://revia.app (or your production domain)
 
 **Post-Deployment Verification**:
+
 ```bash
 # Smoke test production
 curl -I https://revia.app
@@ -201,9 +222,11 @@ curl -s https://revia.app/assets/index-*.js | wc -c
 ```
 
 ### Step 7: Enable Monitoring
+
 **When**: Immediately after production deployment
 
 #### 7.1 Sentry Setup
+
 1. Navigate to: https://sentry.io/organizations/[ORG]/projects/revia/
 2. Verify DSN is configured in Vercel environment variables
 3. Test error tracking:
@@ -216,6 +239,7 @@ curl -s https://revia.app/assets/index-*.js | wc -c
    - Performance degradation > 2s → Warning
 
 #### 7.2 Vercel Analytics
+
 1. Navigate to: https://vercel.com/[TEAM]/revia/analytics
 2. Enable Web Analytics (if not already enabled)
 3. Monitor:
@@ -224,6 +248,7 @@ curl -s https://revia.app/assets/index-*.js | wc -c
    - User flows (sessions → exercises)
 
 ### Step 8: Health Check Validation
+
 **When**: 5 minutes after production deployment
 
 ```bash
@@ -237,6 +262,7 @@ curl https://revia.app/api/health/auth
 ```
 
 **If health checks fail**:
+
 1. Check Vercel deployment logs
 2. Verify environment variables
 3. Test Supabase connection
@@ -247,14 +273,17 @@ curl https://revia.app/api/health/auth
 ## 📣 Post-Deployment Activities
 
 ### Step 9: Beta Tester Communication
+
 **When**: 30 minutes after successful deployment
 
 #### 9.1 Send Launch Email
+
 **Recipients**: 50 beta testers (list in `beta-testers.csv`)
 
 **Subject**: 🎉 Revia Beta is LIVE!
 
 **Body**:
+
 ```
 Hi [Name],
 
@@ -275,30 +304,36 @@ PS: You're one of 50 early adopters helping us shape Revia. Thank you! 🙏
 ```
 
 #### 9.2 Update Status Page (if applicable)
+
 - Mark v1.4.0-beta as "Deployed"
 - Update changelog: https://revia.app/changelog
 
 #### 9.3 Announce in Internal Channels
+
 - Slack: #revia-beta-launch
 - GitHub: Close release PR
 - BMad: Update `.bmad-core/core-config.yaml` status
 
 ### Step 10: Monitoring & Support (Day 1)
+
 **When**: Throughout 2025-01-15
 
 **Hourly Tasks (First 4 hours)**:
+
 - [ ] Check Sentry error rate (< 1% target)
 - [ ] Monitor Vercel analytics (load time < 2s)
 - [ ] Review user onboarding (beta tester signups)
 - [ ] Respond to beta tester questions (< 1h response time)
 
 **Continuous Monitoring**:
+
 - Uptime: 99.9% target
 - Error rate: < 1%
 - Load time: < 2s
 - Guest conversion rate: Track baseline
 
 **If Issues Arise**:
+
 - **P0 (Critical)**: Execute rollback immediately (see Step 11)
 - **P1 (High)**: Create hotfix PR within 4 hours
 - **P2 (Medium)**: Log in GitHub backlog for v1.5
@@ -308,9 +343,11 @@ PS: You're one of 50 early adopters helping us shape Revia. Thank you! 🙏
 ## 🔄 Rollback Procedure
 
 ### Step 11: Emergency Rollback
+
 **When**: Critical P0 issue detected in production
 
 **Trigger Conditions**:
+
 - Error rate > 10%
 - Authentication completely broken
 - Data loss or corruption detected
@@ -319,6 +356,7 @@ PS: You're one of 50 early adopters helping us shape Revia. Thank you! 🙏
 **Rollback Steps**:
 
 #### 11.1 Immediate Actions (< 5 min)
+
 ```bash
 # Announce rollback
 # In Slack: "@channel ROLLBACK IN PROGRESS - v1.4.0-beta"
@@ -333,6 +371,7 @@ git push origin main
 **Vercel will auto-deploy the rollback** (~2-3 minutes).
 
 #### 11.2 Verify Rollback (< 5 min)
+
 ```bash
 # Check deployment
 curl -I https://revia.app
@@ -344,7 +383,9 @@ curl https://revia.app/health
 ```
 
 #### 11.3 Communication (< 15 min)
+
 **Beta Testers Email**:
+
 ```
 Subject: ⚠️ Temporary Issue - Revia Beta
 
@@ -360,11 +401,13 @@ John & the Revia Team
 ```
 
 **Internal Communication**:
+
 - Slack: #revia-beta-launch
 - GitHub: Create incident issue with P0 label
 - Schedule postmortem meeting
 
 #### 11.4 Root Cause Analysis (< 2 hours)
+
 1. Review Sentry error logs
 2. Analyze Vercel deployment logs
 3. Reproduce issue in staging
@@ -377,18 +420,21 @@ John & the Revia Team
 ## 📊 Success Metrics (Day 1)
 
 **Technical Metrics**:
+
 - ✅ Uptime > 99.5% (Allow 0.5% grace for beta)
 - ✅ Error rate < 2%
 - ✅ Load time < 2s
 - ✅ Zero P0 bugs reported
 
 **User Metrics**:
+
 - ✅ 50+ beta testers onboarded
 - ✅ 35+ active users (70% activation)
 - ✅ 150+ sessions created
 - ✅ 15+ guest conversions (30% conversion rate)
 
 **Business Metrics**:
+
 - ✅ Zero data loss incidents
 - ✅ Positive user feedback (NPS > 40)
 - ✅ Support response time < 2 hours
@@ -410,17 +456,20 @@ This PR prepares Revia v1.4.0-beta for beta testing deployment by locking MVP sc
 ### Appendix B: Emergency Contacts
 
 **Release Team**:
+
 - **Product Manager**: John (release owner)
 - **Product Owner**: Sarah (scope validation)
 - **QA Lead**: Quinn (quality assurance)
 - **Tech Lead**: Dev Team (deployment execution)
 
 **Escalation Path**:
+
 1. P0 Issues → Immediate team alert (Slack @channel)
 2. P1 Issues → PM + Tech Lead (< 4h response)
 3. P2 Issues → Weekly triage meeting
 
 **Support Channels**:
+
 - Beta Testers: feedback@revia.app
 - Internal Team: Slack #revia-beta-launch
 - Monitoring Alerts: Slack #revia-alerts
@@ -428,6 +477,7 @@ This PR prepares Revia v1.4.0-beta for beta testing deployment by locking MVP sc
 ### Appendix C: Technical Debt Tracking
 
 **MUST FIX Post-Beta (v1.5)**:
+
 - [ ] Re-enable TypeScript strict mode (`tsconfig.node.json`)
 - [ ] Fix 259 TypeScript errors properly
 - [ ] Fix Supabase `never` type issues (Loop 1B)
@@ -442,6 +492,7 @@ This PR prepares Revia v1.4.0-beta for beta testing deployment by locking MVP sc
 - [ ] Fix 7237 lint errors (line endings, mock files)
 
 **Tracking**:
+
 - GitHub Project: https://github.com/[ORG]/revia/projects/v1.5
 - Milestone: v1.5 Post-Beta Fixes
 - Target Date: 2025-02-01
@@ -449,6 +500,7 @@ This PR prepares Revia v1.4.0-beta for beta testing deployment by locking MVP sc
 ### Appendix D: Vercel Deployment Configuration
 
 **Production Settings**:
+
 ```json
 {
   "buildCommand": "npm run build",
@@ -461,6 +513,7 @@ This PR prepares Revia v1.4.0-beta for beta testing deployment by locking MVP sc
 ```
 
 **Environment Variables** (Production):
+
 ```bash
 VITE_SUPABASE_URL=[PRODUCTION_URL]
 VITE_SUPABASE_ANON_KEY=[PRODUCTION_KEY]

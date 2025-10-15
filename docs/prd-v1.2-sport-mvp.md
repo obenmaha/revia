@@ -6,12 +6,13 @@
 
 **Analysis Source**: IDE-based fresh analysis
 
-**Current Project State**: 
+**Current Project State**:
 Revia est une application web de gestion de cabinet de kinésithérapie existante, construite avec une architecture serverless "Full Supabase + Edge Functions". L'application actuelle se concentre sur la gestion des patients, séances, et facturation pour les kinésithérapeutes.
 
 ### Available Documentation Analysis
 
 **Available Documentation**:
+
 - ✅ Tech Stack Documentation (React 19 + Vite + TypeScript + Tailwind + Zustand + TanStack Query)
 - ✅ Source Tree/Architecture (Architecture serverless Supabase documentée)
 - ✅ Coding Standards (Standards de développement définis)
@@ -24,19 +25,22 @@ Revia est une application web de gestion de cabinet de kinésithérapie existant
 ### Enhancement Scope Definition
 
 **Enhancement Type**:
+
 - ✅ New Feature Addition
 - ✅ Major Feature Modification
 - ✅ UI/UX Overhaul
 
-**Enhancement Description**: 
+**Enhancement Description**:
 Transformation de l'application Revia d'un outil de gestion de cabinet vers une application sport-first pour les sportifs et patients autonomes, avec focus sur la programmation, réalisation et validation de séances d'exercices.
 
 **Impact Assessment**:
+
 - ✅ Major Impact (architectural changes required)
 
 ### Goals and Background Context
 
 **Goals**:
+
 - Aider les sportifs (et patients autonomes) à programmer, réaliser, valider leurs séances, simplement
 - Augmenter l'adhérence aux exercices (baseline actuelle : 40% → objectif : 60% = +20 pts)
 - Motiver via une gamification basique mais solide (streaks, badges light)
@@ -44,6 +48,7 @@ Transformation de l'application Revia d'un outil de gestion de cabinet vers une 
 - RGPD by design (data minimization, consentement explicite, RLS Supabase)
 
 **Success Metrics (MVP) - Baseline Définie**:
+
 - **Adhérence 30j** : % d'utilisateurs avec ≥2 séances/sem (baseline : 40% → objectif : 60%)
 - **Activation D7** : % créent ≥1 séance + valident ≥1 séance (baseline : 25% → objectif : 45%)
 - **Streak médian** : jours consécutifs (baseline : 3 jours → objectif : 7 jours)
@@ -54,12 +59,12 @@ L'application Revia actuelle est conçue pour les kinésithérapeutes gérant le
 
 ### Change Log
 
-| Date | Version | Description | Author |
-|------|---------|-------------|--------|
-| 2024-12-19 | 1.0 | Création initiale du PRD | John (PM) |
-| 2024-12-19 | 2.0 | Refocus patient/sportif | John (PM) |
-| 2025-01-14 | 1.1 | Sport MVP – suppression Offline-first, Cabinet → V2 | BMad Orchestrator |
-| 2025-01-14 | 1.2 | Alignement Revia: sport-first, brownfield, tech simplifiée | Oussama/PM |
+| Date       | Version | Description                                                | Author            |
+| ---------- | ------- | ---------------------------------------------------------- | ----------------- |
+| 2024-12-19 | 1.0     | Création initiale du PRD                                   | John (PM)         |
+| 2024-12-19 | 2.0     | Refocus patient/sportif                                    | John (PM)         |
+| 2025-01-14 | 1.1     | Sport MVP – suppression Offline-first, Cabinet → V2        | BMad Orchestrator |
+| 2025-01-14 | 1.2     | Alignement Revia: sport-first, brownfield, tech simplifiée | Oussama/PM        |
 
 ## Requirements
 
@@ -188,18 +193,22 @@ L'interface sport-first s'intègre avec le système de design existant en utilis
 
 ### Risk Assessment and Mitigation
 
-**Technical Risks**: 
+**Technical Risks**:
+
 - Risque de conflit entre fonctionnalités cabinet et sport
 - Complexité de la migration des données existantes
 
 **Integration Risks**:
+
 - Risque de régression sur les fonctionnalités existantes
 - Complexité de l'intégration avec l'architecture Supabase
 
 **Deployment Risks**:
+
 - Risque de déploiement cassant les fonctionnalités existantes
 
 **Mitigation Strategies**:
+
 - Développement en mode feature flag
 - Tests de régression complets
 - Déploiement progressif avec rollback possible
@@ -212,7 +221,8 @@ L'interface sport-first s'intègre avec le système de design existant en utilis
 
 **Epic Goal**: Transformer l'application Revia d'un outil de gestion de cabinet vers une application sport-first pour les sportifs et patients autonomes, en conservant l'architecture technique existante.
 
-**Integration Requirements**: 
+**Integration Requirements**:
+
 - Maintenir la compatibilité avec l'architecture Supabase existante
 - Préserver les fonctionnalités existantes pour une future réactivation
 - Implémenter un système de feature flags pour basculer entre modes
@@ -224,12 +234,14 @@ je veux une interface mobile-first avec navigation par onglets,
 afin d'accéder facilement aux fonctionnalités principales sur mobile.
 
 **Acceptance Criteria**:
+
 1. Implémentation d'une barre d'onglets mobile (Accueil / Nouvelle séance / Historique / Profil)
 2. Refactoring de la navigation existante pour supporter le mode sport
 3. Adaptation responsive de tous les écrans existants
 4. Mise en place d'un système de feature flags pour basculer entre modes
 
 **Integration Verification**:
+
 1. IV1: Vérifier que les fonctionnalités existantes restent accessibles via feature flags
 2. IV2: Vérifier que la navigation mobile fonctionne sur tous les navigateurs supportés
 3. IV3: Vérifier que les performances ne sont pas dégradées par les changements
@@ -241,12 +253,14 @@ je veux créer un profil simple avec mes objectifs et préférences,
 afin de personnaliser mon expérience d'entraînement.
 
 **Acceptance Criteria**:
+
 1. Création d'un formulaire de profil simplifié (prénom/pseudo, objectifs, préférences)
 2. Intégration avec Supabase Auth existant
 3. Stockage des préférences utilisateur
 4. Interface de modification du profil
 
 **Integration Verification**:
+
 1. IV1: Vérifier que l'authentification Supabase existante fonctionne toujours
 2. IV2: Vérifier que les données utilisateur sont correctement stockées
 3. IV3: Vérifier que les performances de chargement du profil sont acceptables
@@ -258,12 +272,14 @@ je veux programmer et dupliquer mes séances d'entraînement,
 afin de planifier efficacement mes sessions.
 
 **Acceptance Criteria**:
+
 1. Interface de création de séance (date, type, objectifs)
 2. Fonctionnalité de duplication de séance sur dates multiples
 3. Picker de calendrier pour la sélection de dates
 4. Sauvegarde des séances dans Supabase
 
 **Integration Verification**:
+
 1. IV1: Vérifier que les séances sont correctement sauvegardées en base
 2. IV2: Vérifier que la duplication fonctionne sur différentes périodes
 3. IV3: Vérifier que les performances de sauvegarde sont acceptables
@@ -275,12 +291,14 @@ je veux enregistrer mes exercices avec RPE et douleur,
 afin de suivre ma progression et valider mes séances.
 
 **Acceptance Criteria**:
+
 1. Interface d'enregistrement des exercices (nom, séries, répétitions, temps)
 2. Échelles de RPE et douleur intégrées
 3. Système de validation de séance avec feedback
 4. Mise à jour automatique des statistiques
 
 **Integration Verification**:
+
 1. IV1: Vérifier que les données d'exercices sont correctement sauvegardées
 2. IV2: Vérifier que les statistiques sont mises à jour en temps réel
 3. IV3: Vérifier que la validation de séance fonctionne correctement
@@ -292,12 +310,14 @@ je veux consulter mon historique et mes statistiques,
 afin de suivre ma progression dans le temps.
 
 **Acceptance Criteria**:
+
 1. Historique chronologique des séances avec filtres
 2. Statistiques de fréquence, durée et tendance RPE
 3. Interface de visualisation des données
 4. Export des données en CSV/PDF
 
 **Integration Verification**:
+
 1. IV1: Vérifier que l'historique affiche correctement toutes les séances
 2. IV2: Vérifier que les statistiques sont calculées correctement
 3. IV3: Vérifier que l'export fonctionne sur différents navigateurs
@@ -309,12 +329,14 @@ je veux être motivé par la gamification et recevoir des rappels,
 afin de maintenir ma régularité d'entraînement.
 
 **Acceptance Criteria**:
+
 1. Système de streaks (jours consécutifs)
 2. Badges de progression (paliers)
 3. Système de rappels (notifications locales/email)
 4. Interface de visualisation des récompenses
 
 **Integration Verification**:
+
 1. IV1: Vérifier que les streaks sont calculés correctement
 2. IV2: Vérifier que les notifications fonctionnent sur mobile
 3. IV3: Vérifier que les badges s'attribuent correctement
@@ -326,12 +348,14 @@ je veux essayer l'application sans créer de compte,
 afin de tester les fonctionnalités avant de m'engager.
 
 **Acceptance Criteria**:
+
 1. Mode Guest avec données locales temporaires
 2. Onboarding simplifié en 1 clic
 3. Bannière de conversion "Sauvegarder mon progrès"
 4. Export des données Guest vers compte permanent
 
 **Integration Verification**:
+
 1. IV1: Vérifier que le mode Guest fonctionne sans authentification
 2. IV2: Vérifier que la conversion Guest vers compte fonctionne
 3. IV3: Vérifier que les données sont correctement migrées

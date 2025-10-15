@@ -4,7 +4,9 @@ import {
   useAppMode,
 } from '../../hooks/useFeatureFlags';
 import { SportMobileLayout } from './SportMobileLayout';
+import { SportDesktopLayout } from './SportDesktopLayout';
 import { DashboardLayout } from './DashboardLayout';
+import { ModeDebugInfo } from '../debug/ModeDebugInfo';
 
 export function AppLayout() {
   const appMode = useAppMode();
@@ -13,14 +15,28 @@ export function AppLayout() {
 
   // Logique de sélection du layout
   if (appMode === 'sport' && (isMobile || MOBILE_NAVIGATION)) {
-    return <SportMobileLayout />;
+    return (
+      <>
+        <SportMobileLayout />
+        <ModeDebugInfo />
+      </>
+    );
   }
 
   if (appMode === 'sport' && !isMobile) {
-    // TODO: Créer SportDesktopLayout pour les écrans desktop en mode sport
-    return <SportMobileLayout />; // Temporaire
+    return (
+      <>
+        <SportDesktopLayout />
+        <ModeDebugInfo />
+      </>
+    );
   }
 
   // Mode cabinet (existant)
-  return <DashboardLayout />;
+  return (
+    <>
+      <DashboardLayout />
+      <ModeDebugInfo />
+    </>
+  );
 }

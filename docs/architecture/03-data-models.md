@@ -5,10 +5,12 @@
 ### New Data Models
 
 #### SportUser
+
 **Purpose:** Profil utilisateur sportif simplifié avec objectifs et préférences
 **Integration:** Extension de la table users existante avec nouveaux champs
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique (hérité de users)
 - display_name: VARCHAR(100) - Nom d'affichage/pseudo
 - sport_goals: TEXT - Objectifs sportifs (texte libre)
@@ -21,14 +23,17 @@
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Hérite de users (auth.users)
 - **With New:** One-to-many avec SportSession
 
 #### SportSession
+
 **Purpose:** Séances d'entraînement sportif avec exercices et validation
 **Integration:** Nouvelle table indépendante liée à SportUser
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique
 - user_id: UUID - Référence vers SportUser
 - name: VARCHAR(200) - Nom de la séance
@@ -44,14 +49,17 @@
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** Many-to-one avec SportUser, One-to-many avec SportExercise
 
 #### SportExercise
+
 **Purpose:** Exercices individuels dans une séance sportive
 **Integration:** Nouvelle table liée à SportSession
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique
 - session_id: UUID - Référence vers SportSession
 - name: VARCHAR(200) - Nom de l'exercice
@@ -67,14 +75,17 @@
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** Many-to-one avec SportSession
 
 #### GuestData
+
 **Purpose:** Données temporaires des utilisateurs Guest avec expiration automatique
 **Integration:** Table temporaire pour le mode Guest avec chiffrement local
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique temporaire
 - guest_token: VARCHAR(255) - Token de session Guest
 - encrypted_data: TEXT - Données chiffrées (sessions, exercices, etc.)
@@ -84,14 +95,17 @@
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** One-to-one avec SportUser (après migration)
 
 #### SportBadge
+
 **Purpose:** Système de gamification avec badges et récompenses
 **Integration:** Nouvelle table pour la gamification
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique
 - user_id: UUID - Référence vers SportUser
 - badge_type: VARCHAR(50) - Type de badge
@@ -101,12 +115,14 @@
 - created_at: TIMESTAMP - Date de création
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** Many-to-one avec SportUser
 
 ### Schema Integration Strategy
 
 **Database Changes Required:**
+
 - **New Tables:** sport_users, sport_sessions, sport_exercises, sport_badges, guest_data
 - **Modified Tables:** Aucune modification des tables existantes
 - **New Indexes:** Index sur user_id, date, type, expires_at pour les performances
@@ -114,6 +130,7 @@
 - **Security:** RLS activé sur toutes les nouvelles tables, chiffrement des données Guest
 
 **Backward Compatibility:**
+
 - Conservation de toutes les tables existantes
 - Aucune modification des schémas existants
 - RLS maintenu sur toutes les tables
@@ -122,6 +139,7 @@
 ### RLS (Row Level Security) Strategy
 
 #### SportUser Table
+
 ```sql
 -- Les utilisateurs ne peuvent voir que leur propre profil
 CREATE POLICY "Users can view own sport profile" ON sport_users
@@ -133,6 +151,7 @@ CREATE POLICY "Users can update own sport profile" ON sport_users
 ```
 
 #### SportSession Table
+
 ```sql
 -- Les utilisateurs ne peuvent voir que leurs propres séances
 CREATE POLICY "Users can view own sessions" ON sport_sessions
@@ -144,6 +163,7 @@ CREATE POLICY "Users can create sessions" ON sport_sessions
 ```
 
 #### GuestData Table
+
 ```sql
 -- Les données Guest sont accessibles via token uniquement
 CREATE POLICY "Guest data accessible by token" ON guest_data
@@ -153,6 +173,7 @@ CREATE POLICY "Guest data accessible by token" ON guest_data
 ### Migration Scripts
 
 #### Migration 1: Création des Tables Sport
+
 ```sql
 -- Création de la table sport_users
 CREATE TABLE sport_users (
@@ -176,6 +197,7 @@ ALTER TABLE sport_users ENABLE ROW LEVEL SECURITY;
 ```
 
 #### Migration 2: Index et Optimisations
+
 ```sql
 -- Index pour les performances
 CREATE INDEX idx_sport_sessions_user_date ON sport_sessions(user_id, date DESC);

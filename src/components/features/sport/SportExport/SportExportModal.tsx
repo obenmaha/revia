@@ -1,17 +1,38 @@
 // Modal d'export sécurisé pour les données sport - Story 1.5
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, FileText, FileSpreadsheet, Shield, AlertTriangle } from 'lucide-react';
+import {
+  Download,
+  FileText,
+  FileSpreadsheet,
+  Shield,
+  AlertTriangle,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { GDPRComplianceService } from '@/utils/gdprCompliance';
-import type { ExportFilters, GDPRComplianceConfig } from '@/utils/gdprCompliance';
+import type {
+  ExportFilters,
+  GDPRComplianceConfig,
+} from '@/utils/gdprCompliance';
 
 interface SportExportModalProps {
   isOpen: boolean;
@@ -24,11 +45,13 @@ export function SportExportModal({
   isOpen,
   onClose,
   onExport,
-  className = ''
+  className = '',
 }: SportExportModalProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [exportFormat, setExportFormat] = useState<'csv' | 'pdf'>('csv');
-  const [exportPeriod, setExportPeriod] = useState<'week' | 'month' | 'year' | 'custom'>('month');
+  const [exportPeriod, setExportPeriod] = useState<
+    'week' | 'month' | 'year' | 'custom'
+  >('month');
   const [gdprCompliant, setGdprCompliant] = useState(true);
   const [includePersonalData, setIncludePersonalData] = useState(false);
   const [includeLegalNotice, setIncludeLegalNotice] = useState(true);
@@ -44,8 +67,9 @@ export function SportExportModal({
       if (includePersonalData && !gdprCompliant) {
         toast({
           title: 'Conformité RGPD requise',
-          description: 'Vous devez accepter la conformité RGPD pour exporter des données personnelles.',
-          variant: 'destructive'
+          description:
+            'Vous devez accepter la conformité RGPD pour exporter des données personnelles.',
+          variant: 'destructive',
         });
         return;
       }
@@ -57,7 +81,7 @@ export function SportExportModal({
         startDate: exportPeriod === 'custom' ? customStartDate : undefined,
         endDate: exportPeriod === 'custom' ? customEndDate : undefined,
         includePersonalData,
-        includeLegalNotice
+        includeLegalNotice,
       };
 
       // Validation des dates personnalisées
@@ -65,8 +89,9 @@ export function SportExportModal({
         if (!customStartDate || !customEndDate) {
           toast({
             title: 'Dates requises',
-            description: 'Veuillez sélectionner les dates de début et de fin pour l\'export personnalisé.',
-            variant: 'destructive'
+            description:
+              "Veuillez sélectionner les dates de début et de fin pour l'export personnalisé.",
+            variant: 'destructive',
           });
           return;
         }
@@ -74,8 +99,9 @@ export function SportExportModal({
         if (new Date(customStartDate) > new Date(customEndDate)) {
           toast({
             title: 'Dates invalides',
-            description: 'La date de début doit être antérieure à la date de fin.',
-            variant: 'destructive'
+            description:
+              'La date de début doit être antérieure à la date de fin.',
+            variant: 'destructive',
           });
           return;
         }
@@ -90,11 +116,11 @@ export function SportExportModal({
 
       onClose();
     } catch (error) {
-      console.error('Erreur lors de l\'export:', error);
+      console.error("Erreur lors de l'export:", error);
       toast({
-        title: 'Erreur d\'export',
-        description: 'Une erreur est survenue lors de l\'export de vos données.',
-        variant: 'destructive'
+        title: "Erreur d'export",
+        description: "Une erreur est survenue lors de l'export de vos données.",
+        variant: 'destructive',
       });
     } finally {
       setIsExporting(false);
@@ -103,11 +129,16 @@ export function SportExportModal({
 
   const getPeriodLabel = (period: string) => {
     switch (period) {
-      case 'week': return '7 derniers jours';
-      case 'month': return '30 derniers jours';
-      case 'year': return '12 derniers mois';
-      case 'custom': return 'Période personnalisée';
-      default: return '30 derniers jours';
+      case 'week':
+        return '7 derniers jours';
+      case 'month':
+        return '30 derniers jours';
+      case 'year':
+        return '12 derniers mois';
+      case 'custom':
+        return 'Période personnalisée';
+      default:
+        return '30 derniers jours';
     }
   };
 
@@ -127,7 +158,7 @@ export function SportExportModal({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           className={`w-full max-w-2xl mx-4 ${className}`}
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <Card>
             <CardHeader>
@@ -173,7 +204,10 @@ export function SportExportModal({
               {/* Période d'export */}
               <div className="space-y-2">
                 <Label>Période d'export</Label>
-                <Select value={exportPeriod} onValueChange={(value: any) => setExportPeriod(value)}>
+                <Select
+                  value={exportPeriod}
+                  onValueChange={(value: any) => setExportPeriod(value)}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -181,7 +215,9 @@ export function SportExportModal({
                     <SelectItem value="week">7 derniers jours</SelectItem>
                     <SelectItem value="month">30 derniers jours</SelectItem>
                     <SelectItem value="year">12 derniers mois</SelectItem>
-                    <SelectItem value="custom">Période personnalisée</SelectItem>
+                    <SelectItem value="custom">
+                      Période personnalisée
+                    </SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -193,7 +229,7 @@ export function SportExportModal({
                         id="start-date"
                         type="date"
                         value={customStartDate}
-                        onChange={(e) => setCustomStartDate(e.target.value)}
+                        onChange={e => setCustomStartDate(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                       />
                     </div>
@@ -203,7 +239,7 @@ export function SportExportModal({
                         id="end-date"
                         type="date"
                         value={customEndDate}
-                        onChange={(e) => setCustomEndDate(e.target.value)}
+                        onChange={e => setCustomEndDate(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                       />
                     </div>
@@ -214,13 +250,15 @@ export function SportExportModal({
               {/* Options de confidentialité */}
               <div className="space-y-4">
                 <Label>Options de confidentialité</Label>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="gdpr-compliant"
                       checked={gdprCompliant}
-                      onCheckedChange={(checked) => setGdprCompliant(checked as boolean)}
+                      onCheckedChange={checked =>
+                        setGdprCompliant(checked as boolean)
+                      }
                     />
                     <Label htmlFor="gdpr-compliant" className="text-sm">
                       Conformité RGPD (recommandé)
@@ -231,7 +269,9 @@ export function SportExportModal({
                     <Checkbox
                       id="include-personal-data"
                       checked={includePersonalData}
-                      onCheckedChange={(checked) => setIncludePersonalData(checked as boolean)}
+                      onCheckedChange={checked =>
+                        setIncludePersonalData(checked as boolean)
+                      }
                       disabled={!gdprCompliant}
                     />
                     <Label htmlFor="include-personal-data" className="text-sm">
@@ -243,7 +283,9 @@ export function SportExportModal({
                     <Checkbox
                       id="include-legal-notice"
                       checked={includeLegalNotice}
-                      onCheckedChange={(checked) => setIncludeLegalNotice(checked as boolean)}
+                      onCheckedChange={checked =>
+                        setIncludeLegalNotice(checked as boolean)
+                      }
                     />
                     <Label htmlFor="include-legal-notice" className="text-sm">
                       Inclure les mentions légales
@@ -257,9 +299,10 @@ export function SportExportModal({
                 <Alert>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>Attention :</strong> L'export inclura vos notes personnelles. 
-                    Assurez-vous de stocker ces données en sécurité et de les supprimer 
-                    après utilisation si nécessaire.
+                    <strong>Attention :</strong> L'export inclura vos notes
+                    personnelles. Assurez-vous de stocker ces données en
+                    sécurité et de les supprimer après utilisation si
+                    nécessaire.
                   </AlertDescription>
                 </Alert>
               )}
@@ -270,18 +313,25 @@ export function SportExportModal({
                 <div className="text-sm text-gray-600 space-y-1">
                   <div>• Format: {exportFormat.toUpperCase()}</div>
                   <div>• Période: {getPeriodLabel(exportPeriod)}</div>
-                  <div>• Données personnelles: {includePersonalData ? 'Oui' : 'Non'}</div>
+                  <div>
+                    • Données personnelles:{' '}
+                    {includePersonalData ? 'Oui' : 'Non'}
+                  </div>
                   <div>• Conformité RGPD: {gdprCompliant ? 'Oui' : 'Non'}</div>
                 </div>
               </div>
 
               {/* Actions */}
               <div className="flex justify-end gap-3">
-                <Button variant="outline" onClick={onClose} disabled={isExporting}>
+                <Button
+                  variant="outline"
+                  onClick={onClose}
+                  disabled={isExporting}
+                >
                   Annuler
                 </Button>
-                <Button 
-                  onClick={handleExport} 
+                <Button
+                  onClick={handleExport}
                   disabled={isExporting}
                   className="min-w-[120px]"
                 >
@@ -305,3 +355,4 @@ export function SportExportModal({
     </AnimatePresence>
   );
 }
+

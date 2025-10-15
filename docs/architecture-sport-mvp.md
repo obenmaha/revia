@@ -10,12 +10,14 @@ Ce document complète l'architecture existante en définissant comment les nouve
 ### Existing Project Analysis
 
 **Current Project State:**
+
 - **Primary Purpose:** Application de gestion de cabinet de kinésithérapie avec gestion des patients, séances et facturation
 - **Current Tech Stack:** React 19 + Vite + TypeScript + Tailwind + Zustand + TanStack Query + Supabase
 - **Architecture Style:** Serverless "Full Supabase + Edge Functions" avec architecture modulaire
 - **Deployment Method:** Vercel (Frontend) + Supabase (Backend)
 
 **Available Documentation:**
+
 - Architecture technique existante (docs/architecture-technique.md)
 - PRD v1.0 et v1.1 avec spécifications détaillées
 - Spécifications techniques complètes
@@ -23,6 +25,7 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - Types TypeScript et modèles de données Supabase
 
 **Identified Constraints:**
+
 - Architecture Supabase existante à préserver
 - RLS (Row Level Security) déjà implémenté
 - Structure de base de données cabinet existante
@@ -31,9 +34,9 @@ Ce document complète l'architecture existante en définissant comment les nouve
 
 ### Change Log
 
-| Change | Date | Version | Description | Author |
-|--------|------|---------|-------------|--------|
-| Création | 2025-01-14 | 1.0 | Architecture Sport MVP | BMad Orchestrator |
+| Change   | Date       | Version | Description            | Author            |
+| -------- | ---------- | ------- | ---------------------- | ----------------- |
+| Création | 2025-01-14 | 1.0     | Architecture Sport MVP | BMad Orchestrator |
 
 ## Enhancement Scope and Integration Strategy
 
@@ -45,25 +48,29 @@ Ce document complète l'architecture existante en définissant comment les nouve
 
 ### Integration Approach
 
-**Code Integration Strategy:** 
+**Code Integration Strategy:**
+
 - Réutilisation des composants UI existants (Radix UI + Tailwind)
 - Extension des stores Zustand existants pour les fonctionnalités sport
 - Conservation de la structure de routage React Router
 - Ajout de nouveaux composants sport dans `src/components/features/`
 
-**Database Integration:** 
+**Database Integration:**
+
 - Ajout de nouvelles tables pour les fonctionnalités sport
 - Conservation des tables existantes pour compatibilité future
 - Extension du système RLS existant pour les nouvelles entités
 - Migration progressive des données
 
-**API Integration:** 
+**API Integration:**
+
 - Extension des Edge Functions Supabase existantes
 - Nouveaux endpoints pour les fonctionnalités sport
 - Conservation de l'authentification Supabase existante
 - Intégration avec les services existants
 
-**UI Integration:** 
+**UI Integration:**
+
 - Refactoring de la navigation vers mobile-first
 - Conservation du système de design existant
 - Nouveaux écrans sport avec barre d'onglets
@@ -80,38 +87,40 @@ Ce document complète l'architecture existante en définissant comment les nouve
 
 ### Existing Technology Stack
 
-| Category | Current Technology | Version | Usage in Enhancement | Notes |
-|----------|-------------------|---------|---------------------|-------|
-| Frontend Framework | React | 19 | Core framework | Conservation |
-| Build Tool | Vite | 7.x | Build system | Conservation |
-| Language | TypeScript | Latest | Type safety | Conservation |
-| Styling | Tailwind CSS | Latest | UI styling | Conservation |
-| UI Components | Radix UI | Latest | Component library | Conservation |
-| State Management | Zustand | Latest | Client state | Extension |
-| Server State | TanStack Query | v5 | Server state | Conservation |
-| Routing | React Router | v6 | Navigation | Refactoring |
-| Forms | React Hook Form + Zod | Latest | Form handling | Conservation |
-| Backend Platform | Supabase | Latest | Backend services | Extension |
-| Database | PostgreSQL | 15+ | Data storage | Extension |
-| Authentication | Supabase Auth | Latest | User auth | Conservation |
-| File Storage | Supabase Storage | Latest | File handling | Conservation |
-| Deployment | Vercel | Latest | Frontend hosting | Conservation |
+| Category           | Current Technology    | Version | Usage in Enhancement | Notes        |
+| ------------------ | --------------------- | ------- | -------------------- | ------------ |
+| Frontend Framework | React                 | 19      | Core framework       | Conservation |
+| Build Tool         | Vite                  | 7.x     | Build system         | Conservation |
+| Language           | TypeScript            | Latest  | Type safety          | Conservation |
+| Styling            | Tailwind CSS          | Latest  | UI styling           | Conservation |
+| UI Components      | Radix UI              | Latest  | Component library    | Conservation |
+| State Management   | Zustand               | Latest  | Client state         | Extension    |
+| Server State       | TanStack Query        | v5      | Server state         | Conservation |
+| Routing            | React Router          | v6      | Navigation           | Refactoring  |
+| Forms              | React Hook Form + Zod | Latest  | Form handling        | Conservation |
+| Backend Platform   | Supabase              | Latest  | Backend services     | Extension    |
+| Database           | PostgreSQL            | 15+     | Data storage         | Extension    |
+| Authentication     | Supabase Auth         | Latest  | User auth            | Conservation |
+| File Storage       | Supabase Storage      | Latest  | File handling        | Conservation |
+| Deployment         | Vercel                | Latest  | Frontend hosting     | Conservation |
 
 ### New Technology Additions
 
-| Technology | Version | Purpose | Rationale | Integration Method |
-|------------|---------|---------|-----------|-------------------|
-| Aucune nouvelle technologie | - | - | Conservation de l'architecture existante | - |
+| Technology                  | Version | Purpose | Rationale                                | Integration Method |
+| --------------------------- | ------- | ------- | ---------------------------------------- | ------------------ |
+| Aucune nouvelle technologie | -       | -       | Conservation de l'architecture existante | -                  |
 
 ## Data Models and Schema Changes
 
 ### New Data Models
 
 #### SportUser
+
 **Purpose:** Profil utilisateur sportif simplifié avec objectifs et préférences
 **Integration:** Extension de la table users existante avec nouveaux champs
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique (hérité de users)
 - display_name: VARCHAR(100) - Nom d'affichage/pseudo
 - sport_goals: TEXT - Objectifs sportifs (texte libre)
@@ -124,14 +133,17 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Hérite de users (auth.users)
 - **With New:** One-to-many avec SportSession
 
 #### SportSession
+
 **Purpose:** Séances d'entraînement sportif avec exercices et validation
 **Integration:** Nouvelle table indépendante liée à SportUser
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique
 - user_id: UUID - Référence vers SportUser
 - name: VARCHAR(200) - Nom de la séance
@@ -147,14 +159,17 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** Many-to-one avec SportUser, One-to-many avec SportExercise
 
 #### SportExercise
+
 **Purpose:** Exercices individuels dans une séance sportive
 **Integration:** Nouvelle table liée à SportSession
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique
 - session_id: UUID - Référence vers SportSession
 - name: VARCHAR(200) - Nom de l'exercice
@@ -170,14 +185,17 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** Many-to-one avec SportSession
 
 #### GuestData
+
 **Purpose:** Données temporaires des utilisateurs Guest avec expiration automatique
 **Integration:** Table temporaire pour le mode Guest avec chiffrement local
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique temporaire
 - guest_token: VARCHAR(255) - Token de session Guest
 - encrypted_data: TEXT - Données chiffrées (sessions, exercices, etc.)
@@ -187,14 +205,17 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - updated_at: TIMESTAMP - Date de modification
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** One-to-one avec SportUser (après migration)
 
 #### SportBadge
+
 **Purpose:** Système de gamification avec badges et récompenses
 **Integration:** Nouvelle table pour la gamification
 
 **Key Attributes:**
+
 - id: UUID - Identifiant unique
 - user_id: UUID - Référence vers SportUser
 - badge_type: VARCHAR(50) - Type de badge
@@ -204,12 +225,14 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - created_at: TIMESTAMP - Date de création
 
 **Relationships:**
+
 - **With Existing:** Aucune
 - **With New:** Many-to-one avec SportUser
 
 ### Schema Integration Strategy
 
 **Database Changes Required:**
+
 - **New Tables:** sport_users, sport_sessions, sport_exercises, sport_badges, guest_data
 - **Modified Tables:** Aucune modification des tables existantes
 - **New Indexes:** Index sur user_id, date, type, expires_at pour les performances
@@ -217,6 +240,7 @@ Ce document complète l'architecture existante en définissant comment les nouve
 - **Security:** RLS activé sur toutes les nouvelles tables, chiffrement des données Guest
 
 **Backward Compatibility:**
+
 - Conservation de toutes les tables existantes
 - Aucune modification des schémas existants
 - RLS maintenu sur toutes les tables
@@ -227,90 +251,110 @@ Ce document complète l'architecture existante en définissant comment les nouve
 ### New Components
 
 #### SportDashboard
+
 **Responsibility:** Tableau de bord principal sportif avec statistiques et prochaines séances
-**Integration Points:** 
+**Integration Points:**
+
 - Utilise SportUser store pour les données utilisateur
 - Intègre avec TanStack Query pour les statistiques
 - Navigation vers les autres écrans sport
 
 **Key Interfaces:**
+
 - useSportUser() - Hook pour les données utilisateur
 - useSportStats() - Hook pour les statistiques
 - Navigation vers SportSessionList, SportSessionCreate
 
 **Dependencies:**
+
 - **Existing Components:** Layout, Navigation, UI Components
 - **New Components:** SportStats, SportSessionPreview
 
 **Technology Stack:** React + TypeScript + Tailwind + Radix UI
 
 #### SportSessionManager
+
 **Responsibility:** Gestion complète des séances (création, duplication, validation)
 **Integration Points:**
+
 - Intègre avec Supabase pour la persistance
 - Utilise React Hook Form pour les formulaires
 - Calendrier pour la sélection de dates
 
 **Key Interfaces:**
+
 - useSportSessions() - Hook pour les séances
 - useSportSessionForm() - Hook pour les formulaires
 - Duplication de séances sur dates multiples
 
 **Dependencies:**
+
 - **Existing Components:** Form components, Calendar
 - **New Components:** SportExerciseList, SportSessionForm
 
 **Technology Stack:** React + TypeScript + React Hook Form + Zod
 
 #### SportExerciseTracker
+
 **Responsibility:** Enregistrement des exercices avec RPE, douleur et notes
 **Integration Points:**
+
 - Intègre avec SportSession pour la persistance
 - Validation des données avec Zod
 - Interface mobile-first
 
 **Key Interfaces:**
+
 - useSportExercises() - Hook pour les exercices
 - RPE et douleur scales
 - Validation en temps réel
 
 **Dependencies:**
+
 - **Existing Components:** Form components, UI components
 - **New Components:** SportExerciseForm, SportValidation
 
 **Technology Stack:** React + TypeScript + React Hook Form + Zod
 
 #### SportHistory
+
 **Responsibility:** Historique chronologique des séances avec filtres et statistiques
 **Integration Points:**
+
 - Intègre avec Supabase pour les données
 - Filtres par période et type
 - Export CSV/PDF
 
 **Key Interfaces:**
+
 - useSportHistory() - Hook pour l'historique
 - Filtres de recherche
 - Export des données
 
 **Dependencies:**
+
 - **Existing Components:** Data tables, Filters
 - **New Components:** SportSessionCard, SportExport
 
 **Technology Stack:** React + TypeScript + TanStack Query
 
 #### SportGamification
+
 **Responsibility:** Système de gamification avec streaks, badges et motivation
 **Integration Points:**
+
 - Intègre avec SportUser pour les statistiques
 - Calcul automatique des streaks
 - Attribution des badges
 
 **Key Interfaces:**
+
 - useSportGamification() - Hook pour la gamification
 - Badge system
 - Streak calculation
 
 **Dependencies:**
+
 - **Existing Components:** UI components
 - **New Components:** SportBadge, SportStreak
 
@@ -323,29 +367,29 @@ graph TD
     A[SportDashboard] --> B[SportSessionManager]
     A --> C[SportHistory]
     A --> D[SportGamification]
-    
+
     B --> E[SportExerciseTracker]
     B --> F[SportSessionForm]
-    
+
     E --> G[SportExerciseForm]
     E --> H[SportValidation]
-    
+
     C --> I[SportSessionCard]
     C --> J[SportExport]
-    
+
     D --> K[SportBadge]
     D --> L[SportStreak]
-    
+
     M[Supabase] --> A
     M --> B
     M --> C
     M --> D
-    
+
     N[Zustand Store] --> A
     N --> B
     N --> C
     N --> D
-    
+
     O[TanStack Query] --> A
     O --> B
     O --> C
@@ -515,9 +559,9 @@ src/
 ### Enhancement-Specific Standards
 
 - **Sport Components:** Préfixe "Sport" pour tous les composants sport
-- **Hook Naming:** useSport* pour tous les hooks sport
-- **Service Naming:** *Service pour tous les services
-- **Type Naming:** Interface* pour tous les types
+- **Hook Naming:** useSport\* pour tous les hooks sport
+- **Service Naming:** \*Service pour tous les services
+- **Type Naming:** Interface\* pour tous les types
 
 ### Critical Integration Rules
 
@@ -531,7 +575,7 @@ src/
 ### Integration with Existing Tests
 
 **Existing Test Framework:** Vitest + Testing Library
-**Test Organization:** Tests unitaires dans __tests__, tests E2E avec Playwright
+**Test Organization:** Tests unitaires dans **tests**, tests E2E avec Playwright
 **Coverage Requirements:** >80% pour les nouveaux composants
 
 ### New Testing Requirements
@@ -539,7 +583,7 @@ src/
 #### Unit Tests for New Components
 
 - **Framework:** Vitest + Testing Library
-- **Location:** src/__tests__/sport/
+- **Location:** src/**tests**/sport/
 - **Coverage Target:** >80%
 - **Integration with Existing:** Utilisation des mocks existants
 
@@ -581,13 +625,15 @@ src/
 ### Story Manager Handoff
 
 **Référence:** Ce document d'architecture pour la transformation sport-first
-**Exigences d'intégration validées:** 
+**Exigences d'intégration validées:**
+
 - Conservation de l'architecture Supabase existante
 - Ajout de nouvelles tables sans modification des existantes
 - RLS maintenu sur toutes les nouvelles entités
 - Navigation mobile-first avec barre d'onglets
 
 **Contraintes du système existant basées sur l'analyse réelle:**
+
 - Structure de base de données cabinet préservée
 - API existante maintenue
 - Composants UI existants réutilisés
@@ -595,6 +641,7 @@ src/
 
 **Première histoire à implémenter:** Refactoring Architecture et Navigation
 **Points de contrôle d'intégration clairs:**
+
 - Vérification que les fonctionnalités existantes restent accessibles
 - Tests de régression sur la navigation
 - Validation des performances
@@ -605,24 +652,28 @@ src/
 
 **Référence:** Ce document d'architecture et les standards de codage existants analysés
 **Exigences d'intégration avec le codebase existant validées:**
+
 - Réutilisation des composants Radix UI + Tailwind existants
 - Extension des stores Zustand existants
 - Conservation des patterns de routage React Router
 - Intégration avec TanStack Query existant
 
 **Décisions techniques clés basées sur les contraintes réelles du projet:**
+
 - Architecture Supabase serverless maintenue
 - RLS existant étendu aux nouvelles tables
 - Aucune modification des tables existantes
 - Feature flags pour basculer entre modes
 
 **Exigences de compatibilité du système existant avec étapes de vérification spécifiques:**
+
 - Tests de régression sur toutes les fonctionnalités existantes
 - Validation des performances (bundle < 300KB, TTFB < 1s)
 - Vérification de l'authentification Supabase
 - Tests de l'interface utilisateur existante
 
 **Séquençage clair de l'implémentation pour minimiser les risques:**
+
 1. Refactoring navigation (risque minimal)
 2. Nouveaux composants sport (isolation)
 3. Intégration base de données (migrations progressives)

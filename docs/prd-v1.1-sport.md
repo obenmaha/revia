@@ -21,10 +21,10 @@ L'application vise à devenir la solution de référence pour le suivi d'exercic
 
 ### Change Log
 
-| Date       | Version | Description              | Author    |
-| ---------- | ------- | ------------------------ | --------- |
-| 2024-12-19 | 1.0     | Création initiale du PRD | John (PM) |
-| 2024-12-19 | 2.0     | Refocus patient/sportif  | John (PM) |
+| Date       | Version | Description                                            | Author            |
+| ---------- | ------- | ------------------------------------------------------ | ----------------- |
+| 2024-12-19 | 1.0     | Création initiale du PRD                               | John (PM)         |
+| 2024-12-19 | 2.0     | Refocus patient/sportif                                | John (PM)         |
 | 2025-01-14 | 1.1     | Sport MVP - Suppression Offline-first, Cabinet vers V2 | BMad Orchestrator |
 
 ## Requirements
@@ -472,29 +472,35 @@ Afin de rester motivé et concentré.
 Les fonctionnalités suivantes sont reportées à la version 2 pour se concentrer sur l'expérience utilisateur sportif/patient dans le MVP :
 
 #### Gestion des Patients (FR1, FR5, FR6)
+
 - Fiches patients complètes pour les kinésithérapeutes
 - Système de recherche et de filtrage avancé
 - Ajout de photos et documents joints aux dossiers patients
 
 #### Planification et Calendrier (FR2, FR9)
+
 - Calendrier interactif pour la planification des séances
 - Gestion des créneaux de disponibilité du praticien
 - Planification des séances de kinésithérapie
 
 #### Documentation Professionnelle (FR3, FR10)
+
 - Documentation des séances avec notes et évaluations
 - Objectifs de traitement et suivi médical
 - Notes et évaluations pour suivre la progression des patients
 
 #### Facturation (FR4)
+
 - Génération automatique des factures basées sur les séances
 - Gestion des paiements et de la comptabilité
 
 #### Rappels et Communication (FR7)
+
 - Rappels automatiques aux patients avant leurs séances
 - Système de communication patient-praticien
 
 #### Statistiques Cabinet (FR8)
+
 - Statistiques et rapports sur l'activité du cabinet
 - Analytics pour les praticiens
 
