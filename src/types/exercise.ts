@@ -8,6 +8,7 @@ export interface Exercise {
   name: string;
   duration: number; // en minutes
   intensity: number; // RPE 1-10
+  painLevel?: number; // Niveau de douleur 0-10
   weight?: number; // en kg
   sets?: number;
   reps?: number;
@@ -27,6 +28,7 @@ export interface CreateExerciseInput {
   name: string;
   duration: number;
   intensity: number;
+  painLevel?: number;
   weight?: number;
   sets?: number;
   reps?: number;
@@ -47,6 +49,7 @@ export interface SupabaseExercise {
   name: string;
   duration: number;
   intensity: number;
+  pain_level?: number;
   weight?: number;
   sets?: number;
   reps?: number;
@@ -75,6 +78,11 @@ export const exerciseSchema = z.object({
     .number()
     .min(1, 'Intensité minimale 1')
     .max(10, 'Intensité maximale 10'),
+  painLevel: z
+    .number()
+    .min(0, 'Niveau de douleur minimum 0')
+    .max(10, 'Niveau de douleur maximum 10')
+    .optional(),
   weight: z
     .number()
     .min(0, 'Poids minimum 0')
@@ -115,6 +123,11 @@ export const updateExerciseSchema = z.object({
     .min(1, 'Intensité minimale 1')
     .max(10, 'Intensité maximale 10')
     .optional(),
+  painLevel: z
+    .number()
+    .min(0, 'Niveau de douleur minimum 0')
+    .max(10, 'Niveau de douleur maximum 10')
+    .optional(),
   weight: z
     .number()
     .min(0, 'Poids minimum 0')
@@ -147,6 +160,7 @@ export const mapSupabaseExerciseToExercise = (
   name: supabaseExercise.name,
   duration: supabaseExercise.duration,
   intensity: supabaseExercise.intensity,
+  painLevel: supabaseExercise.pain_level,
   weight: supabaseExercise.weight,
   sets: supabaseExercise.sets,
   reps: supabaseExercise.reps,
@@ -165,6 +179,7 @@ export const mapExerciseToSupabaseExercise = (
   name: exercise.name,
   duration: exercise.duration,
   intensity: exercise.intensity,
+  pain_level: exercise.painLevel,
   weight: exercise.weight,
   sets: exercise.sets,
   reps: exercise.reps,
@@ -286,6 +301,7 @@ export interface ExerciseFormData {
   name: string;
   duration: number;
   intensity: number;
+  painLevel?: number;
   weight?: number;
   sets?: number;
   reps?: number;

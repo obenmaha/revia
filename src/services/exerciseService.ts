@@ -71,6 +71,7 @@ export class ExerciseService {
         name: validatedData.name,
         duration: validatedData.duration,
         intensity: validatedData.intensity,
+        pain_level: validatedData.painLevel,
         weight: validatedData.weight,
         sets: validatedData.sets,
         reps: validatedData.reps,
@@ -261,6 +262,8 @@ export class ExerciseService {
         supabaseUpdates.duration = updates.duration;
       if (updates.intensity !== undefined)
         supabaseUpdates.intensity = updates.intensity;
+      if (updates.painLevel !== undefined)
+        supabaseUpdates.pain_level = updates.painLevel;
       if (updates.weight !== undefined) supabaseUpdates.weight = updates.weight;
       if (updates.sets !== undefined) supabaseUpdates.sets = updates.sets;
       if (updates.reps !== undefined) supabaseUpdates.reps = updates.reps;
@@ -491,6 +494,8 @@ export class ExerciseService {
         supabaseUpdates.duration = updates.duration;
       if (updates.intensity !== undefined)
         supabaseUpdates.intensity = updates.intensity;
+      if (updates.painLevel !== undefined)
+        supabaseUpdates.pain_level = updates.painLevel;
       if (updates.weight !== undefined) supabaseUpdates.weight = updates.weight;
       if (updates.sets !== undefined) supabaseUpdates.sets = updates.sets;
       if (updates.reps !== undefined) supabaseUpdates.reps = updates.reps;

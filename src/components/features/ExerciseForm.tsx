@@ -37,6 +37,7 @@ interface FormData {
   name: string;
   duration: number;
   intensity: number;
+  painLevel?: number;
   weight?: number;
   sets?: number;
   reps?: number;
@@ -73,12 +74,14 @@ const ExerciseForm: React.FC<ExerciseFormProps> = ({
       name: '',
       duration: 30,
       intensity: 5,
+      painLevel: 0,
       exerciseType: 'cardio',
     },
   });
 
   const watchedType = watch('exerciseType');
   const watchedIntensity = watch('intensity');
+  const watchedPainLevel = watch('painLevel') || 0;
 
   // Mise à jour des champs requis selon le type d'exercice
   useEffect(() => {
@@ -307,6 +310,49 @@ const ExerciseForm: React.FC<ExerciseFormProps> = ({
                     </p>
                   )}
                 </div>
+              </div>
+
+              {/* Niveau de douleur */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-gray-700">
+                  Niveau de douleur (0 = aucune, 10 = maximale)
+                </Label>
+                <div className="space-y-2">
+                  <Slider
+                    value={[watchedPainLevel]}
+                    onValueChange={([value]) =>
+                      handleFieldChange('painLevel', value)
+                    }
+                    max={10}
+                    min={0}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">0</span>
+                    <Badge
+                      variant="secondary"
+                      className={`${watchedPainLevel === 0 ? 'text-green-600' : watchedPainLevel <= 3 ? 'text-yellow-600' : watchedPainLevel <= 6 ? 'text-orange-600' : 'text-red-600'} font-medium`}
+                    >
+                      {watchedPainLevel} -{' '}
+                      {watchedPainLevel === 0
+                        ? 'Aucune douleur'
+                        : watchedPainLevel <= 3
+                          ? 'Légère'
+                          : watchedPainLevel <= 6
+                            ? 'Modérée'
+                            : watchedPainLevel <= 8
+                              ? 'Importante'
+                              : 'Sévère'}
+                    </Badge>
+                    <span className="text-sm text-gray-500">10</span>
+                  </div>
+                </div>
+                {formErrors.painLevel && (
+                  <p className="text-sm text-red-600">
+                    {formErrors.painLevel.message}
+                  </p>
+                )}
               </div>
 
               {/* Champs avancés pour la musculation */}

@@ -356,6 +356,7 @@ export function useExerciseForm(sessionId: string | null) {
     name: '',
     duration: 30,
     intensity: 5,
+    painLevel: 0,
     exerciseType: 'cardio',
     orderIndex: 0,
   });
@@ -409,6 +410,14 @@ export function useExerciseForm(sessionId: string | null) {
             fieldErrors.push('Intensité minimale 1');
           } else if (formData.intensity > 10) {
             fieldErrors.push('Intensité maximale 10');
+          }
+        }
+
+        if (field === 'painLevel' && formData.painLevel !== undefined) {
+          if (formData.painLevel < 0) {
+            fieldErrors.push('Niveau de douleur minimum 0');
+          } else if (formData.painLevel > 10) {
+            fieldErrors.push('Niveau de douleur maximum 10');
           }
         }
 
@@ -482,6 +491,7 @@ export function useExerciseForm(sessionId: string | null) {
         name: '',
         duration: 30,
         intensity: 5,
+        painLevel: 0,
         exerciseType: 'cardio',
         orderIndex: 0,
       });
@@ -498,6 +508,7 @@ export function useExerciseForm(sessionId: string | null) {
       name: '',
       duration: 30,
       intensity: 5,
+      painLevel: 0,
       exerciseType: 'cardio',
       orderIndex: 0,
     });
