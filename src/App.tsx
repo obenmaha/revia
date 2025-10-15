@@ -7,6 +7,7 @@ import { SportSessionCreatePage } from './pages/sport/SportSessionCreatePage';
 import { SportHistoryPage } from './pages/sport/SportHistoryPage';
 import { SportProfilePage } from './pages/sport/SportProfilePage';
 import { GuestDashboardPage } from './pages/guest/GuestDashboardPage';
+import ProfilePage from './pages/ProfilePage';
 import { ModeToggle } from './components/features/ModeToggle';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './stores/authStore';
@@ -567,6 +568,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         }
       />

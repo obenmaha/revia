@@ -83,4 +83,7 @@ export const queryKeys = {
   stats: ['stats'] as const,
   statsByPractitioner: (practitionerId: string) =>
     ['stats', 'practitioner', practitionerId] as const,
+
+  // Profil utilisateur
+  userProfile: (userId: string) => ['userProfile', userId] as const,
 } as const;
