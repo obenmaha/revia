@@ -86,4 +86,8 @@ export const queryKeys = {
 
   // Profil utilisateur
   userProfile: (userId: string) => ['userProfile', userId] as const,
+
+  // Notifications
+  notificationPreferences: (userId: string) => ['notificationPreferences', userId] as const,
+  notificationLogs: (userId: string) => ['notificationLogs', userId] as const,
 } as const;

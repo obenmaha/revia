@@ -229,6 +229,123 @@ export type Database = {
           updated_at?: string;
         };
       };
+      user_profile: {
+        Row: {
+          id: string;
+          user_id: string;
+          first_name: string | null;
+          last_name: string | null;
+          email: string | null;
+          phone: string | null;
+          birth_date: string | null;
+          gender: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
+          height_cm: number | null;
+          weight_kg: number | null;
+          fitness_level: 'beginner' | 'intermediate' | 'advanced' | 'expert' | null;
+          goals: Json | null;
+          preferences: Json | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          first_name?: string | null;
+          last_name?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          birth_date?: string | null;
+          gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
+          height_cm?: number | null;
+          weight_kg?: number | null;
+          fitness_level?: 'beginner' | 'intermediate' | 'advanced' | 'expert' | null;
+          goals?: Json | null;
+          preferences?: Json | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          first_name?: string | null;
+          last_name?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          birth_date?: string | null;
+          gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
+          height_cm?: number | null;
+          weight_kg?: number | null;
+          fitness_level?: 'beginner' | 'intermediate' | 'advanced' | 'expert' | null;
+          goals?: Json | null;
+          preferences?: Json | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      notification_preferences: {
+        Row: {
+          id: string;
+          user_id: string;
+          email_enabled: boolean;
+          push_enabled: boolean;
+          reminder_time: string;
+          reminder_days: number[];
+          reminder_frequency: 'daily' | 'twice_weekly' | 'weekly';
+          last_reminded_at: string | null;
+          timezone: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          email_enabled?: boolean;
+          push_enabled?: boolean;
+          reminder_time?: string;
+          reminder_days?: number[];
+          reminder_frequency?: 'daily' | 'twice_weekly' | 'weekly';
+          last_reminded_at?: string | null;
+          timezone?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          email_enabled?: boolean;
+          push_enabled?: boolean;
+          reminder_time?: string;
+          reminder_days?: number[];
+          reminder_frequency?: 'daily' | 'twice_weekly' | 'weekly';
+          last_reminded_at?: string | null;
+          timezone?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      notification_logs: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: 'email_reminder' | 'push_notification' | 'in_app';
+          sent_at: string;
+          metadata: Json;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: 'email_reminder' | 'push_notification' | 'in_app';
+          sent_at?: string;
+          metadata?: Json;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: 'email_reminder' | 'push_notification' | 'in_app';
+          sent_at?: string;
+          metadata?: Json;
+        };
+      };
     };
     Views: {
       [_ in never]: never;
@@ -335,6 +452,9 @@ export type Invoice = Tables<'invoices'>;
 export type User = Tables<'users'>;
 export type Document = Tables<'documents'>;
 export type Payment = Tables<'payments'>;
+export type UserProfile = Tables<'user_profile'>;
+export type NotificationPreferences = Tables<'notification_preferences'>;
+export type NotificationLog = Tables<'notification_logs'>;
 
 export type PatientInsert = TablesInsert<'patients'>;
 export type SessionInsert = TablesInsert<'sessions'>;
@@ -342,6 +462,9 @@ export type InvoiceInsert = TablesInsert<'invoices'>;
 export type UserInsert = TablesInsert<'users'>;
 export type DocumentInsert = TablesInsert<'documents'>;
 export type PaymentInsert = TablesInsert<'payments'>;
+export type UserProfileInsert = TablesInsert<'user_profile'>;
+export type NotificationPreferencesInsert = TablesInsert<'notification_preferences'>;
+export type NotificationLogInsert = TablesInsert<'notification_logs'>;
 
 export type PatientUpdate = TablesUpdate<'patients'>;
 export type SessionUpdate = TablesUpdate<'sessions'>;
@@ -349,3 +472,6 @@ export type InvoiceUpdate = TablesUpdate<'invoices'>;
 export type UserUpdate = TablesUpdate<'users'>;
 export type DocumentUpdate = TablesUpdate<'documents'>;
 export type PaymentUpdate = TablesUpdate<'payments'>;
+export type UserProfileUpdate = TablesUpdate<'user_profile'>;
+export type NotificationPreferencesUpdate = TablesUpdate<'notification_preferences'>;
+export type NotificationLogUpdate = TablesUpdate<'notification_logs'>;
