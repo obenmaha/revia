@@ -14,6 +14,7 @@ import {
   createSessionSchema,
   updateSessionSchema,
 } from '../types/session';
+import { generateDuplicateDates, type DuplicateOptions } from '../utils/duplicateDates';
 
 // Classe d'erreur personnalisée pour les services
 export class SessionServiceError extends Error {
@@ -543,6 +544,124 @@ export class SessionService {
       );
     }
   }
+
+  /**
+   * Dupliquer une session sur plusieurs dates (FR3)
+   */
+  static async duplicateSession(
+    sessionData: CreateSessionInput,
+    duplicateOptions: DuplicateOptions
+  ): Promise<Session[]> {
+    try {
+      // Validation des données de base
+      const validatedData = createSessionSchema.parse(sessionData);
+
+      // Génération des dates de duplication
+      const duplicateResult = generateDuplicateDates(duplicateOptions);
+      
+      if (!duplicateResult.isValid) {
+        throw new SessionServiceError(
+          `Erreur de duplication: ${duplicateResult.errors.join(', ')}`,
+          'DUPLICATE_VALIDATION_ERROR'
+        );
+      }
+
+      // Récupération de l'utilisateur actuel
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+      if (authError || !user) {
+        throw new SessionServiceError(
+          'Utilisateur non authentifié',
+          'AUTH_ERROR'
+        );
+      }
+
+      // Préparation des données pour toutes les sessions
+      const sessionsToCreate = duplicateResult.dates.map(date => ({
+        user_id: user.id,
+        name: validatedData.name,
+        date: date.toISOString(),
+        type: validatedData.type,
+        status: 'draft' as const,
+        objectives: validatedData.objectives,
+        notes: validatedData.notes,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }));
+
+      // Insertion en lot dans la base de données
+      const { data, error } = await supabase
+        .from('sessions')
+        .insert(sessionsToCreate)
+        .select();
+
+      if (error) {
+        throw new SessionServiceError(
+          `Erreur lors de la duplication des sessions: ${error.message}`,
+          'DUPLICATE_CREATE_ERROR',
+          error
+        );
+      }
+
+      // Retourner les sessions créées
+      return data.map(mapSupabaseSessionToSession);
+    } catch (error) {
+      if (error instanceof SessionServiceError) {
+        throw error;
+      }
+      if (error instanceof Error) {
+        throw new SessionServiceError(
+          `Erreur de validation: ${error.message}`,
+          'VALIDATION_ERROR'
+        );
+      }
+      throw new SessionServiceError(
+        'Erreur inconnue lors de la duplication des sessions',
+        'UNKNOWN_ERROR'
+      );
+    }
+  }
+
+  /**
+   * Dupliquer une session existante sur plusieurs dates
+   */
+  static async duplicateExistingSession(
+    sourceSessionId: string,
+    duplicateOptions: DuplicateOptions
+  ): Promise<Session[]> {
+    try {
+      // Récupérer la session source
+      const sourceSession = await this.getSession(sourceSessionId);
+      if (!sourceSession) {
+        throw new SessionServiceError(
+          'Session source non trouvée',
+          'SOURCE_NOT_FOUND'
+        );
+      }
+
+      // Préparer les données pour la duplication
+      const sessionData: CreateSessionInput = {
+        name: sourceSession.name,
+        date: sourceSession.date,
+        type: sourceSession.type,
+        objectives: sourceSession.objectives,
+        notes: sourceSession.notes,
+      };
+
+      // Utiliser la méthode de duplication
+      return await this.duplicateSession(sessionData, duplicateOptions);
+    } catch (error) {
+      if (error instanceof SessionServiceError) {
+        throw error;
+      }
+      throw new SessionServiceError(
+        'Erreur inconnue lors de la duplication de la session existante',
+        'UNKNOWN_ERROR'
+      );
+    }
+  }
 }
 
 // Export des fonctions utilitaires
@@ -556,4 +675,6 @@ export const {
   searchSessions,
   getSessionStats,
   autoSaveSession,
+  duplicateSession,
+  duplicateExistingSession,
 } = SessionService;
