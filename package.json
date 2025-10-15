@@ -35,6 +35,11 @@
     "brownfield:verify:no-tests": "powershell -ExecutionPolicy Bypass -File run-brownfield-verification.ps1 -SkipTests",
     "scan:secrets": "npx gitleaks detect --no-git -v || echo 'Aucun secret détecté'",
     "scan:secrets:staged": "npx gitleaks detect --staged -v || echo 'Aucun secret détecté dans les fichiers staged'",
+    "qa:analyze-bundle": "node scripts/analyze-bundle.mjs",
+    "qa:fix-tests": "node scripts/fix-tests.mjs",
+    "qa:optimize-imports": "node scripts/optimize-imports.mjs",
+    "qa:validate-fixes": "node scripts/validate-fixes.mjs",
+    "qa:all": "npm run qa:fix-tests && npm run qa:optimize-imports && npm run qa:analyze-bundle && npm run qa:validate-fixes",
     "prepare": "husky install"
   },
   "dependencies": {

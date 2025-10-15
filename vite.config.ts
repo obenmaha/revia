@@ -26,9 +26,13 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           ui: ['@heroicons/react', 'lucide-react'],
+          router: ['react-router-dom'],
+          auth: ['@supabase/supabase-js'],
+          utils: ['date-fns', 'clsx', 'tailwind-merge'],
         },
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
   server: {
     port: 3000,

@@ -1,0 +1,657 @@
+# Sprint: NFR PASS Fixes - MVP Sport
+# Generated: 2025-01-16
+# Context: QA Report qa-report-mvp-sport-nfr-pass.md
+# Fix Plan: qa-fixes-plan.md
+
+sprint:
+  id: fix-nfr-pass
+  name: "Fixes P0-P1: NFR PASS Gate"
+  goal: "Corriger les problèmes critiques bloquant la validation NFR PASS (Bundle Size + Tests Unitaires + Configuration)"
+  start_date: 2025-01-16
+  duration: 3-4 days
+  priority_order: ["NFR1-bundle", "tests", "environment", "a11y"]
+
+  # Agent Assignments
+  team:
+    dev: "Claude"
+    qa: "Quinn"
+    ci: "GitHub MCP"
+    sm: "Bob"
+
+  # Context References
+  references:
+    qa_report: "docs/qa/qa-report-mvp-sport-nfr-pass.md"
+    fix_plan: "docs/qa/qa-fixes-plan.md"
+    architecture: "docs/architecture-sport-mvp.md"
+    prd: "docs/prd-v1.2-sport-mvp.md"
+
+# ============================================
+# P0 TASKS - CRITIQUES ET BLOQUANTES
+# ============================================
+
+tasks_p0:
+
+  # ==========================================
+  # 1. BUNDLE SIZE OPTIMIZATION (708KB → <300KB)
+  # ==========================================
+
+  - id: P0-1
+    title: "Audit des dépendances et analyse du bundle"
+    description: "Analyser le bundle actuel (708KB) pour identifier les dépendances lourdes et opportunités d'optimisation"
+    priority: P0
+    category: bundle
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+
+    tasks:
+      - "Exécuter analyse du bundle avec vite-bundle-visualizer"
+      - "Identifier les top 10 dépendances les plus lourdes"
+      - "Analyser les imports inutilisés avec ES Lint"
+      - "Documenter les opportunités d'optimisation"
+
+    acceptance_criteria:
+      - "Rapport d'analyse du bundle généré"
+      - "Liste des dépendances lourdes identifiée (>50KB)"
+      - "Plan d'optimisation priorisé documenté"
+
+    technical_notes:
+      - "Bundle actuel: 708.82KB (UI: 2.15KB, Config: 3.60KB)"
+      - "Objectif: Réduire bundle principal à <300KB (réduction de 57.6%)"
+      - "Utiliser: vite-bundle-visualizer, source-map-explorer"
+
+  - id: P0-2
+    title: "Implémenter code splitting par routes"
+    description: "Mettre en place le lazy loading des pages/routes pour réduire le bundle initial"
+    priority: P0
+    category: bundle
+    agent: Claude
+    estimation: 1 day
+    status: pending
+    depends_on: [P0-1]
+
+    tasks:
+      - "Convertir les imports de pages en React.lazy()"
+      - "Ajouter Suspense boundaries avec fallback"
+      - "Configurer route-based code splitting dans vite.config.ts"
+      - "Tester le chargement des routes lazy-loaded"
+      - "Mesurer l'impact sur la taille du bundle"
+
+    acceptance_criteria:
+      - "Toutes les routes principales sont lazy-loaded"
+      - "Suspense boundaries en place avec loading state"
+      - "Bundle initial réduit d'au moins 30%"
+      - "Pas de régression fonctionnelle"
+
+    technical_notes:
+      - "Routes à optimiser: ProfilePage, SessionTrackingPage, StatsPage, LegalPages"
+      - "Pattern: const Page = lazy(() => import('./pages/Page'))"
+      - "Fallback: Utiliser LoadingSpinner component"
+      - "Vérifier avec: npm run build && ls -lh dist/assets"
+
+  - id: P0-3
+    title: "Optimiser les imports de lucide-react"
+    description: "Remplacer les imports globaux par des imports individuels pour réduire le bundle"
+    priority: P0
+    category: bundle
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+    depends_on: [P0-1]
+
+    tasks:
+      - "Auditer tous les imports de lucide-react"
+      - "Remplacer import * as Icons par imports individuels"
+      - "Configurer tree-shaking pour lucide-react dans vite.config"
+      - "Valider la réduction du bundle"
+
+    acceptance_criteria:
+      - "Aucun import global de lucide-react"
+      - "Imports individuels: import { Icon } from 'lucide-react'"
+      - "Réduction du bundle d'au moins 50KB"
+
+    technical_notes:
+      - "lucide-react est une source commune de bundle bloat"
+      - "Pattern: import { Activity, Calendar } from 'lucide-react'"
+      - "Alternative: Utiliser @lucide/react avec tree-shaking"
+
+  - id: P0-4
+    title: "Optimiser les dépendances lourdes identifiées"
+    description: "Remplacer ou optimiser les dépendances lourdes (>50KB) identifiées lors de l'audit"
+    priority: P0
+    category: bundle
+    agent: Claude
+    estimation: 1 day
+    status: pending
+    depends_on: [P0-1]
+
+    tasks:
+      - "Évaluer les alternatives légères pour chaque dépendance lourde"
+      - "Remplacer ou configurer tree-shaking pour dépendances >50KB"
+      - "Externaliser les dépendances vendor si nécessaire"
+      - "Re-mesurer le bundle après chaque optimisation"
+
+    acceptance_criteria:
+      - "Top 3 dépendances lourdes optimisées ou remplacées"
+      - "Configuration tree-shaking validée"
+      - "Réduction du bundle d'au moins 100KB"
+
+    technical_notes:
+      - "Candidats fréquents: date-fns, lodash, moment"
+      - "Alternatives: date-fns/esm, lodash-es, day.js"
+      - "Vérifier: manualChunks dans vite.config pour vendor splitting"
+
+  - id: P0-5
+    title: "Validation finale bundle <300KB"
+    description: "Valider que le bundle principal respecte la limite NFR1 de 300KB"
+    priority: P0
+    category: bundle
+    agent: Claude
+    estimation: 0.25 day
+    status: pending
+    depends_on: [P0-2, P0-3, P0-4]
+
+    tasks:
+      - "Exécuter build de production"
+      - "Mesurer taille du bundle principal"
+      - "Générer rapport de comparaison avant/après"
+      - "Documenter les optimisations appliquées"
+      - "Alerter Quinn pour validation QA"
+
+    acceptance_criteria:
+      - "Bundle principal < 300KB ✓"
+      - "Bundle UI reste < 10KB"
+      - "Total bundle < 320KB"
+      - "Rapport d'optimisation documenté"
+
+    technical_notes:
+      - "Commande: npm run build"
+      - "Vérifier: dist/assets/*.js"
+      - "NFR1 Target: Main bundle < 300KB"
+      - "QA validation required par Quinn"
+
+  # ==========================================
+  # 2. TESTS UNITAIRES (107 échecs → 95%+ pass)
+  # ==========================================
+
+  - id: P0-6
+    title: "Créer mocks pour lucide-react"
+    description: "Implémenter les mocks manquants pour les icônes lucide-react dans les tests"
+    priority: P0
+    category: tests
+    agent: Claude
+    estimation: 0.25 day
+    status: pending
+
+    tasks:
+      - "Créer src/__mocks__/lucide-react.ts"
+      - "Implémenter mocks pour toutes les icônes utilisées"
+      - "Configurer vitest pour utiliser les mocks"
+      - "Valider avec tests échouant actuellement"
+
+    acceptance_criteria:
+      - "Fichier mock créé: src/__mocks__/lucide-react.ts"
+      - "Tous les composants Icon mockés avec data-testid"
+      - "Tests lucide-react passent à 100%"
+
+    technical_notes:
+      - "Pattern mock: export const Icon = () => <div data-testid='icon-name' />"
+      - "Icônes à mocker: Activity, Calendar, User, FileText, etc."
+      - "Config vitest: setupFiles pour auto-mock"
+      - "Référence: vitest.config.ts → setupFiles"
+
+  - id: P0-7
+    title: "Créer mock pour useNotifications"
+    description: "Implémenter le mock manquant pour le hook useNotifications"
+    priority: P0
+    category: tests
+    agent: Claude
+    estimation: 0.25 day
+    status: pending
+
+    tasks:
+      - "Créer src/__mocks__/useNotifications.ts"
+      - "Implémenter mock complet avec toutes propriétés"
+      - "Configurer vitest pour auto-mock du hook"
+      - "Valider avec tests notifications"
+
+    acceptance_criteria:
+      - "Mock useNotifications créé et fonctionnel"
+      - "Propriétés: isSupported, permission, requestPermission, etc."
+      - "Tests notifications passent à 100%"
+
+    technical_notes:
+      - "Hook location: src/hooks/useNotifications.ts"
+      - "Mock retourne: { isSupported: true, permission: 'granted', ... }"
+      - "Tester avec: src/components/NotificationSettings.test.tsx"
+
+  - id: P0-8
+    title: "Corriger timeouts des tests d'intégration"
+    description: "Augmenter les timeouts et optimiser les tests lents qui échouent après 10s"
+    priority: P0
+    category: tests
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+
+    tasks:
+      - "Identifier tous les tests avec timeout <30s"
+      - "Augmenter timeout global à 30s dans vitest.config"
+      - "Optimiser tests lents (mock API calls, reduce delays)"
+      - "Paralléliser tests indépendants"
+
+    acceptance_criteria:
+      - "Timeout global configuré à 30000ms"
+      - "Aucun test ne timeout après 30s"
+      - "Tests d'intégration optimisés (mock API)"
+      - "Tests passent de 68.6% à 85%+"
+
+    technical_notes:
+      - "Config: vitest.config.ts → testTimeout: 30000"
+      - "Optimiser: Mock fetch/API calls avec msw"
+      - "Parallélisation: maxConcurrency dans config"
+      - "Identifier avec: npm test -- --reporter=verbose"
+
+  - id: P0-9
+    title: "Corriger erreurs de validation guestStore"
+    description: "Fixer les erreurs de validation de données dans guestStore (format dates, types stats)"
+    priority: P0
+    category: tests
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+
+    tasks:
+      - "Analyser erreurs validation dans guestStore.test.ts"
+      - "Corriger format des dates (ISO 8601)"
+      - "Corriger types des statistiques (number vs string)"
+      - "Ajouter validation schemas avec zod si nécessaire"
+      - "Valider tous les tests guestStore"
+
+    acceptance_criteria:
+      - "Dates au format ISO 8601: YYYY-MM-DDTHH:mm:ss.sssZ"
+      - "Types statistiques corrects (duration: number, etc.)"
+      - "Tests guestStore passent à 100%"
+      - "Validation schema ajoutée si nécessaire"
+
+    technical_notes:
+      - "Fichier: src/stores/guestStore.ts et tests"
+      - "Format date: new Date().toISOString()"
+      - "Statistiques: totalDuration (ms), averageDuration (ms)"
+      - "Utiliser zod pour validation runtime"
+
+  - id: P0-10
+    title: "Corriger erreurs ResizeObserver"
+    description: "Ajouter polyfill et corriger les erreurs ResizeObserver dans les tests"
+    priority: P0
+    category: tests
+    agent: Claude
+    estimation: 0.25 day
+    status: pending
+
+    tasks:
+      - "Ajouter polyfill ResizeObserver dans setup tests"
+      - "Mocker ResizeObserver dans vitest setup"
+      - "Valider composants avec ResizeObserver"
+
+    acceptance_criteria:
+      - "Polyfill ResizeObserver en place"
+      - "Aucune erreur ResizeObserver dans tests"
+      - "Tous tests UI composants passent"
+
+    technical_notes:
+      - "Setup: src/test/setup.ts"
+      - "Mock: global.ResizeObserver = vi.fn(() => ({ observe: vi.fn(), ... }))"
+      - "Alternative: install @juggle/resize-observer"
+
+  - id: P0-11
+    title: "Validation finale tests >95% pass rate"
+    description: "Valider que le pass rate des tests atteint l'objectif NFR de 95%+"
+    priority: P0
+    category: tests
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+    depends_on: [P0-6, P0-7, P0-8, P0-9, P0-10]
+
+    tasks:
+      - "Exécuter suite complète de tests"
+      - "Analyser résultats et tests restants en échec"
+      - "Corriger derniers problèmes critiques"
+      - "Générer rapport de tests final"
+      - "Alerter Quinn pour validation QA"
+
+    acceptance_criteria:
+      - "Pass rate > 95% (347/363 tests minimum)"
+      - "Aucun test P0 en échec"
+      - "Temps d'exécution total < 5min"
+      - "Rapport de tests documenté"
+
+    technical_notes:
+      - "Commande: npm test -- --coverage"
+      - "Target: 347+ tests passés sur 363"
+      - "Actuel: 249/363 (68.6%)"
+      - "QA validation requise par Quinn"
+
+  # ==========================================
+  # 3. CONFIGURATION ENVIRONNEMENT
+  # ==========================================
+
+  - id: P0-12
+    title: "Configurer variables Supabase"
+    description: "Ajouter les variables d'environnement Supabase manquantes pour tests RLS"
+    priority: P0
+    category: environment
+    agent: Claude
+    estimation: 0.25 day
+    status: pending
+
+    tasks:
+      - "Créer/mettre à jour .env.local avec variables Supabase"
+      - "Documenter variables dans .env.example"
+      - "Valider connexion Supabase avec variables"
+      - "Tester RLS smoke tests"
+
+    acceptance_criteria:
+      - "VITE_SUPABASE_URL configuré"
+      - "VITE_SUPABASE_ANON_KEY configuré"
+      - "VITE_SUPABASE_SERVICE_ROLE_KEY configuré (dev only)"
+      - "Connexion Supabase validée"
+      - "Tests RLS exécutables"
+
+    technical_notes:
+      - "Fichiers: .env.local (git-ignored), .env.example (committed)"
+      - "Format: VITE_SUPABASE_URL=https://xxx.supabase.co"
+      - "Sécurité: SERVICE_ROLE_KEY jamais committé"
+      - "Test: npm run test:rls (NFR4)"
+
+  - id: P0-13
+    title: "Exécuter et valider tests RLS (NFR4)"
+    description: "Valider que les tests RLS A/B passent avec la configuration Supabase"
+    priority: P0
+    category: environment
+    agent: Quinn
+    estimation: 0.5 day
+    status: pending
+    depends_on: [P0-12]
+
+    tasks:
+      - "Exécuter tests RLS smoke A/B"
+      - "Valider policies RLS pour sessions/statistics"
+      - "Documenter résultats dans rapport QA"
+      - "Alerter équipe si échecs critiques"
+
+    acceptance_criteria:
+      - "Tests RLS A/B passent à 100%"
+      - "Policies validées: user isolation, public profiles"
+      - "NFR4 status: PASS ✓"
+      - "Rapport QA mis à jour"
+
+    technical_notes:
+      - "NFR4: RLS Smoke A/B Tests"
+      - "Tables: sessions, session_stats, statistics_summaries, profiles"
+      - "Test: npm run test:rls"
+      - "Rapport: qa-report-mvp-sport-nfr-pass.md"
+
+# ============================================
+# P1 TASKS - CRITIQUES MAIS NON-BLOQUANTES
+# ============================================
+
+tasks_p1:
+
+  # ==========================================
+  # 4. TESTS D'ACCESSIBILITÉ
+  # ==========================================
+
+  - id: P1-1
+    title: "Configurer Playwright et dev server"
+    description: "Configurer Playwright pour les tests d'accessibilité et démarrer l'application"
+    priority: P1
+    category: a11y
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+
+    tasks:
+      - "Vérifier configuration playwright.config.ts"
+      - "Configurer baseURL et webServer pour auto-start"
+      - "Installer dépendances Playwright si manquantes"
+      - "Valider démarrage application en mode test"
+
+    acceptance_criteria:
+      - "playwright.config.ts configuré avec baseURL: http://localhost:5173"
+      - "webServer configuré pour démarrage automatique"
+      - "Application démarre en mode test"
+      - "Playwright tests exécutables"
+
+    technical_notes:
+      - "Config: webServer: { command: 'npm run dev', port: 5173 }"
+      - "Dependencies: @playwright/test, @axe-core/playwright"
+      - "Test basique: playwright/smoke.spec.ts"
+
+  - id: P1-2
+    title: "Exécuter tests accessibilité AA (NFR6)"
+    description: "Valider la conformité WCAG AA avec tests focus/contrast Playwright"
+    priority: P1
+    category: a11y
+    agent: Quinn
+    estimation: 0.5 day
+    status: pending
+    depends_on: [P1-1]
+
+    tasks:
+      - "Exécuter tests Playwright d'accessibilité"
+      - "Analyser résultats focus/contrast"
+      - "Documenter violations WCAG AA si détectées"
+      - "Créer tickets P2 pour violations non-critiques"
+
+    acceptance_criteria:
+      - "Tests focus passent à 100%"
+      - "Tests contrast passent à 100% (ratio 4.5:1 min)"
+      - "NFR6 status: PASS ✓"
+      - "Violations documentées si présentes"
+
+    technical_notes:
+      - "NFR6: Tests AA Focus/Contrast"
+      - "WCAG 2.1 Level AA: Contrast 4.5:1 (text), 3:1 (UI)"
+      - "Axe-core integration: @axe-core/playwright"
+      - "Test: npm run test:a11y"
+
+  # ==========================================
+  # 5. STABILITÉ ET OPTIMISATION TESTS
+  # ==========================================
+
+  - id: P1-3
+    title: "Améliorer isolation des tests"
+    description: "Isoler les tests pour éviter side effects et améliorer stabilité"
+    priority: P1
+    category: tests
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+
+    tasks:
+      - "Auditer tests avec side effects (global state, timers, etc.)"
+      - "Ajouter beforeEach/afterEach cleanup"
+      - "Isoler stores avec fresh instances par test"
+      - "Valider stabilité avec runs multiples"
+
+    acceptance_criteria:
+      - "Tous tests ont cleanup proper (afterEach)"
+      - "Stores réinitialisés entre tests"
+      - "Tests passent 10 runs consécutifs sans flakiness"
+      - "Aucun leak de timers/promises"
+
+    technical_notes:
+      - "Pattern: afterEach(() => { cleanup(); vi.clearAllMocks(); })"
+      - "Stores: Utiliser fresh zustand instances"
+      - "Timers: vi.useFakeTimers() + vi.runAllTimers()"
+
+  - id: P1-4
+    title: "Optimiser performance des tests"
+    description: "Réduire le temps d'exécution total des tests de >5min à <3min"
+    priority: P1
+    category: tests
+    agent: Claude
+    estimation: 0.5 day
+    status: pending
+
+    tasks:
+      - "Identifier tests les plus lents (>1s)"
+      - "Optimiser avec mocks/stubs au lieu de vraies implémentations"
+      - "Augmenter parallélisation (maxConcurrency)"
+      - "Mesurer amélioration temps total"
+
+    acceptance_criteria:
+      - "Temps total < 3min (baseline: >5min)"
+      - "Aucun test individuel >5s"
+      - "Parallélisation optimale configurée"
+      - "Réduction d'au moins 40% du temps"
+
+    technical_notes:
+      - "Commande: npm test -- --reporter=verbose --profile"
+      - "Config: maxConcurrency dans vitest.config"
+      - "Target: 2-3min pour 363 tests"
+
+  - id: P1-5
+    title: "Documentation et rapport final QA"
+    description: "Documenter toutes corrections et générer rapport final de validation NFR PASS"
+    priority: P1
+    category: documentation
+    agent: Quinn
+    estimation: 0.5 day
+    status: pending
+    depends_on: [P0-5, P0-11, P0-13, P1-2]
+
+    tasks:
+      - "Mettre à jour qa-report-mvp-sport-nfr-pass.md avec résultats finaux"
+      - "Documenter toutes corrections P0 appliquées"
+      - "Générer tableau de bord métriques (bundle, tests, NFRs)"
+      - "Créer recommandations pour monitoring continu"
+
+    acceptance_criteria:
+      - "QA report mis à jour avec status PASS ✓"
+      - "Toutes métriques documentées (avant/après)"
+      - "Recommandations CI/CD documentées"
+      - "Sprint considéré DONE"
+
+    technical_notes:
+      - "Fichier: qa-report-mvp-sport-nfr-pass.md"
+      - "Métriques finales attendues:"
+      - "  - Bundle: <300KB ✓"
+      - "  - Tests: >95% ✓"
+      - "  - RLS: PASS ✓"
+      - "  - A11y: PASS ✓"
+
+# ============================================
+# METRIQUES ET VALIDATION
+# ============================================
+
+metrics:
+  initial:
+    bundle_size: "708.82 KB"
+    tests_pass_rate: "68.6% (249/363)"
+    nfr4_rls: "NON TESTABLE"
+    nfr6_a11y: "NON TESTABLE"
+    gate_status: "ÉCHEC ❌"
+
+  targets:
+    bundle_size: "< 300 KB"
+    tests_pass_rate: "> 95% (347+/363)"
+    nfr4_rls: "PASS ✓"
+    nfr6_a11y: "PASS ✓"
+    gate_status: "PASS ✓"
+
+  kpis:
+    - name: "Bundle Size Reduction"
+      target: "57.6% reduction (408KB saved)"
+      measure: "dist/assets/*.js size"
+
+    - name: "Tests Pass Rate Improvement"
+      target: "+26.4% (98 tests fixed)"
+      measure: "npm test -- --reporter=json"
+
+    - name: "Test Execution Time"
+      target: "< 3 minutes"
+      measure: "npm test -- --reporter=verbose"
+
+    - name: "NFR Gates Passed"
+      target: "4/4 (NFR1, NFR4, NFR6, NFR7)"
+      measure: "Manual validation + automated tests"
+
+# ============================================
+# RISQUES ET MITIGATIONS
+# ============================================
+
+risks:
+  - id: RISK-1
+    title: "Bundle size difficile à réduire sous 300KB"
+    probability: medium
+    impact: high
+    mitigation:
+      - "Audit détaillé avec vite-bundle-visualizer"
+      - "Envisager alternatives légères pour dépendances lourdes"
+      - "Code splitting agressif si nécessaire"
+    fallback: "Augmenter temporairement limite à 350KB avec justification"
+
+  - id: RISK-2
+    title: "Tests instables avec timeouts intermittents"
+    probability: medium
+    impact: medium
+    mitigation:
+      - "Isolation stricte des tests"
+      - "Mocks robustes pour API/async"
+      - "Retry logic pour tests flaky"
+    fallback: "Désactiver tests instables temporairement, valider manuellement"
+
+  - id: RISK-3
+    title: "Configuration Supabase complexe ou credentials manquants"
+    probability: low
+    impact: medium
+    mitigation:
+      - "Documentation claire dans .env.example"
+      - "Scripts d'aide pour setup Supabase"
+      - "Tests RLS mockés en fallback"
+    fallback: "Tests RLS manuels par Quinn avec Supabase UI"
+
+# ============================================
+# DEFINITION OF DONE
+# ============================================
+
+done_criteria:
+  p0_required:
+    - "Bundle principal < 300KB validé ✓"
+    - "Tests pass rate > 95% (347+/363) ✓"
+    - "Variables Supabase configurées ✓"
+    - "Tests RLS NFR4 PASS ✓"
+
+  p1_recommended:
+    - "Tests accessibilité NFR6 PASS ✓"
+    - "Tests optimisés < 3min ✓"
+    - "Documentation QA complète ✓"
+
+  validation:
+    - "Quinn validation QA finale ✓"
+    - "Rapport QA mis à jour status PASS ✓"
+    - "Commit avec tag 'nfr-pass-fixes' ✓"
+    - "CI/CD GitHub Actions GREEN ✓"
+
+# ============================================
+# NEXT STEPS POST-SPRINT
+# ============================================
+
+post_sprint:
+  immediate:
+    - "Déployer sur environnement staging"
+    - "Valider E2E en environnement réel"
+    - "Monitoring bundle size avec CI checks"
+
+  short_term:
+    - "Intégrer checks bundle size dans CI/CD"
+    - "Automatiser tests NFR dans pipeline"
+    - "Setup Lighthouse CI pour performance"
+
+  mid_term:
+    - "Monitoring continu métriques qualité"
+    - "Tests de performance automatisés"
+    - "Documentation procédures QA"
