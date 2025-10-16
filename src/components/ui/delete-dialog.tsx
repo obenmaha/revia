@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -7,8 +8,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from './alert-dialog';
-import { Loader2 } from 'lucide-react';
+} from '@/components/ui/alert-dialog';
 
 interface DeleteDialogProps {
   open: boolean;

@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect, Suspense, lazy } from 'react';
-import './App.css';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './stores/authStore';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
