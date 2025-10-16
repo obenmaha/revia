@@ -4,7 +4,7 @@ import { vi, beforeAll, afterEach, afterAll } from 'vitest';
 // Mock lucide-react icons
 vi.mock('lucide-react', () => {
   return new Proxy({}, {
-    get: (target, prop) => {
+    get: (_target, prop) => {
       if (typeof prop === 'string') {
         return (props: any) => {
           const React = require('react');

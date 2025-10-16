@@ -346,6 +346,100 @@ export type Database = {
           metadata?: Json;
         };
       };
+      sport_sessions: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          date: string;
+          type: 'cardio' | 'musculation' | 'flexibility' | 'other';
+          status: 'draft' | 'in_progress' | 'completed';
+          objectives: string | null;
+          notes: string | null;
+          rpe_score: number | null;
+          pain_level: number | null;
+          duration_minutes: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          date: string;
+          type: 'cardio' | 'musculation' | 'flexibility' | 'other';
+          status?: 'draft' | 'in_progress' | 'completed';
+          objectives?: string | null;
+          notes?: string | null;
+          rpe_score?: number | null;
+          pain_level?: number | null;
+          duration_minutes: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          date?: string;
+          type?: 'cardio' | 'musculation' | 'flexibility' | 'other';
+          status?: 'draft' | 'in_progress' | 'completed';
+          objectives?: string | null;
+          notes?: string | null;
+          rpe_score?: number | null;
+          pain_level?: number | null;
+          duration_minutes?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      sport_exercises: {
+        Row: {
+          id: string;
+          session_id: string;
+          name: string;
+          exercise_type: 'cardio' | 'musculation' | 'flexibility' | 'other';
+          sets: number | null;
+          reps: number | null;
+          weight_kg: number | null;
+          duration_seconds: number | null;
+          rest_seconds: number | null;
+          order_index: number;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          session_id: string;
+          name: string;
+          exercise_type: 'cardio' | 'musculation' | 'flexibility' | 'other';
+          sets?: number | null;
+          reps?: number | null;
+          weight_kg?: number | null;
+          duration_seconds?: number | null;
+          rest_seconds?: number | null;
+          order_index: number;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          session_id?: string;
+          name?: string;
+          exercise_type?: 'cardio' | 'musculation' | 'flexibility' | 'other';
+          sets?: number | null;
+          reps?: number | null;
+          weight_kg?: number | null;
+          duration_seconds?: number | null;
+          rest_seconds?: number | null;
+          order_index?: number;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

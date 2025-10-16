@@ -16,7 +16,12 @@
       "Bash(for file in src/__tests__/*.test.{ts,tsx})",
       "Bash(do [ -f \"$file\" ])",
       "Bash(timeout 30 npm test -- --run \"$file\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(find:*)",
+      "Bash(timeout 60 npm test:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

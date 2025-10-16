@@ -40,6 +40,11 @@ export interface SportExercise {
   updated_at: string;
 }
 
+// Interface pour session avec exercices
+export interface SportSessionWithExercises extends SportSession {
+  exercises: SportExercise[];
+}
+
 // Interface pour les statistiques calculées
 export interface SportStats {
   total_sessions: number;

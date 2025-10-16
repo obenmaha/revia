@@ -98,7 +98,7 @@ function LoginPage() {
         email: 'dev@test.com',
         firstName: 'Dev',
         lastName: 'User',
-        role: 'PRACTITIONER' as const,
+        role: 'practitioner' as const,
         isActive: true,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -116,7 +116,7 @@ function LoginPage() {
           password, 
           firstName: 'Test',
           lastName: 'User',
-          role: 'PRACTITIONER'
+          role: 'practitioner'
         });
         console.log('✅ Inscription terminée');
       } else {

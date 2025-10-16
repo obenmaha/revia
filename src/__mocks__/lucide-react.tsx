@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Mock des icônes lucide-react les plus utilisées
 export const FileText = (props: any) => <div data-testid="file-text" {...props} />;
 export const Calendar = (props: any) => <div data-testid="calendar" {...props} />;

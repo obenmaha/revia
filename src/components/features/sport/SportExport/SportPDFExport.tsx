@@ -1,5 +1,4 @@
 // Composant d'export PDF pour les données sport - Story 1.5
-import React from 'react';
 import { FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {

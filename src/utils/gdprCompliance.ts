@@ -27,8 +27,8 @@ export interface SanitizedSession {
   type: string;
   status: string;
   duration_minutes: number;
-  rpe_score: number;
-  pain_level: number;
+  rpe_score: number | null;
+  pain_level: number | null;
   objectives?: string;
   notes?: string;
   exercises: SanitizedExercise[];
@@ -39,11 +39,11 @@ export interface SanitizedExercise {
   id: string; // ID anonymisé
   name: string;
   exercise_type: string;
-  sets: number;
-  reps: number;
-  weight_kg: number;
-  duration_seconds: number;
-  rest_seconds: number;
+  sets: number | null;
+  reps: number | null;
+  weight_kg: number | null;
+  duration_seconds: number | null;
+  rest_seconds: number | null;
   order_index: number;
   notes?: string;
 }

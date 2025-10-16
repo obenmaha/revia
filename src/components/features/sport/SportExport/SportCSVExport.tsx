@@ -1,5 +1,4 @@
 // Composant d'export CSV pour les données sport - Story 1.5
-import React from 'react';
 import { FileSpreadsheet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
