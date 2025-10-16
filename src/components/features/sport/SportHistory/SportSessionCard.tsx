@@ -15,8 +15,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { formatDate, formatTime, frenchLocale } from '../../../../utils/dateUtils';
 import type { SportSession, SportExercise, SportSessionType, SportSessionStatus } from '@/types/sport';
 
 interface SportSessionWithExercises extends SportSession {
@@ -63,12 +62,12 @@ export function SportSessionCard({
     return `${mins}min`;
   };
 
-  const formatDate = (date: Date) => {
-    return format(date, 'dd MMMM yyyy', { locale: fr });
+  const formatDateLocal = (date: Date) => {
+    return formatDate(date, 'dd MMMM yyyy');
   };
 
-  const formatTime = (date: Date) => {
-    return format(date, 'HH:mm');
+  const formatTimeLocal = (date: Date) => {
+    return formatTime(date);
   };
 
   const getRPEColor = (rpe?: number) => {
@@ -95,10 +94,10 @@ export function SportSessionCard({
               <h3 className="text-lg font-semibold text-gray-900">{session.name}</h3>
               <div className="flex items-center space-x-2 text-sm text-gray-500">
                 <Calendar className="h-4 w-4" />
-                <span>{formatDate(session.date)}</span>
+                <span>{formatDateLocal(session.date)}</span>
                 <span>•</span>
                 <Clock className="h-4 w-4" />
-                <span>{formatTime(session.date)}</span>
+                <span>{formatTimeLocal(session.date)}</span>
               </div>
             </div>
           </div>

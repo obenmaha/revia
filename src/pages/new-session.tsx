@@ -25,8 +25,7 @@ import {
 } from '../components/ui/popover';
 import { Checkbox } from '../components/ui/checkbox';
 import { CalendarIcon, Clock, Dumbbell, Copy } from 'lucide-react';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { formatDate, formatTime, frenchLocale } from '../utils/dateUtils';
 import { cn } from '../lib/utils';
 import { generateDuplicateDates } from '../utils/duplicateDates';
 import { SessionService } from '../services/sessionService';

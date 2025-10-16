@@ -7,7 +7,7 @@ import {
   useSportPerformanceMetrics,
 } from '@/hooks/useSportStats';
 import { SportStatsCards } from './SportStatsCards';
-import { SportStatsCharts } from './SportStatsCharts';
+import { SportStatsChartsLazy } from './SportStatsChartsLazy';
 import { SportStatsComparison } from './SportStatsComparison';
 import { Loader2, TrendingUp, Activity, Calendar, Target } from 'lucide-react';
 
@@ -96,7 +96,7 @@ export function SportStatsDashboard({
                 <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
               </div>
             ) : (
-              <SportStatsCharts
+              <SportStatsChartsLazy
                 data={progression}
                 type="progression"
                 height={250}
@@ -118,7 +118,7 @@ export function SportStatsDashboard({
                 <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
               </div>
             ) : (
-              <SportStatsCharts
+              <SportStatsChartsLazy
                 data={stats?.sessions_by_type}
                 type="distribution"
                 height={250}

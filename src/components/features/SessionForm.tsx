@@ -30,8 +30,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from 'lucide-react';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { formatDate, formatTime, frenchLocale } from '../../utils/dateUtils';
 
 // Interface pour les props du composant
 interface SessionFormProps {
@@ -129,7 +128,7 @@ export function SessionForm({
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {selectedDate
-              ? format(selectedDate, 'PPP', { locale: fr })
+              ? formatDate(selectedDate, 'PPP')
               : 'Sélectionner une date'}
           </Button>
         </PopoverTrigger>

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,6 +15,11 @@ export default defineConfig({
       '@/services': path.resolve(__dirname, './src/services'),
       '@/utils': path.resolve(__dirname, './src/utils'),
       '@/types': path.resolve(__dirname, './src/types'),
+      // Preact en production pour réduire la taille du bundle
+      ...(mode === 'production' && {
+        'react': 'preact/compat',
+        'react-dom': 'preact/compat'
+      }),
     },
   },
   build: {
@@ -30,6 +35,11 @@ export default defineConfig({
           }
           if (id.includes('node_modules/react-router-dom')) {
             return 'vendor-router';
+          }
+
+          // Charts - séparé pour lazy loading
+          if (id.includes('node_modules/recharts')) {
+            return 'vendor-charts';
           }
 
           // Supabase & Auth
@@ -93,4 +103,4 @@ export default defineConfig({
     port: 3000,
     open: true,
   },
-});
+}));

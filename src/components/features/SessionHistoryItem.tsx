@@ -25,8 +25,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import type { Session } from '@/types/session';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { formatDate, formatTime, frenchLocale } from '../../utils/dateUtils';
 
 interface SessionHistoryItemProps {
   session: Session;
@@ -112,12 +111,12 @@ const SessionHistoryItem: React.FC<SessionHistoryItemProps> = ({
     }
   };
 
-  const formatDate = (date: Date) => {
-    return format(date, 'dd MMM yyyy', { locale: fr });
+  const formatDateLocal = (date: Date) => {
+    return formatDate(date, 'dd MMM yyyy');
   };
 
-  const formatTime = (date: Date) => {
-    return format(date, 'HH:mm', { locale: fr });
+  const formatTimeLocal = (date: Date) => {
+    return formatTime(date);
   };
 
   const getRelativeDate = (date: Date) => {
@@ -136,7 +135,7 @@ const SessionHistoryItem: React.FC<SessionHistoryItemProps> = ({
       // 7 jours
       return `Il y a ${Math.floor(diffInHours / 24)} jour${Math.floor(diffInHours / 24) > 1 ? 's' : ''}`;
     } else {
-      return formatDate(date);
+      return formatDateLocal(date);
     }
   };
 
@@ -182,11 +181,11 @@ const SessionHistoryItem: React.FC<SessionHistoryItemProps> = ({
               <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
-                  <span>{formatDate(session.date)}</span>
+                  <span>{formatDateLocal(session.date)}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  <span>{formatTime(session.date)}</span>
+                  <span>{formatTimeLocal(session.date)}</span>
                 </div>
                 <span className="text-gray-400">•</span>
                 <span className="text-gray-500">

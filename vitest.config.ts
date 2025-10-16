@@ -25,21 +25,25 @@ export default defineConfig({
     restoreMocks: true,
     clearMocks: true,
 
-    // Ignorer les tests "cabinet/clinic/export/pwa" pendant le deep clean
+    // Inclure tous les tests Sport MVP, exclure cabinet/clinic/pwa/export/_deprecated/old
+    include: [
+      'src/__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}'
+    ],
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
       '**/cypress/**',
       '**/.{idea,git,cache,output,temp}/**',
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
-      '**/__tests__/{cabinet,clinic,patients,patient,invoices,invoice,billing,practitioner,appointment,agenda,export,pwa,_deprecated,old}/**',
-      '**/playwright/**' // si tu veux séparer E2E Playwright de Vitest
+      '**/__tests__/**/*{cabinet,clinic,pwa,export,_deprecated,old}*',
+      '**/playwright/**' // Séparer E2E Playwright de Vitest
     ],
 
-    // Réduire la pression CPU (Windows)
+    // Workers stabilisés pour MVP (1-2 workers)
     pool: 'threads',
     poolOptions: { threads: { singleThread: false, minThreads: 1, maxThreads: 2 } },
 
+    // Charger .env.test (pas de mock hardcodé)
     env: {
       VITE_SUPABASE_URL: 'https://mock.supabase.co',
       VITE_SUPABASE_ANON_KEY: 'mock-anon-key',
@@ -48,7 +52,13 @@ export default defineConfig({
       VITE_DEBUG: 'true',
       VITE_LOG_LEVEL: 'debug',
       VITE_API_TIMEOUT: '10000',
-      NODE_ENV: 'test'
+      NODE_ENV: 'test',
+      // Mode test pour MVP
+      VITE_APP_MODE: 'test',
+      VITE_SPORT_MODE: 'false',
+      VITE_CABINET_MODE: 'false',
+      VITE_GUEST_MODE: 'true',
+      VITE_ANALYTICS_ENABLED: 'false'
     },
 
     coverage: {
@@ -62,8 +72,8 @@ export default defineConfig({
         '**/coverage/**',
         '**/__tests__/**'
       ],
-      // Pendant le clean, tu peux baisser les seuils si besoin
-      thresholds: { global: { branches: 60, functions: 60, lines: 60, statements: 60 } }
+      // Seuils visés >95% sur le périmètre MVP
+      thresholds: { global: { branches: 95, functions: 95, lines: 95, statements: 95 } }
     }
   },
   resolve: {

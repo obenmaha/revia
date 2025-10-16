@@ -1,4 +1,4 @@
-import { addDays, addWeeks, isAfter, isBefore, isSameDay } from 'date-fns';
+import { addDays, addWeeks, isAfter, isBefore, isSameDay } from './dateUtils';
 
 export type DuplicateType = 'daily' | 'every-other-day' | 'weekly';
 

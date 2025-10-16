@@ -11,16 +11,16 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : 2, // Limiter à 2 workers pour éviter les blocages Windows
-  /* Ignorer les tests cabinet/clinic/patients/invoices/billing/practitioner/appointment/agenda/export/pwa/_deprecated/old */
+  /* Workers stabilisés pour MVP */
+  workers: 1, // Toujours 1 worker pour stabilité
+  /* Exclure cabinet/clinic/pwa/export/_deprecated/old pour stabiliser les tests MVP */
   testIgnore: [
     '**/node_modules/**',
     '**/dist/**',
-    // Note: Ces patterns ne s'appliquent que s'il y a des tests cabinet spécifiques
+    '**/*{cabinet,clinic,pwa,export,_deprecated,old}*',
   ],
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  /* Reporter line pour CI */
+  reporter: process.env.CI ? 'line' : 'html',
   /* Global timeout for each test (30 seconds) */
   timeout: 30000,
   /* Expect timeout for assertions (5 seconds) */
@@ -81,9 +81,9 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
+  webServer: process.env.CI ? undefined : {
     command: 'npm run dev',
     url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
 });

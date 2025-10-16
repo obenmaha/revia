@@ -22,7 +22,7 @@ import {
   PopoverTrigger,
 } from '../../components/ui/popover';
 import { CalendarIcon, Dumbbell } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatDate } from '../../utils/dateUtils';
 
 export function SportSessionCreatePage() {
   const [formData, setFormData] = useState({

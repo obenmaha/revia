@@ -1,5 +1,5 @@
 import { cn } from '../../lib/utils';
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ReviaButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
