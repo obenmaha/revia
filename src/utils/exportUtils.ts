@@ -35,7 +35,6 @@ export function generateCSV(data: ExportData): string {
   return Papa.unparse(csvData, {
     header: true,
     delimiter: ',',
-    encoding: 'UTF-8',
   });
 }
 

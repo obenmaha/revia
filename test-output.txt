@@ -1,0 +1,97 @@
+
+> revia@0.0.2 test
+> vitest
+
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90mD:/Projets/revia[39m
+
+[90mstdout[2m | src/__tests__/integration/sport-export.test.tsx
+[22m[39m🔄 Utilisation des variables d'environnement Vite
+Configuration de l'environnement: {
+  app: {
+    name: [32m'App-Kine'[39m,
+    version: [32m'1.0.0'[39m,
+    debug: [33mtrue[39m,
+    logLevel: [32m'debug'[39m
+  },
+  api: {
+    baseUrl: [32m'https://mock.supabase.co'[39m,
+    anonKey: [32m'mock-anon-key'[39m,
+    serviceRoleKey: [32m''[39m,
+    timeout: [33m10000[39m
+  },
+  supabase: {
+    url: [32m'https://mock.supabase.co'[39m,
+    anonKey: [32m'mock-anon-key'[39m,
+    serviceRoleKey: [32m''[39m
+  },
+  services: {
+    email: [32m'https://api.emailservice.com'[39m,
+    sms: [32m'https://api.smsservice.com'[39m
+  }
+}
+✅ Configuration des variables d'environnement valide
+
+ [31m❯[39m src/__tests__/integration/sport-export.test.tsx [2m([22m[2m17 tests[22m[2m | [22m[31m15 failed[39m[2m)[22m[33m 140301[2mms[22m[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mExport CSV - Intégration complète[2m > [22mdevrait exporter les données CSV avec succès[39m[33m 10022[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mExport CSV - Intégration complète[2m > [22mdevrait gérer les erreurs d'export CSV[39m[33m 10010[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mExport CSV - Intégration complète[2m > [22mdevrait valider les données avant export[39m[33m 10006[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mExport CSV - Intégration complète[2m > [22mdevrait nettoyer les données sensibles avant export[39m[33m 10021[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mExport PDF - Intégration complète[2m > [22mdevrait exporter les données PDF avec succès[39m[33m 10007[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mExport PDF - Intégration complète[2m > [22mdevrait gérer les erreurs d'export PDF[39m[33m 10016[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mExport PDF - Intégration complète[2m > [22mdevrait générer un PDF avec les métadonnées appropriées[39m[33m 10015[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+   [32m✓[39m Tests d'intégration - Exports Sport[2m > [22mModal d'export - Intégration complète[2m > [22mdevrait afficher la modal d'export correctement[32m 36[2mms[22m[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mModal d'export - Intégration complète[2m > [22mdevrait gérer la sélection du format d'export[39m[32m 26[2mms[22m[39m
+[31m     → expected "spy" to be called with arguments: [ 'csv' ][90m
+
+Received: 
+
+[1m  1st spy call:
+
+[22m[2m  [[22m
+[32m-   "csv",[90m
+[31m+   {[90m
+[31m+     "format": "csv",[90m
+[31m+     "period": "month",[90m
+[31m+   },[90m
+[2m  ][22m
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+   [32m✓[39m Tests d'intégration - Exports Sport[2m > [22mModal d'export - Intégration complète[2m > [22mdevrait fermer la modal correctement[32m 19[2mms[22m[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mIntégration avec Supabase[2m > [22mdevrait récupérer les données de session depuis Supabase[39m[33m 10011[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mIntégration avec Supabase[2m > [22mdevrait appliquer les filtres de période correctement[39m[33m 10019[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mIntégration avec Supabase[2m > [22mdevrait gérer les erreurs de récupération des données[39m[33m 10017[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mPerformance et optimisation[2m > [22mdevrait gérer les exports de grandes quantités de données[39m[33m 10014[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mPerformance et optimisation[2m > [22mdevrait optimiser les requêtes Supabase[39m[33m 10026[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mSécurité et conformité RGPD[2m > [22mdevrait nettoyer les données sensibles avant export[39m[33m 10022[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[31m   [31m×[31m Tests d'intégration - Exports Sport[2m > [22mSécurité et conformité RGPD[2m > [22mdevrait inclure les mentions légales dans les exports[39m[33m 10009[2mms[22m[39m
+[31m     → Test timed out in 10000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m

@@ -1,6 +1,50 @@
 import '@testing-library/jest-dom';
 import { vi, beforeAll, afterEach, afterAll } from 'vitest';
 
+// Mock lucide-react icons
+vi.mock('lucide-react', () => {
+  return new Proxy({}, {
+    get: (_target, prop) => {
+      if (typeof prop === 'string') {
+        return (props: any) => {
+          const React = require('react');
+          return React.createElement('div', { 'data-testid': prop.toLowerCase(), ...props });
+        };
+      }
+      return undefined;
+    }
+  });
+});
+
+// Mock useNotifications hook
+vi.mock('@/hooks/useNotifications', () => ({
+  useNotifications: vi.fn(() => ({
+    preferences: null,
+    isLoading: false,
+    isError: false,
+    error: null,
+    permission: 'granted' as NotificationPermission,
+    isSupported: true,
+    updatePreferences: vi.fn().mockResolvedValue(undefined),
+    requestPermission: vi.fn().mockResolvedValue(true),
+    scheduleLocalReminder: vi.fn().mockResolvedValue(undefined),
+    cancelReminder: vi.fn(),
+    cancelAllReminders: vi.fn(),
+    isUpdating: false,
+    isRequestingPermission: false,
+    updateError: null,
+    permissionError: null,
+    refetch: vi.fn(),
+  })),
+  useScheduleSessionReminder: vi.fn(() => ({
+    scheduleSessionReminder: vi.fn().mockResolvedValue({
+      reminderTime: new Date(),
+      delay: 0,
+      cancelled: false,
+    }),
+  })),
+}));
+
 // Mock Supabase Client pour tous les tests
 vi.mock('@supabase/supabase-js', () => {
   const mockAuth = {

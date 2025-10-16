@@ -1,5 +1,5 @@
 // Modal d'export sécurisé pour les données sport - Story 1.5
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Download,
@@ -28,11 +28,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { GDPRComplianceService } from '@/utils/gdprCompliance';
-import type {
-  ExportFilters,
-  GDPRComplianceConfig,
-} from '@/utils/gdprCompliance';
+import type { ExportFilters } from '@/types/sport';
 
 interface SportExportModalProps {
   isOpen: boolean;
@@ -48,7 +44,7 @@ export function SportExportModal({
   className = '',
 }: SportExportModalProps) {
   const [isExporting, setIsExporting] = useState(false);
-  const [exportFormat, setExportFormat] = useState<'csv' | 'pdf'>('csv');
+  const exportFormat = 'csv'; // PDF removed for Sport MVP
   const [exportPeriod, setExportPeriod] = useState<
     'week' | 'month' | 'year' | 'custom'
   >('month');

@@ -14,7 +14,7 @@ export interface GuestSession {
   id: string; // client-generated UUID
   name: string;
   date: string; // ISO date string
-  type: 'cardio' | 'musculation' | 'flexibility' | 'other';
+  type: 'cardio' | 'musculation' | 'flexibility' | 'sport' | 'other';
   status: 'draft' | 'in_progress' | 'completed';
   duration_minutes: number;
   rpe_score?: number; // 1-10
@@ -31,7 +31,7 @@ export interface GuestExercise {
   id: string; // client-generated UUID
   session_id: string;
   name: string;
-  type: 'cardio' | 'musculation' | 'flexibility' | 'other';
+  type: 'cardio' | 'musculation' | 'flexibility' | 'sport' | 'other';
   sets?: number;
   reps?: number;
   weight_kg?: number;
@@ -161,7 +161,7 @@ export const guestSessionSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1).max(200),
   date: z.string().datetime(),
-  type: z.enum(['cardio', 'musculation', 'flexibility', 'other']),
+  type: z.enum(['cardio', 'musculation', 'flexibility', 'sport', 'other']),
   status: z.enum(['draft', 'in_progress', 'completed']),
   duration_minutes: z.number().int().min(0).max(600),
   rpe_score: z.number().int().min(1).max(10).optional(),
@@ -175,7 +175,7 @@ export const guestExerciseSchema = z.object({
   id: z.string().uuid(),
   session_id: z.string().uuid(),
   name: z.string().min(1).max(200),
-  type: z.enum(['cardio', 'musculation', 'flexibility', 'other']),
+  type: z.enum(['cardio', 'musculation', 'flexibility', 'sport', 'other']),
   sets: z.number().int().min(1).max(50).optional(),
   reps: z.number().int().min(1).max(500).optional(),
   weight_kg: z.number().min(0).max(1000).optional(),
@@ -195,7 +195,7 @@ export const guestDataSchema = z.object({
     total_sessions: z.number().int().min(0),
     total_duration_minutes: z.number().int().min(0),
     total_exercises: z.number().int().min(0),
-    sessions_by_type: z.record(z.number()),
+    sessions_by_type: z.record(z.string(), z.number().int().min(0)),
     avg_rpe: z.number().min(0).max(10).optional(),
     last_session_date: z.string().datetime().optional(),
   }),

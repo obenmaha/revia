@@ -1,5 +1,5 @@
 // Page principale de l'historique sport - Story 1.5
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSportHistory, useSportHistoryStats } from '@/hooks/useSportHistory';
 import { SportHistoryFilters } from './SportHistoryFilters';
 import { SportSessionList } from './SportSessionList';

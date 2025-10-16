@@ -1,19 +1,37 @@
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import './App.css';
-import { AppLayout } from './components/layouts/AppLayout';
-import { SportDashboardPage } from './pages/sport/SportDashboardPage';
-import { SportSessionCreatePage } from './pages/sport/SportSessionCreatePage';
-import { SportHistoryPage } from './pages/sport/SportHistoryPage';
-import { SportProfilePage } from './pages/sport/SportProfilePage';
-import { GuestDashboardPage } from './pages/guest/GuestDashboardPage';
-import ProfilePage from './pages/ProfilePage';
-import { LegalMentionsPage } from './pages/legal/LegalMentionsPage';
-import { LegalCGUPage } from './pages/legal/LegalCGUPage';
-import { ModeToggle } from './components/features/ModeToggle';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './stores/authStore';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+
+// Lazy load layouts and heavy components
+const AppLayout = lazy(() => import('./components/layouts/AppLayout').then(m => ({ default: m.AppLayout })));
+const ModeToggle = lazy(() => import('./components/features/ModeToggle').then(m => ({ default: m.ModeToggle })));
+
+// Lazy loading des pages pour optimiser le bundle size
+const SportDashboardPage = lazy(() => import('./pages/sport/SportDashboardPage').then(m => ({ default: m.SportDashboardPage })));
+const SportSessionCreatePage = lazy(() => import('./pages/sport/SportSessionCreatePage').then(m => ({ default: m.SportSessionCreatePage })));
+const SportHistoryPage = lazy(() => import('./pages/sport/SportHistoryPage').then(m => ({ default: m.SportHistoryPage })));
+const SportProfilePage = lazy(() => import('./pages/sport/SportProfilePage').then(m => ({ default: m.SportProfilePage })));
+const GuestDashboardPage = lazy(() => import('./pages/guest/GuestDashboardPage').then(m => ({ default: m.GuestDashboardPage })));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const LegalMentionsPage = lazy(() => import('./pages/legal/LegalMentionsPage').then(m => ({ default: m.LegalMentionsPage })));
+const LegalCGUPage = lazy(() => import('./pages/legal/LegalCGUPage').then(m => ({ default: m.LegalCGUPage })));
+
+// Composant de chargement
+const LoadingSpinner = () => (
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '200px',
+    fontSize: '18px',
+    color: '#6b7280'
+  }}>
+    Chargement...
+  </div>
+);
 
 // Composant pour la redirection par défaut basée sur le mode configuré
 function DefaultRedirect() {
@@ -80,7 +98,7 @@ function LoginPage() {
         email: 'dev@test.com',
         firstName: 'Dev',
         lastName: 'User',
-        role: 'PRACTITIONER' as const,
+        role: 'practitioner' as const,
         isActive: true,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -98,7 +116,7 @@ function LoginPage() {
           password, 
           firstName: 'Test',
           lastName: 'User',
-          role: 'PRACTITIONER'
+          role: 'practitioner'
         });
         console.log('✅ Inscription terminée');
       } else {
@@ -260,7 +278,9 @@ function LoginPage() {
 
         {/* Sélecteur de mode */}
         <div style={{ marginTop: '30px' }}>
-          <ModeToggle />
+          <Suspense fallback={<div>...</div>}>
+            <ModeToggle />
+          </Suspense>
         </div>
       </div>
     </div>
@@ -577,7 +597,9 @@ function App() {
         path="/profile"
         element={
           <ProtectedRoute>
-            <ProfilePage />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ProfilePage />
+            </Suspense>
           </ProtectedRoute>
         }
       />
@@ -591,10 +613,26 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route path="dashboard" element={<SportDashboardPage />} />
-        <Route path="session/new" element={<SportSessionCreatePage />} />
-        <Route path="history" element={<SportHistoryPage />} />
-        <Route path="profile" element={<SportProfilePage />} />
+        <Route path="dashboard" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <SportDashboardPage />
+          </Suspense>
+        } />
+        <Route path="session/new" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <SportSessionCreatePage />
+          </Suspense>
+        } />
+        <Route path="history" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <SportHistoryPage />
+          </Suspense>
+        } />
+        <Route path="profile" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <SportProfilePage />
+          </Suspense>
+        } />
         <Route path="" element={<Navigate to="/sport/dashboard" replace />} />
       </Route>
 
@@ -607,13 +645,25 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route path="dashboard" element={<GuestDashboardPage />} />
+        <Route path="dashboard" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <GuestDashboardPage />
+          </Suspense>
+        } />
         <Route path="" element={<Navigate to="/guest/dashboard" replace />} />
       </Route>
 
       {/* Routes légales - Accessibles sans authentification */}
-      <Route path="/legal/mentions" element={<LegalMentionsPage />} />
-      <Route path="/legal/cgu" element={<LegalCGUPage />} />
+      <Route path="/legal/mentions" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <LegalMentionsPage />
+        </Suspense>
+      } />
+      <Route path="/legal/cgu" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <LegalCGUPage />
+        </Suspense>
+      } />
 
       {/* Redirection par défaut - basée sur le mode configuré */}
       <Route path="/" element={<DefaultRedirect />} />
