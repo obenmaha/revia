@@ -1,109 +1,64 @@
-import * as React from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import * as React from "react"
+import { cn } from "@/utils/cn"
 
 export interface PageStep {
-  id: string;
-  title: string;
-  description?: string;
-  content: React.ReactNode;
-  completed?: boolean;
-  disabled?: boolean;
+  id: string
+  title: string
+  description?: string
+  status: 'completed' | 'current' | 'upcoming'
 }
 
 export interface PageStepperProps {
-  steps: PageStep[];
-  currentStep: number;
-  onStepChange: (step: number) => void;
-  onComplete?: () => void;
-  className?: string;
-  headerClassName?: string;
-  contentClassName?: string;
-  showNavigation?: boolean;
-  showProgress?: boolean;
+  steps: PageStep[]
+  currentStep: number
+  className?: string
 }
 
-export function PageStepper({
-  steps,
-  currentStep,
-  onStepChange,
-  onComplete,
-  className,
-  headerClassName,
-  contentClassName,
-  showNavigation = true,
-  showProgress = true,
-}: PageStepperProps) {
-  const canGoNext = currentStep < steps.length - 1;
-  const canGoPrevious = currentStep > 0;
-  const isLastStep = currentStep === steps.length - 1;
-
-  const handleNext = () => {
-    if (canGoNext) {
-      onStepChange(currentStep + 1);
-    } else if (isLastStep) {
-      onComplete?.();
-    }
-  };
-
-  const handlePrevious = () => {
-    if (canGoPrevious) {
-      onStepChange(currentStep - 1);
-    }
-  };
-
+export function PageStepper({ steps, currentStep, className }: PageStepperProps) {
   return (
-    <div className={cn('space-y-6', className)}>
-      {showProgress && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span>
-              Étape {currentStep + 1} sur {steps.length}
-            </span>
-            <span>{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
-          </div>
-          <div className="h-2 w-full rounded-full bg-muted">
-            <div
-              className="h-2 rounded-full bg-primary transition-all"
-              style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-            />
-          </div>
-        </div>
-      )}
-
-      <Card className={cn(headerClassName)}>
-        <CardHeader>
-          <CardTitle>{steps[currentStep]?.title}</CardTitle>
-          {steps[currentStep]?.description && (
-            <CardDescription>{steps[currentStep]?.description}</CardDescription>
-          )}
-        </CardHeader>
-        <CardContent className={cn(contentClassName)}>
-          {steps[currentStep]?.content}
-        </CardContent>
-      </Card>
-
-      {showNavigation && (
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={!canGoPrevious}
-          >
-            Précédent
-          </Button>
-          <Button onClick={handleNext} disabled={steps[currentStep]?.disabled}>
-            {isLastStep ? 'Terminer' : 'Suivant'}
-          </Button>
-        </div>
-      )}
-    </div>
-  );
+    <nav aria-label="Progress" className={cn("w-full", className)}>
+      <ol className="flex items-center justify-between">
+        {steps.map((step, stepIdx) => (
+          <li key={step.id} className={cn("relative", stepIdx !== steps.length - 1 ? "pr-8 sm:pr-20" : "")}>
+            {step.status === 'completed' ? (
+              <>
+                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div className="h-0.5 w-full bg-primary" />
+                </div>
+                <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+                  <svg className="h-5 w-5 text-primary-foreground" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </>
+            ) : step.status === 'current' ? (
+              <>
+                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div className="h-0.5 w-full bg-muted" />
+                </div>
+                <div className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary bg-background">
+                  <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div className="h-0.5 w-full bg-muted" />
+                </div>
+                <div className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-muted bg-background">
+                  <span className="h-2.5 w-2.5 rounded-full bg-muted" />
+                </div>
+              </>
+            )}
+            <div className="mt-2 text-center">
+              <p className="text-sm font-medium text-foreground">{step.title}</p>
+              {step.description && (
+                <p className="text-xs text-muted-foreground">{step.description}</p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
 }

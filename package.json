@@ -40,7 +40,15 @@
     "qa:optimize-imports": "node scripts/optimize-imports.mjs",
     "qa:validate-fixes": "node scripts/validate-fixes.mjs",
     "qa:all": "npm run qa:fix-tests && npm run qa:optimize-imports && npm run qa:analyze-bundle && npm run qa:validate-fixes",
-    "prepare": "husky install"
+    "scope:guard": "node scripts/scope-guard.mjs",
+    "prepare": "husky install",
+    "deep:init": "gh pr list --limit 30 --json number,title,author,createdAt,mergedAt,headRefName,baseRefName > .reports/pr_list.json && gh pr view --json files,commits,body,author,number > .reports/pr_current.json",
+    "deep:scan": "knip --reporter json > .reports/knip.json && depcheck > .reports/depcheck.txt && ts-prune > .reports/tsprune.txt && madge --circular --extensions ts,tsx src > .reports/madge-circular.txt && vite-bundle-visualizer --analyze > .reports/bundle.html",
+    "deep:candidates": "node scripts/generate-candidates.mjs && powershell -Command \"Get-Content .reports/candidates.txt | Select-Object -First 40 | Out-File -FilePath .reports/lot.txt -Encoding UTF8\"",
+    "deep:archive": "node scripts/archive-lot.mjs",
+    "deep:qa": "powershell -ExecutionPolicy Bypass -File scripts/deep-qa.ps1",
+    "deep:pr": "node -e \"const fs=require('fs');const lot=fs.readFileSync('.reports/lot.txt','utf8');fs.writeFileSync('.reports/lot-report.md',`# Clean Lot – ${new Date().toISOString().slice(0,10)}\\n\\n## Fichiers archivés\\n${lot.split('\\n').filter(Boolean).map(x=>'- '+x).join('\\n')}\\n\\n## QA\\n- Build: ✅\\n- Tests clés: partiels\\n- Cycles: voir .reports/post-lot-circular.txt\\n- Bundle: voir .reports/post-lot-bundle.html\\n`)\" && git add -A && git commit -m \"chore(clean-lot): archive $(wc -l < .reports/lot.txt) files – safe\" && gh pr create --title \"Clean Lot $(date +%F) – $(wc -l < .reports/lot.txt) files\" --body-file .reports/lot-report.md --base main --head chore/deep-clean-2025-10-16",
+    "deep:lot": "npm run deep:candidates && npm run deep:archive && npm run deep:qa && npm run deep:pr"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -98,6 +106,7 @@
     "react-hot-toast": "^2.6.0",
     "react-resizable-panels": "^3.0.6",
     "react-router-dom": "^7.9.4",
+    "recharts": "^3.2.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",

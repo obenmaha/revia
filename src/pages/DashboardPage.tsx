@@ -9,7 +9,6 @@ import {
 } from '../components/ui/card';
 import { Skeleton } from '../components/ui/skeleton';
 import { Users, Calendar, FileText, TrendingUp } from 'lucide-react';
-import { TestConnection } from '../components/test/TestConnection';
 
 export function DashboardPage() {
   const { user } = useAuth();
