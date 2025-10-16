@@ -21,7 +21,12 @@
       "Bash(timeout 60 npm test:*)",
       "Bash(npx playwright test:*)",
       "Bash(python -m json.tool:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npx depcheck:*)",
+      "Bash(mkdir:*)",
+      "Bash(git mv:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nchore(cleanup): Smart Clean Pass - Remove unused UI/hooks + optimize exports\n\n## Summary\nExecuted Option B (Safe Quick Wins) of Smart Clean Pass for Sport MVP scope.\nRemoved 26 confirmed-unused files and optimized export features.\n\n## Changes\n### Removed (26 files)\n- 13 unused UI components (0 imports confirmed via Grep audit):\n  accordion, alert-dialog, aspect-ratio, collapsible, combobox, command,\n  context-menu, emoji-picker, hover-card, menubar, navigation-menu,\n  resizable, page-stepper\n\n- 11 unused utility hooks (0 imports confirmed via Grep audit):\n  useClickOutside, useCopyToClipboard, useFocusTrap, useGeolocation,\n  useHover, useIntersectionObserver, useKeyPress, useOnlineStatus,\n  usePrevious, useToggle, useWindowSize\n\n- 2 PDF export files (prevent 147KB jspdf bloat):\n  SportPDFExport component, sportExportService PDF methods\n\n### Modified (2 files)\n- sportExportService.ts: CSV-only export (PDF removed)\n- SportExportModal.tsx: Hardcoded CSV format\n\n### Retained\n- ✅ Gamification (BadgeSystem, StreakCounter) - FR8 in MVP scope\n- ✅ CSV export with papaparse (lightweight)\n- ✅ PostHog analytics (already Sport MVP events only)\n\n## Metrics\n- Bundle: 708.82KB → ~695KB (-14KB, -1.95%)\n- Build: SUCCESS (Vite 10.43s)\n- Files removed: 26 (all confirmed safe)\n- TS errors: ~120 (pre-existing, not caused by cleanup)\n\n## Scope\nPart of Sport MVP focus (FR1-FR7, FR9, FR10 only).\nCabinet code archive deferred to separate PR (~200KB additional savings).\n\n## Documentation\n- KILL-LIST-SPORT-MVP.md: Comprehensive cleanup strategy\n- SMART-CLEAN-PASS-REPORT.md: Full execution report\n\n## Next Steps\n1. Cabinet archive PR (high-priority, -200KB bundle)\n2. Type system cleanup (regenerate Supabase types)\n3. Test suite validation (>95% target)\n\n🤖 Generated with Claude Code (https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

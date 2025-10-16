@@ -44,7 +44,7 @@ export function SportExportModal({
   className = '',
 }: SportExportModalProps) {
   const [isExporting, setIsExporting] = useState(false);
-  const [exportFormat, setExportFormat] = useState<'csv' | 'pdf'>('csv');
+  const exportFormat = 'csv'; // PDF removed for Sport MVP
   const [exportPeriod, setExportPeriod] = useState<
     'week' | 'month' | 'year' | 'custom'
   >('month');

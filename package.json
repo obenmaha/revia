@@ -40,6 +40,7 @@
     "qa:optimize-imports": "node scripts/optimize-imports.mjs",
     "qa:validate-fixes": "node scripts/validate-fixes.mjs",
     "qa:all": "npm run qa:fix-tests && npm run qa:optimize-imports && npm run qa:analyze-bundle && npm run qa:validate-fixes",
+    "scope:guard": "node scripts/scope-guard.mjs",
     "prepare": "husky install"
   },
   "dependencies": {

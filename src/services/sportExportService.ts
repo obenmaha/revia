@@ -1,6 +1,5 @@
-// Service d'export sécurisé pour les données sport - Story 1.5
+// Service d'export sécurisé pour les données sport - Story 1.5 (CSV Only - Sport MVP)
 import { supabase } from '@/lib/supabase';
-import { jsPDF } from 'jspdf';
 import Papa from 'papaparse';
 import type { Database } from '@/types/supabase';
 
@@ -8,7 +7,7 @@ type SportSession = Database['public']['Tables']['sport_sessions']['Row'];
 type SportExercise = Database['public']['Tables']['sport_exercises']['Row'];
 
 export interface ExportFilters {
-  format: 'csv' | 'pdf';
+  format: 'csv'; // PDF removed for Sport MVP
   period: 'week' | 'month' | 'year' | 'custom';
   startDate?: string;
   endDate?: string;
@@ -93,123 +92,8 @@ export class SportExportService {
     }
   }
 
-  /**
-   * Export PDF des sessions sport
-   */
-  static async exportPDF(filters: ExportFilters): Promise<ExportResult> {
-    try {
-      // Récupération des données
-      const sessions = await this.getSessionsForExport(filters);
-
-      // Validation des données
-      if (!this.validateExportData(sessions)) {
-        throw new Error("Données d'export invalides");
-      }
-
-      // Nettoyage des données sensibles
-      const sanitizedSessions = this.sanitizeExportData(sessions);
-
-      // Génération du PDF
-      const pdf = new jsPDF();
-
-      // Configuration du PDF
-      pdf.setFontSize(16);
-      pdf.setTextColor(0, 0, 0);
-
-      // En-tête
-      pdf.text("Rapport d'Entraînement Sport", 20, 20);
-      pdf.text(`Période: ${this.getPeriodLabel(filters.period)}`, 20, 30);
-      pdf.text(`Généré le: ${new Date().toLocaleDateString('fr-FR')}`, 20, 40);
-
-      // Ligne de séparation
-      pdf.line(20, 45, 190, 45);
-
-      // Contenu des sessions
-      let yPosition = 60;
-      sanitizedSessions.forEach((session, index) => {
-        if (yPosition > 250) {
-          pdf.addPage();
-          yPosition = 20;
-        }
-
-        // Titre de la session
-        pdf.setFontSize(12);
-        pdf.text(`${index + 1}. ${session.name}`, 20, yPosition);
-        yPosition += 10;
-
-        // Détails de la session
-        pdf.setFontSize(10);
-        pdf.text(`Date: ${session.date}`, 20, yPosition);
-        yPosition += 6;
-        pdf.text(`Type: ${session.type}`, 20, yPosition);
-        yPosition += 6;
-        pdf.text(`Durée: ${session.duration_minutes} min`, 20, yPosition);
-        yPosition += 6;
-        pdf.text(`RPE: ${session.rpe_score}/10`, 20, yPosition);
-        yPosition += 6;
-        pdf.text(`Douleur: ${session.pain_level}/10`, 20, yPosition);
-        yPosition += 6;
-
-        // Exercices
-        if (session.exercises && session.exercises.length > 0) {
-          pdf.text('Exercices:', 20, yPosition);
-          yPosition += 6;
-
-          session.exercises.forEach(exercise => {
-            pdf.text(
-              `- ${exercise.name} (${exercise.exercise_type})`,
-              25,
-              yPosition
-            );
-            yPosition += 5;
-            if (exercise.sets > 0) {
-              pdf.text(
-                `  ${exercise.sets} séries x ${exercise.reps} reps`,
-                25,
-                yPosition
-              );
-              yPosition += 5;
-            }
-            if (exercise.weight_kg > 0) {
-              pdf.text(`  Poids: ${exercise.weight_kg}kg`, 25, yPosition);
-              yPosition += 5;
-            }
-            if (exercise.duration_seconds > 0) {
-              pdf.text(
-                `  Durée: ${Math.round(exercise.duration_seconds / 60)}min`,
-                25,
-                yPosition
-              );
-              yPosition += 5;
-            }
-          });
-        }
-
-        yPosition += 10;
-      });
-
-      // Mentions légales si demandées
-      if (filters.includeLegalNotice) {
-        this.addLegalNotice(pdf);
-      }
-
-      // Génération du nom de fichier
-      const filename = this.generateFilename('pdf', filters.period);
-
-      return {
-        success: true,
-        data: pdf.output('blob'),
-        filename,
-      };
-    } catch (error) {
-      console.error("Erreur lors de l'export PDF:", error);
-      return {
-        success: false,
-        filename: '',
-        error: error instanceof Error ? error.message : 'Erreur inconnue',
-      };
-    }
-  }
+  // PDF export removed for Sport MVP to reduce bundle size
+  // Use CSV export for lightweight data export
 
   /**
    * Récupération des sessions pour l'export
@@ -364,7 +248,7 @@ export class SportExportService {
    * Génération du nom de fichier
    */
   private static generateFilename(
-    format: 'csv' | 'pdf',
+    format: 'csv',
     period: string
   ): string {
     const date = new Date().toISOString().split('T')[0];
@@ -390,24 +274,6 @@ export class SportExportService {
     }
   }
 
-  /**
-   * Ajout des mentions légales au PDF
-   */
-  private static addLegalNotice(pdf: jsPDF): void {
-    const pageHeight = pdf.internal.pageSize.height;
-    const yPosition = pageHeight - 40;
-
-    pdf.setFontSize(8);
-    pdf.setTextColor(100, 100, 100);
-
-    pdf.text('Mentions légales:', 20, yPosition);
-    pdf.text('- Données personnelles protégées par le RGPD', 20, yPosition + 6);
-    pdf.text(
-      '- Export généré le ' + new Date().toLocaleString('fr-FR'),
-      20,
-      yPosition + 12
-    );
-    pdf.text('- Usage personnel uniquement', 20, yPosition + 18);
-  }
+  // PDF legal notice removed with PDF export feature
 }
 
